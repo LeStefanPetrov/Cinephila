@@ -32,6 +32,7 @@ namespace Cinephila.DataAccess.Helpers
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<CountryProduction>(builder =>
             {
                 builder.HasNoKey();
