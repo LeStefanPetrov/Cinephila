@@ -23,7 +23,7 @@ namespace Cinephila.API.Controllers
         public async Task<ActionResult<int>> Create(ParticipantDto dto)
         {
             var participantId = await _service.CreateAsync(dto).ConfigureAwait(false);
-            return participantId;
+            return Created(Request.Path.Value, participantId);
         }
 
         [HttpPut]

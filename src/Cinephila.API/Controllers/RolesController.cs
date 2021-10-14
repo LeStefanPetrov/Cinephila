@@ -22,7 +22,7 @@ namespace Cinephila.API.Controllers
         public async Task<ActionResult<int>> Create(string roleName)
         {
             var roleId = await _service.CreateAsync(roleName).ConfigureAwait(false);
-            return roleId;
+            return Created(Request.Path.Value, roleId);
         }
 
         [HttpDelete]
