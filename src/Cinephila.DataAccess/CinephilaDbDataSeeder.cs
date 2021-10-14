@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cinephila.DataAccess.Helpers
+namespace Cinephila.DataAccess
 {
     public static class CinephilaDbDataSeeder
     {

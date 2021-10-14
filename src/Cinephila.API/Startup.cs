@@ -1,4 +1,10 @@
-using Cinephila.DataAccess.Helpers;
+using AutoMapper;
+using Cinephila.API.StartupExtensions;
+using Cinephila.DataAccess;
+using Cinephila.DataAccess.Repositories;
+using Cinephila.Domain.Repositories;
+using Cinephila.Domain.Services;
+using Cinephila.Services.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +33,11 @@ namespace Cinephila.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cinephila.API", Version = "v1" });
             });
+
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddRepositories();
+            services.AddServices();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

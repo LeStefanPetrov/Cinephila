@@ -1,7 +1,7 @@
 ﻿using Cinephila.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Cinephila.DataAccess.Helpers
+namespace Cinephila.DataAccess
 {
     public class CinephilaDbContext : DbContext
     {
