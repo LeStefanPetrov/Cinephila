@@ -37,6 +37,7 @@ namespace Cinephila.API
             services.AddAutoMapper(typeof(AutoMapperProfile));
             services.AddRepositories();
             services.AddServices();
+            services.AddValidators();
 
         }
 
