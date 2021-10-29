@@ -1,17 +1,16 @@
-﻿using Cinephila.Domain.DTOs.ProductionDTOs;
-using Cinephila.Domain.Enum;
+﻿using Cinephila.Domain.Enum;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Cinephila.Domain.DTOs
+namespace Cinephila.Domain.DTOs.ProductionDTOs
 {
-    public class ProductionDto
+    public abstract class ProductionDto
     {
-        public ProductionType ProductionType { get; set; }
+        public ProductionType Type { get; set; }
 
-        public BaseProductionDto Production { get; set; }
+        public string Name { get; set; }
+
+        public DateTime YearOfCreation { get; set; }
+
+        public string Summary { get; set; }
     }
 }

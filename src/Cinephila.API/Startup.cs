@@ -1,4 +1,5 @@
 using AutoMapper;
+using Cinephila.API.DataBinding;
 using Cinephila.API.StartupExtensions;
 using Cinephila.DataAccess;
 using Cinephila.DataAccess.Repositories;
@@ -35,6 +36,7 @@ namespace Cinephila.API
             });
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
+            services.AddCustomModelBinders();
             services.AddRepositories();
             services.AddServices();
             services.AddValidators();
