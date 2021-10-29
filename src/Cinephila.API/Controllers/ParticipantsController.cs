@@ -14,23 +14,15 @@ namespace Cinephila.API.Controllers
     public class ParticipantsController : Controller
     {
         private readonly IParticipantsService _service;
-        private readonly IValidator<ParticipantDto> _validator;
 
-        public ParticipantsController(IParticipantsService service, IValidator<ParticipantDto> validator)
+        public ParticipantsController(IParticipantsService service)
         {
             _service = service;
-            _validator = validator;
         }
 
         [HttpPost]
         public async Task<ActionResult<int>> Create(ParticipantDto dto)
         {
-            var validationResult = await _validator.ValidateAsync(dto);
-            if(!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.Errors);
-            }
-
             var participantId = await _service.CreateAsync(dto).ConfigureAwait(false);
             return Created(Request.Path.Value, participantId);
         }

@@ -1,6 +1,7 @@
 ﻿using Cinephila.API.FluentValidators;
 using Cinephila.Domain.DTOs.ParticipantsDTOs;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace Cinephila.API.StartupExtensions
     {
         public static IServiceCollection AddValidators(this IServiceCollection services)
         {
-            services.AddScoped<IValidator<ParticipantDto>, ParticipantValidator>();
+            services.AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Startup>());
             return services;
         }
     }
