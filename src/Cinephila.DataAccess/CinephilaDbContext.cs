@@ -11,7 +11,7 @@ namespace Cinephila.DataAccess
 
         public DbSet<Movie> Movies { get; set; }
 
-        public DbSet<Show> Shows { get; set; }
+        public DbSet<TVShow> TVShows { get; set; }
 
         public DbSet<Participant> Participants { get; set; }
 

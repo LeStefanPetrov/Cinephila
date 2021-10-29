@@ -10,26 +10,26 @@ namespace Cinephila.Services.Services
 {
     public class RolesService : IRolesService
     {
-        private readonly IRolesRepository _repository;
+        private readonly IRolesRepository _rolesRepository;
 
-        public RolesService(IRolesRepository repository)
+        public RolesService(IRolesRepository rolesRepository)
         {
-            _repository = repository;            
+            _rolesRepository = rolesRepository;            
         }
 
         public Task<int> CreateAsync(string roleName)
         {
-            return _repository.CreateAsync(roleName);
+            return _rolesRepository.CreateAsync(roleName);
         }
 
         public Task DeleteAsync(int id)
         {
-            return _repository.DeleteAsync(id);
+            return _rolesRepository.DeleteAsync(id);
         }
 
         public Task<bool> CheckIfExistAsync(int id)
         {
-            return  _repository.CheckIfExistAsync(id);
+            return _rolesRepository.CheckIfExistAsync(id);
         }
     }
 }

@@ -11,36 +11,36 @@ namespace Cinephila.Services.Services
 {
     public class ParticipantsService : IParticipantsService
     {
-        private readonly IParticipantsRepository _repository;
+        private readonly IParticipantsRepository _participantsRepository;
 
-        public ParticipantsService(IParticipantsRepository repository)
+        public ParticipantsService(IParticipantsRepository participantsRepository)
         {
-            _repository = repository;
+            _participantsRepository = participantsRepository;
         }
 
         public Task<int> CreateAsync(ParticipantDto dto)
         {
-            return _repository.CreateAsync(dto);
+            return _participantsRepository.CreateAsync(dto);
         }
 
         public Task UpdateAsync(ParticipantDto dto, int id)
         {
-            return _repository.UpdateAsync(dto, id);
+            return _participantsRepository.UpdateAsync(dto, id);
         }
 
         public Task DeleteAsync(int id)
         {
-            return _repository.DeleteAsync(id);
+            return _participantsRepository.DeleteAsync(id);
         }
 
         public Task<List<ParticipantDto>> GetPaginatedAsync(int currentPage, int pageSize)
         {
-            return _repository.GetPaginatedAsync(currentPage, pageSize);
+            return _participantsRepository.GetPaginatedAsync(currentPage, pageSize);
         }
 
         public Task<bool> CheckIfExistAsync(int id)
         {
-            return _repository.CheckIfExistAsync(id);
+            return _participantsRepository.CheckIfExistAsync(id);
         }
     }
 }

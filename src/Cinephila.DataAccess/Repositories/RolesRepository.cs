@@ -22,7 +22,7 @@ namespace Cinephila.DataAccess.Repositories
         {
             var role = new Role { Name = roleName };
 
-            await _context.Roles.AddAsync(role).ConfigureAwait(false);
+            _context.Roles.Add(role);
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return role.ID;

@@ -11,17 +11,17 @@ namespace Cinephila.API.Controllers
     [ApiController]
     public class RolesController : ControllerBase
     {
-        private readonly IRolesService _service;
+        private readonly IRolesService _rolesService;
 
-        public RolesController(IRolesService service)
+        public RolesController(IRolesService rolesService)
         {
-            _service = service;
+            _rolesService = rolesService;
         }
 
         [HttpPost]
         public async Task<ActionResult<int>> Create(string roleName)
         {
-            var roleId = await _service.CreateAsync(roleName).ConfigureAwait(false);
+            var roleId = await _rolesService.CreateAsync(roleName).ConfigureAwait(false);
             return Created(Request.Path.Value, roleId);
         }
 
@@ -31,10 +31,10 @@ namespace Cinephila.API.Controllers
             if (id <= 0)
                 return BadRequest();
 
-            if (!await _service.CheckIfExistAsync(id).ConfigureAwait(false))
+            if (!await _rolesService.CheckIfExistAsync(id).ConfigureAwait(false))
                 return NotFound();
 
-            await _service.DeleteAsync(id).ConfigureAwait(false);
+            await _rolesService.DeleteAsync(id).ConfigureAwait(false);
             return NoContent();
         }
     }

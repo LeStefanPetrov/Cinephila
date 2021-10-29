@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cinephila.DataAccess.Entities
 {
-    public class Show : BaseEntity
+    public class TVShow : BaseEntity
     {
         [Required]
         public int ProductionID { get; set; }

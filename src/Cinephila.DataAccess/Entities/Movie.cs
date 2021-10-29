@@ -8,5 +8,8 @@ namespace Cinephila.DataAccess.Entities
         public int ProductionID { get; set; }
 
         public Production Production { get; set; }
+
+        public int LengthInMinutes { get; set; }
+
     }
 }

@@ -13,17 +13,17 @@ namespace Cinephila.API.Controllers
     [ApiController]
     public class ParticipantsController : Controller
     {
-        private readonly IParticipantsService _service;
+        private readonly IParticipantsService _participantsService;
 
-        public ParticipantsController(IParticipantsService service)
+        public ParticipantsController(IParticipantsService participantsService)
         {
-            _service = service;
+            _participantsService = participantsService;
         }
 
         [HttpPost]
         public async Task<ActionResult<int>> Create(ParticipantDto dto)
         {
-            var participantId = await _service.CreateAsync(dto).ConfigureAwait(false);
+            var participantId = await _participantsService.CreateAsync(dto).ConfigureAwait(false);
             return Created(Request.Path.Value, participantId);
         }
 
@@ -33,10 +33,10 @@ namespace Cinephila.API.Controllers
             if (id <= 0)
                 return BadRequest();
 
-            if (!await _service.CheckIfExistAsync(id).ConfigureAwait(false))
+            if (!await _participantsService.CheckIfExistAsync(id).ConfigureAwait(false))
                 return NotFound();
 
-            await _service.UpdateAsync(dto, id).ConfigureAwait(false);
+            await _participantsService.UpdateAsync(dto, id).ConfigureAwait(false);
 
             return NoContent();
         }
@@ -47,10 +47,10 @@ namespace Cinephila.API.Controllers
             if (id <= 0)
                 return BadRequest();
 
-            if (!await _service.CheckIfExistAsync(id).ConfigureAwait(false))
+            if (!await _participantsService.CheckIfExistAsync(id).ConfigureAwait(false))
                 return NotFound();
 
-            await _service.DeleteAsync(id).ConfigureAwait(false);
+            await _participantsService.DeleteAsync(id).ConfigureAwait(false);
 
             return NoContent();
         }
@@ -58,7 +58,7 @@ namespace Cinephila.API.Controllers
         [HttpGet]
         public async Task<ActionResult> GetPaginated(int currentPage, int pageSize)
         {
-            var participants = await _service.GetPaginatedAsync(currentPage, pageSize).ConfigureAwait(false);
+            var participants = await _participantsService.GetPaginatedAsync(currentPage, pageSize).ConfigureAwait(false);
 
             if (!participants.Any())
                 return NotFound();
