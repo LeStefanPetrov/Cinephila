@@ -42,7 +42,7 @@ namespace Cinephila.API.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
-            return Ok(await _productionsService.CreateAsync(productionDto));
+            return Ok(await _productionsService.CreateAsync(productionDto).ConfigureAwait(false));
         }
     }
 }

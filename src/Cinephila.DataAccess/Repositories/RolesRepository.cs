@@ -30,7 +30,7 @@ namespace Cinephila.DataAccess.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await _context.Roles.FirstOrDefaultAsync(x => x.ID == id).ConfigureAwait(false);
+            var entity = _context.Roles.FirstOrDefault(x => x.ID == id);
             _context.Roles.Remove(entity);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

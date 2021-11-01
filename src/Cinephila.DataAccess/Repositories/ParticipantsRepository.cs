@@ -32,7 +32,7 @@ namespace Cinephila.DataAccess.Repositories
         }
         public async Task UpdateAsync(ParticipantDto dto, int id)
         {
-            var entity = await _context.Participants.FirstOrDefaultAsync(x => x.ID == id).ConfigureAwait(false);
+            var entity = _context.Participants.FirstOrDefault(x => x.ID == id);
             _mapper.Map(dto, entity);
             _context.Participants.Update(entity);
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -40,14 +40,14 @@ namespace Cinephila.DataAccess.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await _context.Participants.FirstOrDefaultAsync(x => x.ID == id).ConfigureAwait(false);
+            var entity = _context.Participants.FirstOrDefault(x => x.ID == id);
             _context.Participants.Remove(entity);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task<List<ParticipantDto>> GetPaginatedAsync(int currentPage, int pageSize)
         {
-            var entities = await _context.Participants.Skip((currentPage - 1) * pageSize).Take(pageSize).ToListAsync();
+            var entities = await _context.Participants.Skip((currentPage - 1) * pageSize).Take(pageSize).ToListAsync().ConfigureAwait(false);
 
             return _mapper.Map<List<ParticipantDto>>(entities);
         }
