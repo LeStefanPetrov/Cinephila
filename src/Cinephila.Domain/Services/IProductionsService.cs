@@ -10,5 +10,7 @@ namespace Cinephila.Domain.Services
     public interface IProductionsService
     {
         Task<int> CreateAsync(ProductionDto dto);
+
+        Task DeleteAsync(int id);
     }
 }

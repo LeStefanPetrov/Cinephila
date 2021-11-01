@@ -22,5 +22,10 @@ namespace Cinephila.Services.Services
         {
            return _productionsRepository.CreateAsync(dto);
         }
+
+        public Task DeleteAsync(int id)
+        {
+            return _productionsRepository.DeleteAsync(id);
+        }
     }
 }

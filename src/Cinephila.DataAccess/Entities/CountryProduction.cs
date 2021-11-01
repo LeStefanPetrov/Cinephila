@@ -11,9 +11,8 @@ namespace Cinephila.DataAccess.Entities
         [Required]
         public int CountryID { get; set; }
 
-        public Production Production { get; set; }
+        public virtual Production Production { get; set; }
 
-        public Country Country { get; set; }
-
+        public virtual Country Country { get; set; }
     }
 }

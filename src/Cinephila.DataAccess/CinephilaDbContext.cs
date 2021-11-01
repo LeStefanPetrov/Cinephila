@@ -43,21 +43,11 @@ namespace Cinephila.DataAccess
 
             modelBuilder.Entity<CountryProduction>()
                 .HasKey(x => new { x.CountryID, x.ProductionID });
+        }
 
-            modelBuilder.Entity<ParticipantProduction>()
-                .HasOne(x => x.Participant)
-                .WithMany(x => x.ParticipantsProductions)
-                .HasForeignKey(x => x.ParticipantID);
-
-            modelBuilder.Entity<ParticipantProduction>()
-                .HasOne(x => x.Production)
-                .WithMany(x => x.ParticipantsProductions)
-                .HasForeignKey(x => x.ProductionID);
-
-            modelBuilder.Entity<ParticipantProduction>()
-                .HasOne(x => x.Role)
-                .WithMany(x => x.ParticipantsProductions)
-                .HasForeignKey(x => x.RoleID);
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseLazyLoadingProxies();
         }
     }
 }

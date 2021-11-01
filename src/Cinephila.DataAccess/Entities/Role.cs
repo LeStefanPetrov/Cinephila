@@ -8,6 +8,6 @@ namespace Cinephila.DataAccess.Entities
         [Required]
         public string Name { get; set; }
 
-        public ICollection<ParticipantProduction> ParticipantsProductions { get; set; }
+        public virtual ICollection<ParticipantProduction> ParticipantsProductions { get; set; }
     }
 }

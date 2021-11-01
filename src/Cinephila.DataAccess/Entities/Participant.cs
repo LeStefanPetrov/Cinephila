@@ -15,6 +15,6 @@ namespace Cinephila.DataAccess.Entities
 
         public string PlaceOfBirth { get; set; }
 
-        public ICollection<ParticipantProduction> ParticipantsProductions { get; set; }
+        public virtual ICollection<ParticipantProduction> ParticipantsProductions { get; set; }
     }
 }

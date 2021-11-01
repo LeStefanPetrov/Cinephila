@@ -13,6 +13,5 @@ namespace Cinephila.DataAccess.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-
     }
 }

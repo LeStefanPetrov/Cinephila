@@ -44,5 +44,15 @@ namespace Cinephila.API.Controllers
 
             return Ok(await _productionsService.CreateAsync(productionDto).ConfigureAwait(false));
         }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteAsync(int id)
+        {
+            if (id <= 0)
+                return BadRequest();
+
+            await _productionsService.DeleteAsync(id).ConfigureAwait(false);
+            return NoContent();
+        }
     }
 }

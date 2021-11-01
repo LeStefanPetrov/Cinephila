@@ -14,9 +14,8 @@ namespace Cinephila.DataAccess.Entities
 
         public int? Rating { get; set; }
 
-        public Production Production { get; set; }
+        public virtual Production Production { get; set; }
 
-        public User User { get; set; }
-        
+        public virtual User User { get; set; }
     }
 }

@@ -7,5 +7,6 @@ namespace Cinephila.Domain.Repositories
     {
         Task<int> CreateAsync(ProductionDto dto);
 
+        Task DeleteAsync(int id);
     }
 }

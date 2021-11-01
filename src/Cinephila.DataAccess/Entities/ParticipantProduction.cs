@@ -11,10 +11,10 @@ namespace Cinephila.DataAccess.Entities
 
         public int RoleID { get; set; }
 
-        public Production Production { get; set; }
+        public virtual Production Production { get; set; }
 
-        public Participant Participant { get; set; }
+        public virtual Participant Participant { get; set; }
 
-        public Role Role { get; set; }
+        public virtual Role Role { get; set; }
     }
 }

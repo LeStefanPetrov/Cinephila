@@ -39,5 +39,12 @@ namespace Cinephila.DataAccess.Repositories
                 return show.ID;
             }
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entity = _context.Productions.FirstOrDefault(x => x.ID == id);
+            _context.Productions.Remove(entity);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+        }
     }
 }

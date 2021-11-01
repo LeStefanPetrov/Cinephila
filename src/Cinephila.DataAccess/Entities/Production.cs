@@ -13,9 +13,8 @@ namespace Cinephila.DataAccess.Entities
 
         public string Summary { get; set; }
 
-        public ICollection<CountryProduction> Countries { get; set; }
+        public virtual ICollection<CountryProduction> Countries { get; set; }
 
-        public ICollection<ParticipantProduction> ParticipantsProductions { get; set; }
-
+        public virtual ICollection<ParticipantProduction> ParticipantsProductions { get; set; }
     }
 }
