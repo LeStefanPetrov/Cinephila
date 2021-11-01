@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Cinephila.DataAccess.Entities;
-using Cinephila.Domain.DTOs.ParticipantsDTOs;
+using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;

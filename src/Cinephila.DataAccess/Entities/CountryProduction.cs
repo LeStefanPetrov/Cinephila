@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Cinephila.DataAccess.Entities
 {
@@ -13,5 +14,6 @@ namespace Cinephila.DataAccess.Entities
         public Production Production { get; set; }
 
         public Country Country { get; set; }
+
     }
 }

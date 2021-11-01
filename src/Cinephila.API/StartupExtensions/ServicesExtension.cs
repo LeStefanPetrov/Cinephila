@@ -14,6 +14,7 @@ namespace Cinephila.API.StartupExtensions
         {
             services.AddScoped<IRolesService, RolesService>();
             services.AddScoped<IParticipantsService, ParticipantsService>();
+            services.AddScoped<IProductionsService, ProductionsService>();
             return services;
         }
     }

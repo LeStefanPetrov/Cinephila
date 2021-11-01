@@ -33,20 +33,31 @@ namespace Cinephila.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<CountryProduction>(builder =>
-            {
-                builder.HasNoKey();
-            });
-
-            modelBuilder.Entity<ParticipantProduction>(builder =>
-            {
-                builder.HasNoKey();
-            });
-
             modelBuilder.Entity<ReviewProduction>(builder =>
             {
                 builder.HasNoKey();
             });
+
+            modelBuilder.Entity<ParticipantProduction>()
+                .HasKey(x => new { x.ProductionID, x.ParticipantID, x.RoleID });
+
+            modelBuilder.Entity<CountryProduction>()
+                .HasKey(x => new { x.CountryID, x.ProductionID });
+
+            modelBuilder.Entity<ParticipantProduction>()
+                .HasOne(x => x.Participant)
+                .WithMany(x => x.ParticipantsProductions)
+                .HasForeignKey(x => x.ParticipantID);
+
+            modelBuilder.Entity<ParticipantProduction>()
+                .HasOne(x => x.Production)
+                .WithMany(x => x.ParticipantsProductions)
+                .HasForeignKey(x => x.ProductionID);
+
+            modelBuilder.Entity<ParticipantProduction>()
+                .HasOne(x => x.Role)
+                .WithMany(x => x.ParticipantsProductions)
+                .HasForeignKey(x => x.RoleID);
         }
     }
 }

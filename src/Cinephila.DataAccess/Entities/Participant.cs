@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Cinephila.DataAccess.Entities
@@ -13,5 +14,7 @@ namespace Cinephila.DataAccess.Entities
         public DateTime? DeathDate { get; set; }
 
         public string PlaceOfBirth { get; set; }
+
+        public ICollection<ParticipantProduction> ParticipantsProductions { get; set; }
     }
 }

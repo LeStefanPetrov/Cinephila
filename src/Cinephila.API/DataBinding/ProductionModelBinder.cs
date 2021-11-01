@@ -45,6 +45,7 @@ namespace Cinephila.API.DataBinding
             bindingInfo: null,
             bindingContext.ModelName);
 
+            
             await modelBinder.BindModelAsync(newBindingContext);
             bindingContext.Result = newBindingContext.Result;
 

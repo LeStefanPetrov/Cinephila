@@ -1,6 +1,9 @@
 ﻿using Cinephila.API.DataBinding;
 using Cinephila.Domain.DTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
+using Cinephila.Domain.Services;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,18 +16,33 @@ namespace Cinephila.API.Controllers
     [ApiController]
     public class ProductionsController : Controller
     {
-        public ProductionsController()
+        private readonly IProductionsService _productionsService;
+        private readonly IValidator<MovieDto> _movieValidator;
+
+
+        public ProductionsController(IProductionsService productionsService, IValidator<MovieDto> validator)
         {
+            _productionsService = productionsService;
+            _movieValidator = validator;
         }
 
         [HttpPost]
-        public ActionResult Create([ModelBinder(BinderType = typeof(ProductionModelBinder))] ProductionDto productionDto)
+        public async Task<ActionResult<int>> Create([ModelBinder(BinderType = typeof(ProductionModelBinder))] ProductionDto productionDto)
         {
             if (productionDto == null)
                 return BadRequest();
 
-            var a = productionDto;
-            return Ok(productionDto);
+            var validationResult = new ValidationResult();
+
+            if(productionDto.GetType() == typeof(MovieDto))
+                validationResult = await _movieValidator.ValidateAsync(productionDto as MovieDto);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
+            return Ok(await _productionsService.CreateAsync(productionDto));
         }
     }
 }

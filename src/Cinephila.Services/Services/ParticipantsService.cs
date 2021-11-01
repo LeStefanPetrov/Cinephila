@@ -1,4 +1,4 @@
-﻿using Cinephila.Domain.DTOs.ParticipantsDTOs;
+﻿using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.Repositories;
 using Cinephila.Domain.Services;
 using System;

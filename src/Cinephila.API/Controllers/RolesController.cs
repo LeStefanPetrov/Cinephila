@@ -1,4 +1,6 @@
-﻿using Cinephila.Domain.Services;
+﻿using Cinephila.Domain.DTOs;
+using Cinephila.Domain.DTOs.ProductionDTOs;
+using Cinephila.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

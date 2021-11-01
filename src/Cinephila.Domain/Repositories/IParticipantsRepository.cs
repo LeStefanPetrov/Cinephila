@@ -1,4 +1,4 @@
-﻿using Cinephila.Domain.DTOs.ParticipantsDTOs;
+﻿using Cinephila.Domain.DTOs.ParticipantDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

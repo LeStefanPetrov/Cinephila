@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cinephila.Domain.DTOs.ParticipantsDTOs
+namespace Cinephila.Domain.DTOs.ParticipantDTOs
 {
     public class ParticipantDto
     {

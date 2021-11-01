@@ -4,14 +4,16 @@ using Cinephila.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Cinephila.DataAccess.Migrations
 {
     [DbContext(typeof(CinephilaDbContext))]
-    partial class CinephilaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211031162254_AddCountryEntityCompositeKeyAndNavProperty")]
+    partial class AddCountryEntityCompositeKeyAndNavProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,18 +99,18 @@ namespace Cinephila.DataAccess.Migrations
 
             modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantProduction", b =>
                 {
-                    b.Property<int>("ProductionID")
+                    b.Property<int>("ParticipantID")
                         .HasColumnType("int");
 
-                    b.Property<int>("ParticipantID")
+                    b.Property<int>("ProductionID")
                         .HasColumnType("int");
 
                     b.Property<int>("RoleID")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductionID", "ParticipantID", "RoleID");
-
                     b.HasIndex("ParticipantID");
+
+                    b.HasIndex("ProductionID");
 
                     b.HasIndex("RoleID");
 
@@ -251,19 +253,19 @@ namespace Cinephila.DataAccess.Migrations
             modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantProduction", b =>
                 {
                     b.HasOne("Cinephila.DataAccess.Entities.Participant", "Participant")
-                        .WithMany("ParticipantsProductions")
+                        .WithMany()
                         .HasForeignKey("ParticipantID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Cinephila.DataAccess.Entities.Production", "Production")
-                        .WithMany("ParticipantsProductions")
+                        .WithMany()
                         .HasForeignKey("ProductionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Cinephila.DataAccess.Entities.Role", "Role")
-                        .WithMany("ParticipantsProductions")
+                        .WithMany()
                         .HasForeignKey("RoleID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -310,21 +312,9 @@ namespace Cinephila.DataAccess.Migrations
                     b.Navigation("Productions");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.Participant", b =>
-                {
-                    b.Navigation("ParticipantsProductions");
-                });
-
             modelBuilder.Entity("Cinephila.DataAccess.Entities.Production", b =>
                 {
                     b.Navigation("Countries");
-
-                    b.Navigation("ParticipantsProductions");
-                });
-
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.Role", b =>
-                {
-                    b.Navigation("ParticipantsProductions");
                 });
 #pragma warning restore 612, 618
         }
