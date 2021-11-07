@@ -5,25 +5,25 @@ namespace Cinephila.DataAccess
 {
     public class CinephilaDbContext : DbContext
     {
-        public DbSet<Country> Countries { get; set; }
+        public DbSet<CountryEntity> Countries { get; set; }
 
-        public DbSet<Production> Productions { get; set; }
+        public DbSet<ProductionEntity> Productions { get; set; }
 
-        public DbSet<Movie> Movies { get; set; }
+        public DbSet<MovieEntity> Movies { get; set; }
 
-        public DbSet<TVShow> TVShows { get; set; }
+        public DbSet<TVShowEntity> TVShows { get; set; }
 
-        public DbSet<Participant> Participants { get; set; }
+        public DbSet<ParticipantEntity> Participants { get; set; }
 
-        public DbSet<Role> Roles { get; set; }
+        public DbSet<RoleEntity> Roles { get; set; }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
 
-        public DbSet<CountryProduction> CountriesProductions { get; set; }
+        public DbSet<CountryProductionEntity> CountriesProductions { get; set; }
 
-        public DbSet<ParticipantProduction> ParticipantsProductions { get; set; }
+        public DbSet<ParticipantProductionEntity> ParticipantsProductions { get; set; }
 
-        public DbSet<ReviewProduction> ReviewsProductions { get; set; }
+        public DbSet<ReviewProductionEntity> ReviewsProductions { get; set; }
 
         public CinephilaDbContext(DbContextOptions options) : base(options)
         {
@@ -33,15 +33,15 @@ namespace Cinephila.DataAccess
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<ReviewProduction>(builder =>
+            modelBuilder.Entity<ReviewProductionEntity>(builder =>
             {
                 builder.HasNoKey();
             });
 
-            modelBuilder.Entity<ParticipantProduction>()
+            modelBuilder.Entity<ParticipantProductionEntity>()
                 .HasKey(x => new { x.ProductionID, x.ParticipantID, x.RoleID });
 
-            modelBuilder.Entity<CountryProduction>()
+            modelBuilder.Entity<CountryProductionEntity>()
                 .HasKey(x => new { x.CountryID, x.ProductionID });
         }
 

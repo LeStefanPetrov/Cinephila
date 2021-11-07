@@ -2,7 +2,7 @@
 
 namespace Cinephila.DataAccess.Entities
 {
-    public class User : BaseEntity
+    public class UserEntity : BaseEntity
     {
         [Required]
         public string Username { get; set; }

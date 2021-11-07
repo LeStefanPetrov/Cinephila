@@ -2,7 +2,7 @@
 
 namespace Cinephila.DataAccess.Entities
 {
-    public class ReviewProduction
+    public class ReviewProductionEntity
     {
         [Required]
         public int ProductionID { get; set; }
@@ -14,8 +14,8 @@ namespace Cinephila.DataAccess.Entities
 
         public int? Rating { get; set; }
 
-        public virtual Production Production { get; set; }
+        public virtual ProductionEntity Production { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual UserEntity User { get; set; }
     }
 }

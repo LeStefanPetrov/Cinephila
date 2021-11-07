@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cinephila.DataAccess.Entities
 {
-    public class CountryProduction
+    public class CountryProductionEntity
     {
         [Required]
         public int ProductionID { get; set; }
@@ -11,8 +11,8 @@ namespace Cinephila.DataAccess.Entities
         [Required]
         public int CountryID { get; set; }
 
-        public virtual Production Production { get; set; }
+        public virtual ProductionEntity Production { get; set; }
 
-        public virtual Country Country { get; set; }
+        public virtual CountryEntity Country { get; set; }
     }
 }

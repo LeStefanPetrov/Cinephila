@@ -18,12 +18,12 @@ namespace Cinephila.Services.Services
             _participantsRepository = participantsRepository;
         }
 
-        public Task<int> CreateAsync(ParticipantDto dto)
+        public Task<int> CreateAsync(Participant dto)
         {
             return _participantsRepository.CreateAsync(dto);
         }
 
-        public Task UpdateAsync(ParticipantDto dto, int id)
+        public Task UpdateAsync(Participant dto, int id)
         {
             return _participantsRepository.UpdateAsync(dto, id);
         }
@@ -33,7 +33,7 @@ namespace Cinephila.Services.Services
             return _participantsRepository.DeleteAsync(id);
         }
 
-        public Task<List<ParticipantDto>> GetPaginatedAsync(int currentPage, int pageSize)
+        public Task<List<Participant>> GetPaginatedAsync(int currentPage, int pageSize)
         {
             return _participantsRepository.GetPaginatedAsync(currentPage, pageSize);
         }

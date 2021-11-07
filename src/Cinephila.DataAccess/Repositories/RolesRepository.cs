@@ -20,7 +20,7 @@ namespace Cinephila.DataAccess.Repositories
 
         public async Task<int> CreateAsync(string roleName)
         {
-            var role = new Role { Name = roleName };
+            var role = new RoleEntity { Name = roleName };
 
             _context.Roles.Add(role);
             await _context.SaveChangesAsync().ConfigureAwait(false);

@@ -1,13 +1,10 @@
-﻿using Cinephila.API.DataBinding;
-using Cinephila.Domain.DTOs;
+﻿using AutoMapper;
 using Cinephila.Domain.DTOs.ProductionDTOs;
+using Cinephila.Domain.Models.ProductionModels;
 using Cinephila.Domain.Services;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Cinephila.API.Controllers
@@ -17,32 +14,22 @@ namespace Cinephila.API.Controllers
     public class ProductionsController : Controller
     {
         private readonly IProductionsService _productionsService;
-        private readonly IValidator<MovieDto> _movieValidator;
+        private readonly IMapper _mapper;
 
-
-        public ProductionsController(IProductionsService productionsService, IValidator<MovieDto> validator)
+        public ProductionsController(IProductionsService productionsService, IMapper mapper)
         {
             _productionsService = productionsService;
-            _movieValidator = validator;
+            _mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Create([ModelBinder(BinderType = typeof(ProductionModelBinder))] ProductionDto productionDto)
+        public async Task<ActionResult<int>> Create(ProductionCreateModel model)
         {
-            if (productionDto == null)
-                return BadRequest();
+            if (model.Movie != null)
+                return Ok(await _productionsService.CreateAsync(_mapper.Map<Movie>(model.Movie)).ConfigureAwait(false));
 
-            var validationResult = new ValidationResult();
 
-            if(productionDto.GetType() == typeof(MovieDto))
-                validationResult = await _movieValidator.ValidateAsync(productionDto as MovieDto);
-
-            if (!validationResult.IsValid)
-            {
-                return BadRequest(validationResult.Errors);
-            }
-
-            return Ok(await _productionsService.CreateAsync(productionDto).ConfigureAwait(false));
+            return Ok(await _productionsService.CreateAsync(_mapper.Map<TVShow>(model.TVShow)).ConfigureAwait(false));
         }
 
         [HttpDelete]

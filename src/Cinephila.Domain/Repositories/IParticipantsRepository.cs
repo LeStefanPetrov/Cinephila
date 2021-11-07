@@ -9,13 +9,13 @@ namespace Cinephila.Domain.Repositories
 {
     public interface IParticipantsRepository
     {
-        Task<int> CreateAsync(ParticipantDto dto);
+        Task<int> CreateAsync(Participant dto);
 
-        Task UpdateAsync(ParticipantDto dto, int id);
+        Task UpdateAsync(Participant dto, int id);
 
         Task DeleteAsync(int id);
 
-        Task<List<ParticipantDto>> GetPaginatedAsync(int currentPage, int pageSize);
+        Task<List<Participant>> GetPaginatedAsync(int currentPage, int pageSize);
 
         Task<bool> CheckIfExistAsync(int id);
     }

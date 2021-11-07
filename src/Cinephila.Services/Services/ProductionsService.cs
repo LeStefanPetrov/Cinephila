@@ -18,7 +18,7 @@ namespace Cinephila.Services.Services
             _productionsRepository = productionsRepository;
         }
 
-        public Task<int> CreateAsync(ProductionDto dto)
+        public Task<int> CreateAsync(Production dto)
         {
            return _productionsRepository.CreateAsync(dto);
         }

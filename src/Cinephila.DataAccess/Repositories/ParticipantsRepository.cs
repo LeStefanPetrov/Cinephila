@@ -22,15 +22,15 @@ namespace Cinephila.DataAccess.Repositories
             _mapper = mapper;
         }
 
-        public async Task<int> CreateAsync(ParticipantDto dto)
+        public async Task<int> CreateAsync(Participant dto)
         {
-            var entity = _mapper.Map<Participant>(dto);
+            var entity = _mapper.Map<ParticipantEntity>(dto);
             _context.Participants.Add(entity);
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return entity.ID;
         }
-        public async Task UpdateAsync(ParticipantDto dto, int id)
+        public async Task UpdateAsync(Participant dto, int id)
         {
             var entity = _context.Participants.FirstOrDefault(x => x.ID == id);
             _mapper.Map(dto, entity);
@@ -45,11 +45,11 @@ namespace Cinephila.DataAccess.Repositories
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task<List<ParticipantDto>> GetPaginatedAsync(int currentPage, int pageSize)
+        public async Task<List<Participant>> GetPaginatedAsync(int currentPage, int pageSize)
         {
             var entities = await _context.Participants.Skip((currentPage - 1) * pageSize).Take(pageSize).ToListAsync().ConfigureAwait(false);
 
-            return _mapper.Map<List<ParticipantDto>>(entities);
+            return _mapper.Map<List<Participant>>(entities);
         }
 
         public async Task<bool> CheckIfExistAsync(int id)

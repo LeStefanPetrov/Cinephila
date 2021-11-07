@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cinephila.DataAccess.Entities
 {
-    public class TVShow : BaseEntity
+    public class TVShowEntity : BaseEntity
     {
         [Required]
         public int ProductionID { get; set; }
 
-        public virtual Production Production { get; set; }
+        public virtual ProductionEntity Production { get; set; }
 
         public DateTime? EndOfProduction { get; set; }
     }

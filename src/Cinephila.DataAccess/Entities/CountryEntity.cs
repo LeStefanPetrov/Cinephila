@@ -3,11 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cinephila.DataAccess.Entities
 {
-    public class Role : BaseEntity
+    public class CountryEntity : BaseEntity
     {
         [Required]
         public string Name { get; set; }
 
-        public virtual ICollection<ParticipantProduction> ParticipantsProductions { get; set; }
+        public virtual ICollection<CountryProductionEntity> Productions { get; set; }
     }
 }

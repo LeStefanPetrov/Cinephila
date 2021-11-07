@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cinephila.DataAccess.Entities
 {
-    public class Production : BaseEntity
+    public class ProductionEntity : BaseEntity
     {
         [Required]
         public string Name { get; set; }
@@ -13,8 +13,8 @@ namespace Cinephila.DataAccess.Entities
 
         public string Summary { get; set; }
 
-        public virtual ICollection<CountryProduction> Countries { get; set; }
+        public virtual ICollection<CountryProductionEntity> Countries { get; set; }
 
-        public virtual ICollection<ParticipantProduction> ParticipantsProductions { get; set; }
+        public virtual ICollection<ParticipantProductionEntity> ParticipantsProductions { get; set; }
     }
 }

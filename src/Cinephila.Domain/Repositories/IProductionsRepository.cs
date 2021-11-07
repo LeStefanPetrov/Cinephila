@@ -5,7 +5,7 @@ namespace Cinephila.Domain.Repositories
 {
     public interface IProductionsRepository
     {
-        Task<int> CreateAsync(ProductionDto dto);
+        Task<int> CreateAsync(Production dto);
 
         Task DeleteAsync(int id);
     }

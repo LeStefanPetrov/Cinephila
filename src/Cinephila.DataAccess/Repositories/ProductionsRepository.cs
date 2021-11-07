@@ -21,11 +21,11 @@ namespace Cinephila.DataAccess.Repositories
             _mapper = mapper;
         }
 
-        public async Task<int> CreateAsync(ProductionDto dto)
+        public async Task<int> CreateAsync(Production dto)
         {
-            if (dto is MovieDto)
+            if (dto is Movie)
             {
-                var movie = _mapper.Map<Movie>(dto);
+                var movie = _mapper.Map<MovieEntity>(dto);
 
                 _context.Movies.Add(movie);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -33,7 +33,7 @@ namespace Cinephila.DataAccess.Repositories
             }
             else
             {
-                var show = _mapper.Map<TVShow>(dto);
+                var show = _mapper.Map<TVShowEntity>(dto);
                 _context.TVShows.Add(show);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
                 return show.ID;

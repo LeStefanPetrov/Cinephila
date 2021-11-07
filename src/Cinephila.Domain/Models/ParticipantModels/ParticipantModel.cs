@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Cinephila.Domain.ModelInterfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Cinephila.Domain.DTOs.ParticipantDTOs
+namespace Cinephila.Domain.Models.ParticipantModels
 {
-    public class ParticipantDto
+    public class ParticipantModel : IParticipant
     {
         public string Name { get; set; }
 
