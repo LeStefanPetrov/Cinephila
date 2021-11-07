@@ -1,6 +1,5 @@
 using Cinephila.API.StartupExtensions;
 using Cinephila.DataAccess;
-using Cinephila.DataAccess.MappingProfiles;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -30,8 +29,7 @@ namespace Cinephila.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cinephila.API", Version = "v1" });
             });
 
-            services.AddAutoMapper(typeof(DtoToEntityMappingProfile));
-            services.AddAutoMapper(typeof(ModelToDtoMappingProfile));
+            services.AddMappingProfiles();
             services.AddRepositories();
             services.AddServices();
             services.AddValidators();

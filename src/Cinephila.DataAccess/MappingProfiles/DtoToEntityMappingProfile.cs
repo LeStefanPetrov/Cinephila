@@ -11,8 +11,6 @@ namespace Cinephila.DataAccess.MappingProfiles
         {
             CreateMap<Participant, ParticipantEntity>().ReverseMap();
 
-            
-
             CreateMap<int, CountryProductionEntity>()
                 .ForMember(x => x.CountryID, opts => opts.MapFrom(x => x));
 
