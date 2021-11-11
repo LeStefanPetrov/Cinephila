@@ -2,10 +2,8 @@
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.Repositories;
-using System;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Cinephila.DataAccess.Repositories
@@ -29,14 +27,32 @@ namespace Cinephila.DataAccess.Repositories
 
                 _context.Movies.Add(movie);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
-                return movie.ID;
+                return movie.ProductionID;
             }
             else
             {
                 var show = _mapper.Map<TVShowEntity>(dto);
                 _context.TVShows.Add(show);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
-                return show.ID;
+                return show.ProductionID;
+            }
+        }
+
+        public async Task UpdateAsync(Production dto, int id)
+        {
+            if (dto is Movie)
+            {
+                var movie = _context.Movies.Where(x => x.ProductionID == id).FirstOrDefault();
+                _mapper.Map(dto,movie);
+                _context.Movies.Update(movie);
+                await _context.SaveChangesAsync().ConfigureAwait(false);
+            }
+            else
+            {
+                var show = _context.TVShows.Where(x => x.ProductionID == id).FirstOrDefault();
+                _mapper.Map(dto, show);
+                _context.TVShows.Update(show);
+                await _context.SaveChangesAsync().ConfigureAwait(false);
             }
         }
 
@@ -45,6 +61,11 @@ namespace Cinephila.DataAccess.Repositories
             var entity = _context.Productions.FirstOrDefault(x => x.ID == id);
             _context.Productions.Remove(entity);
             await _context.SaveChangesAsync().ConfigureAwait(false);
+        }
+
+        public async Task<bool> CheckIfExistAsync(int id)
+        {
+            return await _context.Productions.AnyAsync(x => x.ID == id).ConfigureAwait(false);
         }
     }
 }

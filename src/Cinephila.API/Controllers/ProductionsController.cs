@@ -32,6 +32,25 @@ namespace Cinephila.API.Controllers
             return Ok(await _productionsService.CreateAsync(_mapper.Map<TVShow>(model.TVShow)).ConfigureAwait(false));
         }
 
+        [HttpPut]
+        public async Task<ActionResult<int>> Update(int id, ProductionCreateModel model)
+        {
+            if (id <= 0)
+                return BadRequest();
+
+            if (!await _productionsService.CheckIfExistAsync(id).ConfigureAwait(false))
+                return BadRequest();
+
+            if (model.Movie != null)
+            {
+                await _productionsService.UpdateAsync(_mapper.Map<Movie>(model.Movie), id).ConfigureAwait(false);
+                return NoContent();
+            }
+
+            await _productionsService.UpdateAsync(_mapper.Map<TVShow>(model.TVShow), id).ConfigureAwait(false);
+            return NoContent();
+        }
+
         [HttpDelete]
         public async Task<ActionResult> DeleteAsync(int id)
         {

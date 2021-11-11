@@ -7,6 +7,10 @@ namespace Cinephila.Domain.Repositories
     {
         Task<int> CreateAsync(Production dto);
 
+        Task UpdateAsync(Production dto, int id);
+
         Task DeleteAsync(int id);
+
+        Task<bool> CheckIfExistAsync(int id);
     }
 }

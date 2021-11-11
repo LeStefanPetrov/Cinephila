@@ -19,9 +19,19 @@ namespace Cinephila.Services.Services
            return _productionsRepository.CreateAsync(dto);
         }
 
+        public Task UpdateAsync(Production dto, int id)
+        {
+            return _productionsRepository.UpdateAsync(dto, id);
+        }
+
         public Task DeleteAsync(int id)
         {
             return _productionsRepository.DeleteAsync(id);
+        }
+
+        public Task<bool> CheckIfExistAsync(int id)
+        {
+            return _productionsRepository.CheckIfExistAsync(id);
         }
     }
 }
