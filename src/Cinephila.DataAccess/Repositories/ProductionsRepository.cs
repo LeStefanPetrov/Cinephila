@@ -42,14 +42,14 @@ namespace Cinephila.DataAccess.Repositories
         {
             if (dto is Movie)
             {
-                var movie = _context.Movies.Where(x => x.ProductionID == id).FirstOrDefault();
+                var movie = await _context.Movies.Where(x => x.ProductionID == id).FirstOrDefaultAsync().ConfigureAwait(false);
                 _mapper.Map(dto,movie);
                 _context.Movies.Update(movie);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
             }
             else
             {
-                var show = _context.TVShows.Where(x => x.ProductionID == id).FirstOrDefault();
+                var show = await _context.TVShows.Where(x => x.ProductionID == id).FirstOrDefaultAsync().ConfigureAwait(false);
                 _mapper.Map(dto, show);
                 _context.TVShows.Update(show);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -58,7 +58,7 @@ namespace Cinephila.DataAccess.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var entity = _context.Productions.FirstOrDefault(x => x.ID == id);
+            var entity = await _context.Productions.FirstOrDefaultAsync(x => x.ID == id).ConfigureAwait(false);
             _context.Productions.Remove(entity);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

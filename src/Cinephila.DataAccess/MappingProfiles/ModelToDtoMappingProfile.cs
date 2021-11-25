@@ -17,16 +17,15 @@ namespace Cinephila.DataAccess.MappingProfiles
             CreateMap<TVShowModel, TVShow>().ReverseMap();
             CreateMap<ParticipantRoleModel, ParticipantRole>().ReverseMap();
 
-            CreateMap<ProductionCreateModel, Production>().ConvertUsing<CustomResolver>();
+            CreateMap<ProductionCreateModel, Production>().ConvertUsing<CustomModelToProductionResolver>();
         }
     }
 
-    public class CustomResolver : ITypeConverter<ProductionCreateModel, Production>
+    public class CustomModelToProductionResolver : ITypeConverter<ProductionCreateModel, Production>
     {
         public Production Convert(ProductionCreateModel source, Production destination, ResolutionContext context)
         {
             return source.Movie != null ? context.Mapper.Map<Movie>(source.Movie) : context.Mapper.Map<TVShow>(source.TVShow);
-
         }
     }
 }

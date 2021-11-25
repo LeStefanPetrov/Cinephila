@@ -32,7 +32,7 @@ namespace Cinephila.DataAccess.Repositories
         }
         public async Task UpdateAsync(Participant dto, int id)
         {
-            var entity = _context.Participants.FirstOrDefault(x => x.ID == id);
+            var entity = await _context.Participants.FirstOrDefaultAsync(x => x.ID == id).ConfigureAwait(false);
             _mapper.Map(dto, entity);
             _context.Participants.Update(entity);
             await _context.SaveChangesAsync().ConfigureAwait(false);
@@ -40,7 +40,7 @@ namespace Cinephila.DataAccess.Repositories
 
         public async Task DeleteAsync(int id)
         {
-            var entity = _context.Participants.FirstOrDefault(x => x.ID == id);
+            var entity = await _context.Participants.FirstOrDefaultAsync(x => x.ID == id).ConfigureAwait(false);
             _context.Participants.Remove(entity);
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }

@@ -25,7 +25,7 @@ namespace Cinephila.API.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Create(ProductionCreateModel model)
         {
-                return Ok(await _productionsService.CreateAsync(_mapper.Map<Production>(model)).ConfigureAwait(false));
+            return Ok(await _productionsService.CreateAsync(_mapper.Map<Production>(model)).ConfigureAwait(false));
         }
 
         [HttpPut]
