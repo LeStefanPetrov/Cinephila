@@ -21,21 +21,10 @@ namespace Cinephila.DataAccess.Repositories
 
         public async Task<int> CreateAsync(Production dto)
         {
-            if (dto is Movie)
-            {
-                var movie = _mapper.Map<MovieEntity>(dto);
-
-                _context.Movies.Add(movie);
+                var productionEntity = _mapper.Map<ProductionEntity>(dto);
+                _context.Productions.Add(productionEntity);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
-                return movie.ProductionID;
-            }
-            else
-            {
-                var show = _mapper.Map<TVShowEntity>(dto);
-                _context.TVShows.Add(show);
-                await _context.SaveChangesAsync().ConfigureAwait(false);
-                return show.ProductionID;
-            }
+                return productionEntity.ID;
         }
 
         public async Task UpdateAsync(Production dto, int id)

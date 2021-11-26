@@ -16,5 +16,9 @@ namespace Cinephila.DataAccess.Entities
         public virtual ICollection<CountryProductionEntity> Countries { get; set; }
 
         public virtual ICollection<ParticipantProductionEntity> ParticipantsProductions { get; set; }
+
+        public virtual MovieEntity Movie { get; set; }
+
+        public virtual TVShowEntity TVShow { get; set; }
     }
 }

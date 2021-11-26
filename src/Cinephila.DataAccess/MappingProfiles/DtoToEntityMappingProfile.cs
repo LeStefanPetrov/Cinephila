@@ -22,15 +22,35 @@ namespace Cinephila.DataAccess.MappingProfiles
                 .ForMember(x => x.LengthInMinutes, opts => opts.MapFrom(x => x.LengthInMinutes))
                 .ForMember(x => x.Production, opts => opts.MapFrom(x => x));
 
-            CreateMap<Movie, ProductionEntity>()
-                .ForMember(x => x.ParticipantsProductions, opts => opts.MapFrom(x => x.Participants));
-
             CreateMap<TVShow, TVShowEntity>()
                 .ForMember(x => x.EndOfProduction, opts => opts.MapFrom(x => x.EndOfProduction))
                 .ForMember(x => x.Production, opts => opts.MapFrom(x => x));
 
             CreateMap<TVShow, ProductionEntity>()
                 .ForMember(x => x.ParticipantsProductions, opts => opts.MapFrom(x => x.Participants));
+
+            CreateMap<Production, ProductionEntity>().ConvertUsing<ProductionToProductionEntityResolver>();
+        }
+    }
+
+    public class ProductionToProductionEntityResolver : ITypeConverter<Production, ProductionEntity>
+    {
+        public ProductionEntity Convert(Production source, ProductionEntity destination, ResolutionContext context)
+        {
+            if(source is Movie)
+            {
+                return new ProductionEntity
+                {
+                    Name = source.Name,
+                    Movie = context.Mapper.Map<MovieEntity>(source as Movie)
+                };
+            }
+
+            return new ProductionEntity
+            {
+                Name = source.Name,
+                TVShow = context.Mapper.Map<TVShowEntity>(source as TVShow)
+            };
         }
     }
 }

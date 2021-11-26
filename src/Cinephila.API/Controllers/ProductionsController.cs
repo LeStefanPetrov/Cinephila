@@ -2,8 +2,6 @@
 using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.Models.ProductionModels;
 using Cinephila.Domain.Services;
-using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
