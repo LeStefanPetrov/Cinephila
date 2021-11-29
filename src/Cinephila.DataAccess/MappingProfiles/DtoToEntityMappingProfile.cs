@@ -3,6 +3,7 @@ using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cinephila.DataAccess.MappingProfiles
 {
@@ -38,9 +39,44 @@ namespace Cinephila.DataAccess.MappingProfiles
             destination.Name = source.Name;
             destination.Summary = source.Summary;
             destination.YearOfCreation = source.YearOfCreation;
-            destination.ParticipantsProductions = context.Mapper.Map<List<ParticipantProductionEntity>>(source.Participants);
-            destination.Countries = context.Mapper.Map<List<CountryProductionEntity>>(source.Countries);
 
+            foreach (var participant in destination.ParticipantsProductions)
+            {
+                if (!source.Participants.Any(p => p.ParticipantID == participant.ParticipantID))
+                    destination.ParticipantsProductions.Remove(participant);
+            }
+
+            foreach (var participant in source.Participants)
+            {
+                if (!destination.ParticipantsProductions.Any(p => p.ParticipantID == participant.ParticipantID))
+                {
+                    destination.ParticipantsProductions.Add(
+                        new ParticipantProductionEntity
+                        {
+                            ParticipantID = participant.ParticipantID,
+                            RoleID = participant.RoleID,
+                            ProductionID = destination.ID
+                        });
+                }
+            }
+
+            foreach (var country in destination.Countries)
+            {
+                if (!source.Countries.Any(c => c == country.CountryID))
+                    destination.Countries.Remove(country);
+            }
+
+            foreach(var country in source.Countries)
+            {
+                if (!destination.Countries.Any(c => c.CountryID == country)) { 
+                    destination.Countries.Add(
+                        new CountryProductionEntity
+                        {
+                            CountryID = country,
+                            ProductionID = destination.ID
+                        });
+                    }
+            }
 
             if(source is Movie)
             {
