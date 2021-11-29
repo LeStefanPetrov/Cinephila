@@ -35,33 +35,31 @@ namespace Cinephila.DataAccess.MappingProfiles
     {
         public ProductionEntity Convert(Production source, ProductionEntity destination, ResolutionContext context)
         {
-            var productionEntity = new ProductionEntity
-            {
-                Name = source.Name,
-                Summary = source.Summary,
-                YearOfCreation = source.YearOfCreation,
-                ParticipantsProductions = context.Mapper.Map<List<ParticipantProductionEntity>>(source.Participants),
-                Countries = context.Mapper.Map<List<CountryProductionEntity>>(source.Countries),
-            };
+            destination.Name = source.Name;
+            destination.Summary = source.Summary;
+            destination.YearOfCreation = source.YearOfCreation;
+            destination.ParticipantsProductions = context.Mapper.Map<List<ParticipantProductionEntity>>(source.Participants);
+            destination.Countries = context.Mapper.Map<List<CountryProductionEntity>>(source.Countries);
+
 
             if(source is Movie)
             {
                 Movie movie = source as Movie;
-                productionEntity.Movie = new MovieEntity
+                destination.Movie = new MovieEntity
                 {
                     LengthInMinutes = movie.LengthInMinutes
                 };
 
-                return productionEntity;
+                return destination;
             }
 
             TVShow tvShow = source as TVShow;
-            productionEntity.TVShow = new TVShowEntity
+            destination.TVShow = new TVShowEntity
             {
                 EndOfProduction = tvShow.EndOfProduction
             };
 
-            return productionEntity;
+            return destination;
         }
     }
 }

@@ -21,28 +21,18 @@ namespace Cinephila.DataAccess.Repositories
 
         public async Task<int> CreateAsync(Production dto)
         {
-                var productionEntity = _mapper.Map<ProductionEntity>(dto);
-                _context.Productions.Add(productionEntity);
-                await _context.SaveChangesAsync().ConfigureAwait(false);
-                return productionEntity.ID;
+            var productionEntity = _mapper.Map<ProductionEntity>(dto);
+            _context.Productions.Add(productionEntity);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+            return productionEntity.ID;
         }
 
         public async Task UpdateAsync(Production dto, int id)
         {
-            if (dto is Movie)
-            {
-                var movie = await _context.Movies.Where(x => x.ProductionID == id).FirstOrDefaultAsync().ConfigureAwait(false);
-                _mapper.Map(dto,movie);
-                _context.Movies.Update(movie);
-                await _context.SaveChangesAsync().ConfigureAwait(false);
-            }
-            else
-            {
-                var show = await _context.TVShows.Where(x => x.ProductionID == id).FirstOrDefaultAsync().ConfigureAwait(false);
-                _mapper.Map(dto, show);
-                _context.TVShows.Update(show);
-                await _context.SaveChangesAsync().ConfigureAwait(false);
-            }
+            var productionEntity = await _context.Productions.Where(x => x.ID == id).FirstOrDefaultAsync().ConfigureAwait(false);
+            _mapper.Map(dto, productionEntity);
+            _context.Productions.Update(productionEntity);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         public async Task DeleteAsync(int id)
