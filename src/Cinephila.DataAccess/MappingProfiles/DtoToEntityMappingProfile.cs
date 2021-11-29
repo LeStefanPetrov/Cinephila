@@ -2,6 +2,7 @@
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
+using System.Collections.Generic;
 
 namespace Cinephila.DataAccess.MappingProfiles
 {
@@ -26,9 +27,6 @@ namespace Cinephila.DataAccess.MappingProfiles
                 .ForMember(x => x.EndOfProduction, opts => opts.MapFrom(x => x.EndOfProduction))
                 .ForMember(x => x.Production, opts => opts.MapFrom(x => x));
 
-            CreateMap<TVShow, ProductionEntity>()
-                .ForMember(x => x.ParticipantsProductions, opts => opts.MapFrom(x => x.Participants));
-
             CreateMap<Production, ProductionEntity>().ConvertUsing<ProductionToProductionEntityResolver>();
         }
     }
@@ -37,20 +35,33 @@ namespace Cinephila.DataAccess.MappingProfiles
     {
         public ProductionEntity Convert(Production source, ProductionEntity destination, ResolutionContext context)
         {
-            if(source is Movie)
-            {
-                return new ProductionEntity
-                {
-                    Name = source.Name,
-                    Movie = context.Mapper.Map<MovieEntity>(source as Movie)
-                };
-            }
-
-            return new ProductionEntity
+            var productionEntity = new ProductionEntity
             {
                 Name = source.Name,
-                TVShow = context.Mapper.Map<TVShowEntity>(source as TVShow)
+                Summary = source.Summary,
+                YearOfCreation = source.YearOfCreation,
+                ParticipantsProductions = context.Mapper.Map<List<ParticipantProductionEntity>>(source.Participants),
+                Countries = context.Mapper.Map<List<CountryProductionEntity>>(source.Countries),
             };
+
+            if(source is Movie)
+            {
+                Movie movie = source as Movie;
+                productionEntity.Movie = new MovieEntity
+                {
+                    LengthInMinutes = movie.LengthInMinutes
+                };
+
+                return productionEntity;
+            }
+
+            TVShow tvShow = source as TVShow;
+            productionEntity.TVShow = new TVShowEntity
+            {
+                EndOfProduction = tvShow.EndOfProduction
+            };
+
+            return productionEntity;
         }
     }
 }
