@@ -21,7 +21,8 @@ namespace Cinephila.DataAccess.Repositories
 
         public async Task<int> CreateAsync(Production dto)
         {
-            var productionEntity = _mapper.Map<ProductionEntity>(dto);
+            var productionEntity = new ProductionEntity();
+            _mapper.Map(dto, productionEntity);
             _context.Productions.Add(productionEntity);
             await _context.SaveChangesAsync().ConfigureAwait(false);
             return productionEntity.ID;
