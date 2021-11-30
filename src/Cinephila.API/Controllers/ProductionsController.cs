@@ -3,6 +3,7 @@ using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.Models.ProductionModels;
 using Cinephila.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Cinephila.API.Controllers
@@ -53,6 +54,18 @@ namespace Cinephila.API.Controllers
 
             await _productionsService.DeleteAsync(id).ConfigureAwait(false);
             return NoContent();
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetPaginatedAsync(int page, int size)
+        {
+            
+            var productions = await _productionsService.GetPaginatedAsync(page, size).ConfigureAwait(false);
+
+            if (!productions.Any())
+                return NotFound();
+
+            return Ok(productions);
         }
     }
 }

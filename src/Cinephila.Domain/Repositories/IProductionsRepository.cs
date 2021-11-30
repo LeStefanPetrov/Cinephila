@@ -1,4 +1,5 @@
 ﻿using Cinephila.Domain.DTOs.ProductionDTOs;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Cinephila.Domain.Repositories
@@ -12,5 +13,7 @@ namespace Cinephila.Domain.Repositories
         Task DeleteAsync(int id);
 
         Task<bool> CheckIfExistAsync(int id);
+
+        Task<IEnumerable<Production>> GetPaginatedAsync(int page, int size);
     }
 }

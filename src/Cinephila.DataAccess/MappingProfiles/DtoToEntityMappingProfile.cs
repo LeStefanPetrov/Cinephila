@@ -29,6 +29,8 @@ namespace Cinephila.DataAccess.MappingProfiles
                 .ForMember(x => x.Production, opts => opts.MapFrom(x => x));
 
             CreateMap<Production, ProductionEntity>().ConvertUsing<ProductionToProductionEntityResolver>();
+
+            CreateMap<ProductionEntity, Production>();
         }
     }
 
@@ -39,44 +41,8 @@ namespace Cinephila.DataAccess.MappingProfiles
             destination.Name = source.Name;
             destination.Summary = source.Summary;
             destination.YearOfCreation = source.YearOfCreation;
-
-            foreach (var participant in destination.ParticipantsProductions)
-            {
-                if (!source.Participants.Any(p => p.ParticipantID == participant.ParticipantID))
-                    destination.ParticipantsProductions.Remove(participant);
-            }
-
-            foreach (var participant in source.Participants)
-            {
-                if (!destination.ParticipantsProductions.Any(p => p.ParticipantID == participant.ParticipantID))
-                {
-                    destination.ParticipantsProductions.Add(
-                        new ParticipantProductionEntity
-                        {
-                            ParticipantID = participant.ParticipantID,
-                            RoleID = participant.RoleID,
-                            ProductionID = destination.ID
-                        });
-                }
-            }
-
-            foreach (var country in destination.Countries)
-            {
-                if (!source.Countries.Any(c => c == country.CountryID))
-                    destination.Countries.Remove(country);
-            }
-
-            foreach(var country in source.Countries)
-            {
-                if (!destination.Countries.Any(c => c.CountryID == country)) { 
-                    destination.Countries.Add(
-                        new CountryProductionEntity
-                        {
-                            CountryID = country,
-                            ProductionID = destination.ID
-                        });
-                    }
-            }
+            destination.ParticipantsProductions = context.Mapper.Map<List<ParticipantProductionEntity>>(source.Participants);
+            destination.Countries = context.Mapper.Map<List<CountryProductionEntity>>(source.Countries);
 
             if(source is Movie)
             {

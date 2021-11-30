@@ -1,6 +1,8 @@
 ﻿using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.Repositories;
 using Cinephila.Domain.Services;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Cinephila.Services.Services
@@ -32,6 +34,11 @@ namespace Cinephila.Services.Services
         public Task<bool> CheckIfExistAsync(int id)
         {
             return _productionsRepository.CheckIfExistAsync(id);
+        }
+
+        public Task<IEnumerable<Production>> GetPaginatedAsync(int page, int size)
+        {
+            return _productionsRepository.GetPaginatedAsync(page, size);
         }
     }
 }
