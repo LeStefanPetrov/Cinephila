@@ -9,7 +9,7 @@ namespace Cinephila.Domain.DTOs.ProductionDTOs
     {
         public string Name { get; set; }
 
-        public DateTime YearOfCreation { get; set; }
+        public DateTime? YearOfCreation { get; set; }
 
         public string Summary { get; set; }
 

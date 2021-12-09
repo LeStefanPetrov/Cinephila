@@ -59,7 +59,6 @@ namespace Cinephila.API.Controllers
         [HttpGet]
         public async Task<ActionResult> GetPaginatedAsync(int page, int size)
         {
-            
             var productions = await _productionsService.GetPaginatedAsync(page, size).ConfigureAwait(false);
 
             if (!productions.Any())

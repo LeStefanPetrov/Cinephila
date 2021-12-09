@@ -7,7 +7,7 @@ namespace Cinephila.Domain.ModelInterfaces
     {
         string Name { get; set; }
 
-        DateTime YearOfCreation { get; set; }
+        DateTime? YearOfCreation { get; set; }
 
         string Summary { get; set; }
 

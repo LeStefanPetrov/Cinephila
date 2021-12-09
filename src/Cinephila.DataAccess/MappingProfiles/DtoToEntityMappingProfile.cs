@@ -18,7 +18,8 @@ namespace Cinephila.DataAccess.MappingProfiles
 
             CreateMap<ParticipantRole, ParticipantProductionEntity>()
                 .ForMember(x => x.ParticipantID, opts => opts.MapFrom(x => x.ParticipantID))
-                .ForMember(x => x.RoleID, opts => opts.MapFrom(x => x.RoleID));
+                .ForMember(x => x.RoleID, opts => opts.MapFrom(x => x.RoleID))
+                .ReverseMap();
 
             CreateMap<Movie, MovieEntity>()
                 .ForMember(x => x.LengthInMinutes, opts => opts.MapFrom(x => x.LengthInMinutes))
@@ -30,7 +31,7 @@ namespace Cinephila.DataAccess.MappingProfiles
 
             CreateMap<Production, ProductionEntity>().ConvertUsing<ProductionToProductionEntityResolver>();
 
-            CreateMap<ProductionEntity, Production>();
+            CreateMap<ProductionEntity, Production>().ConvertUsing<ProductionEntityToProductionResolver>();
         }
     }
 
@@ -62,6 +63,32 @@ namespace Cinephila.DataAccess.MappingProfiles
             };
 
             return destination;
+        }
+    }
+
+    public class ProductionEntityToProductionResolver : ITypeConverter<ProductionEntity, Production>
+    {
+        public Production Convert(ProductionEntity source, Production destination, ResolutionContext context)
+        {
+            if (source is MovieEntity)
+            {
+                var movie = new Movie();
+                movie.Name = source.Name;
+                movie.Summary = source.Summary;
+                movie.YearOfCreation = source.YearOfCreation;
+                movie.Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions);
+                movie.LengthInMinutes = source.Movie.LengthInMinutes;
+
+                return movie;
+            }
+
+            var tvShow = new TVShow();
+            tvShow.Name = source.Name;
+            tvShow.Summary = source.Summary;
+            tvShow.YearOfCreation = source.YearOfCreation;
+            tvShow.Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions);
+
+            return tvShow;
         }
     }
 }
