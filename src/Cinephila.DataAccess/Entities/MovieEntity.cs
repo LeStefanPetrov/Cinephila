@@ -2,7 +2,7 @@
 
 namespace Cinephila.DataAccess.Entities
 {
-    public class MovieEntity : BaseEntity
+    public class MovieEntity
     {
         [Required]
         public int ProductionID { get; set; }

@@ -43,6 +43,12 @@ namespace Cinephila.DataAccess
 
             modelBuilder.Entity<CountryProductionEntity>()
                 .HasKey(x => new { x.CountryID, x.ProductionID });
+
+            modelBuilder.Entity<MovieEntity>()
+                .HasKey(x => x.ProductionID);
+
+            modelBuilder.Entity<TVShowEntity>()
+                .HasKey(x => x.ProductionID);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
