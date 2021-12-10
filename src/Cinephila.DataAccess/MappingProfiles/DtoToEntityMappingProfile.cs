@@ -44,7 +44,7 @@ namespace Cinephila.DataAccess.MappingProfiles
             destination.YearOfCreation = source.YearOfCreation;
             destination.ParticipantsProductions = context.Mapper.Map<List<ParticipantProductionEntity>>(source.Participants);
             destination.Countries = context.Mapper.Map<List<CountryProductionEntity>>(source.Countries);
-
+            
             if(source is Movie)
             {
                 Movie movie = source as Movie;
@@ -61,7 +61,7 @@ namespace Cinephila.DataAccess.MappingProfiles
             {
                 EndOfProduction = tvShow.EndOfProduction
             };
-
+            
             return destination;
         }
     }
@@ -70,7 +70,7 @@ namespace Cinephila.DataAccess.MappingProfiles
     {
         public Production Convert(ProductionEntity source, Production destination, ResolutionContext context)
         {
-            if (source is MovieEntity)
+            if (source.Movie != null)
             {
                 var movie = new Movie();
                 movie.Name = source.Name;

@@ -33,8 +33,47 @@ namespace Cinephila.DataAccess.Repositories
         public async Task UpdateAsync(Production dto, int id)
         {
             var productionEntity = await _context.Productions.Where(x => x.ID == id).FirstOrDefaultAsync().ConfigureAwait(false);
-            _mapper.Map(dto, productionEntity);
-            _context.Productions.Update(productionEntity);
+            _context.Entry(productionEntity).CurrentValues.SetValues(dto);
+
+            foreach(var country in productionEntity.Countries)
+            {
+                if (!dto.Countries.Any(c => c == country.CountryID))
+                    _context.CountriesProductions.Remove(country);
+            }
+
+            foreach(var participant in productionEntity.ParticipantsProductions)
+            {
+                if (!dto.Participants.Any(p => p.ParticipantID == participant.ParticipantID && p.RoleID == participant.RoleID))
+                    _context.ParticipantsProductions.Remove(participant);
+            }
+
+            foreach (var countryID in dto.Countries)
+            {
+               if(!productionEntity.Countries.Any(c => c.CountryID == countryID))
+                {
+                    productionEntity.Countries.Add(
+                        new CountryProductionEntity
+                        {
+                            CountryID = countryID,
+                            ProductionID = productionEntity.ID
+                        });
+                }
+            }
+
+            foreach(var participant in dto.Participants)
+            {
+                if(!productionEntity.ParticipantsProductions.Any(p => p.ParticipantID == participant.ParticipantID && p.RoleID == participant.RoleID))
+                {
+                    productionEntity.ParticipantsProductions.Add(
+                        new ParticipantProductionEntity
+                        {
+                            ParticipantID = participant.ParticipantID,
+                            RoleID = participant.RoleID,
+                            ProductionID = productionEntity.ID
+                        });
+                }
+            }
+
             await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
