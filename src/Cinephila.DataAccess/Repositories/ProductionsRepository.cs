@@ -92,6 +92,7 @@ namespace Cinephila.DataAccess.Repositories
         public async Task<IEnumerable<Production>> GetPaginatedAsync(int page, int size)
         {
             var productions = await _context.Productions
+                .Where(x => x.Movie != null)
                 .Skip((page - 1) * size)
                 .Take(size)
                 .ToListAsync()

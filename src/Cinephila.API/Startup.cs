@@ -33,7 +33,6 @@ namespace Cinephila.API
             services.AddRepositories();
             services.AddServices();
             services.AddValidators();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
