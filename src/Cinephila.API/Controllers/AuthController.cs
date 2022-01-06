@@ -1,9 +1,11 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Gmail.v1;
+using Google.Apis.Oauth2.v2;
 using Google.Apis.Services;
 using Google.Apis.Util;
 using Google.Apis.YouTube.v3;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,9 +18,9 @@ namespace Cinephila.API.Controllers
         private const string ClientSecret = "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";
 
         [HttpPost]
-        public ActionResult GoogleAuth()
+        public async Task<ActionResult> GoogleAuth()
         {
-            string[] scopes = { "https://www.googleapis.com/auth/gmail.readonly" };
+            string[] scopes = { GmailService.Scope.GmailReadonly , Oauth2Service.Scope.UserinfoProfile, Oauth2Service.Scope.UserinfoEmail };
 
             var credentials = GoogleWebAuthorizationBroker.AuthorizeAsync(
                 new ClientSecrets
@@ -35,9 +37,18 @@ namespace Cinephila.API.Controllers
                 HttpClientInitializer = credentials
             });
 
-            var profile = service.Users.GetProfile("framedout98@gmail.com").Execute();
+            var oauthSerivce = new Oauth2Service( new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credentials,
+                ApplicationName = "OAuth 2.0 Sample",
+            });
 
-            return Ok(credentials);
+
+            var profile = await oauthSerivce.Userinfo.Get().ExecuteAsync();
+
+            var info =  service.Users.GetProfile("framedout98@gmail.com").Execute();
+
+            return Ok(info);
         }
     }
 }
