@@ -33,8 +33,8 @@ namespace Cinephila.API.StartupExtensions
                     {
                         AuthorizationCode = new OpenApiOAuthFlow
                         {
-                            AuthorizationUrl = new Uri($"https://accounts.google.com/o/oauth2/auth"),
-                            TokenUrl = new Uri($"https://accounts.google.com/o/oauth2/token"),
+                            AuthorizationUrl = new Uri($"{settings.Authority.TrimEnd('/')}/protocol/openid-connect/auth"),
+                            TokenUrl = new Uri($"{settings.Authority.TrimEnd('/')}/protocol/openid-connect/token"),
                             Scopes = settings.Scopes.ToDictionary(k => k, v => v)
                         }
                     }

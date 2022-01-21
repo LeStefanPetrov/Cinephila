@@ -45,7 +45,7 @@ namespace Cinephila.API
                 .AddJwtBearer(async x =>
                 {
                     var configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                        $"{_appSettings.Authority}/",
+                        $"{_appSettings.Authority.Trim('/')}/.well-known/openid-configuration",
                         new OpenIdConnectConfigurationRetriever(),
                         new HttpDocumentRetriever());
 

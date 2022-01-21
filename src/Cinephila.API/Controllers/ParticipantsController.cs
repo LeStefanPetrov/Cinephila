@@ -2,6 +2,8 @@
 using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.Models.ParticipantModels;
 using Cinephila.Domain.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,7 @@ namespace Cinephila.API.Controllers
 {
     [Route("api/participants")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ParticipantsController : Controller
     {
         private readonly IParticipantsService _participantsService;
@@ -60,6 +63,8 @@ namespace Cinephila.API.Controllers
         public async Task<ActionResult> GetPaginated(int currentPage, int pageSize)
         {
             var participants = await _participantsService.GetPaginatedAsync(currentPage, pageSize).ConfigureAwait(false);
+
+            var a = User.Claims;
 
             if (!participants.Any())
                 return NotFound();
