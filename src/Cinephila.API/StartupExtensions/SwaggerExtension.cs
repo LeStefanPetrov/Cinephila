@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Any;
+using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
@@ -29,12 +31,14 @@ namespace Cinephila.API.StartupExtensions
                 options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                 {
                     Type = SecuritySchemeType.OAuth2,
+                    Extensions = new Dictionary<string, IOpenApiExtension>
+                        { { "x-tokenName", new OpenApiString("id_token") } },
                     Flows = new OpenApiOAuthFlows
                     {
                         AuthorizationCode = new OpenApiOAuthFlow
                         {
-                            AuthorizationUrl = new Uri($"{settings.Authority.TrimEnd('/')}/protocol/openid-connect/auth"),
-                            TokenUrl = new Uri($"{settings.Authority.TrimEnd('/')}/protocol/openid-connect/token"),
+                            AuthorizationUrl = new Uri($"{settings.Authority.TrimEnd('/')}/o/oauth2/v2/auth"),
+                            TokenUrl = new Uri("https://oauth2.googleapis.com/token"),
                             Scopes = settings.Scopes.ToDictionary(k => k, v => v)
                         }
                     }

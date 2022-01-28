@@ -59,8 +59,8 @@ namespace Cinephila.API
                         ValidIssuer = discoveryDocument.Issuer,
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKeys = discoveryDocument.SigningKeys,
-                        ValidAudience = _appSettings.Audience,
-                        ValidateAudience = true,
+                        //ValidAudience = _appSettings.Audience,
+                        ValidateAudience = false,
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.FromMinutes(1)
                     };
