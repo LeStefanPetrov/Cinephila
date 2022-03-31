@@ -30,6 +30,7 @@ namespace Cinephila.DataAccess.Repositories
 
             return entity.ID;
         }
+
         public async Task UpdateAsync(Participant dto, int id)
         {
             var entity = await _context.Participants.FirstOrDefaultAsync(x => x.ID == id).ConfigureAwait(false);

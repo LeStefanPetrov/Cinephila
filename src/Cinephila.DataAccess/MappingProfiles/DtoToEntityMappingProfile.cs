@@ -2,6 +2,7 @@
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
+using Cinephila.Domain.DTOs.ReviewDTOs;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,6 +33,10 @@ namespace Cinephila.DataAccess.MappingProfiles
             CreateMap<Production, ProductionEntity>().ConvertUsing<ProductionToProductionEntityResolver>();
 
             CreateMap<ProductionEntity, Production>().ConvertUsing<ProductionEntityToProductionResolver>();
+
+            CreateMap<Review, ReviewProductionEntity>()
+                .ForMember(x => x.Review, opts => opts.MapFrom(x => x.UserReview))
+                .ReverseMap();
         }
     }
 

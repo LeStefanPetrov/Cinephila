@@ -1,7 +1,6 @@
 using Cinephila.API.Settings;
 using Cinephila.API.StartupExtensions;
 using Cinephila.DataAccess;
-using Google.Apis.Gmail.v1;
 using Google.Apis.Oauth2.v2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -53,6 +52,7 @@ namespace Cinephila.API
 
                     x.RequireHttpsMetadata = true;
                     x.SaveToken = true;
+                    x.MapInboundClaims = false;
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -85,7 +85,7 @@ namespace Cinephila.API
                     c.DocumentTitle = $"Cinephila Service";
                     c.OAuthClientId("21758989588-o99527rg1tidhva82aigfg1u6ku81b6q.apps.googleusercontent.com");
                     c.OAuthClientSecret("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");
-                    c.OAuthScopes(new string[] { GmailService.Scope.GmailReadonly , Oauth2Service.Scope.UserinfoProfile, Oauth2Service.Scope.UserinfoEmail });
+                    c.OAuthScopes(new string[] { Oauth2Service.Scope.UserinfoProfile, Oauth2Service.Scope.UserinfoEmail });
                     c.EnableDeepLinking();
                 });
             }

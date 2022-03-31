@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
+using Cinephila.Domain.DTOs.ReviewDTOs;
 using Cinephila.Domain.Models.ParticipantModels;
 using Cinephila.Domain.Models.ProductionModels;
+using Cinephila.Domain.Models.ReviewModels;
 
 namespace Cinephila.DataAccess.MappingProfiles
 {
@@ -18,6 +20,8 @@ namespace Cinephila.DataAccess.MappingProfiles
             CreateMap<ParticipantRoleModel, ParticipantRole>().ReverseMap();
 
             CreateMap<ProductionCreateModel, Production>().ConvertUsing<CustomModelToProductionResolver>();
+
+            CreateMap<ReviewModel, Review>().ReverseMap();
         }
     }
 
