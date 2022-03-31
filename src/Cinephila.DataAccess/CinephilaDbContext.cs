@@ -49,6 +49,9 @@ namespace Cinephila.DataAccess
 
             modelBuilder.Entity<TVShowEntity>()
                 .HasKey(x => x.ProductionID);
+
+            modelBuilder.Entity<ReviewProductionEntity>()
+                .HasKey(x => x.ID);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

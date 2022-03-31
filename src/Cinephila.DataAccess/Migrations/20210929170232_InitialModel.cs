@@ -175,6 +175,8 @@ namespace Cinephila.DataAccess.Migrations
                 name: "ReviewsProductions",
                 columns: table => new
                 {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductionID = table.Column<int>(type: "int", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: false),
                     Review = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -182,6 +184,7 @@ namespace Cinephila.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_ReviewsProductions", x => x.ID);
                     table.ForeignKey(
                         name: "FK_ReviewsProductions_Productions_ProductionID",
                         column: x => x.ProductionID,
