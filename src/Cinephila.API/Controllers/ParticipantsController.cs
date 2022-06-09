@@ -4,6 +4,7 @@ using Cinephila.Domain.Models.ParticipantModels;
 using Cinephila.Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,7 @@ namespace Cinephila.API.Controllers
         }
 
         [HttpDelete]
+        [EnableCors]
         public async Task<ActionResult> Delete(int id)
         {
             if (id <= 0)
