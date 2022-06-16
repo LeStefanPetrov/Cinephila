@@ -18,4 +18,8 @@ RUN dotnet publish "Cinephila.API.csproj" -c Release -o /app/publish /p:UseAppHo
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+EXPOSE 80 2222
+COPY entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./entrypoint.sh
+CMD /bin/bash ./entrypoint.sh
 ENTRYPOINT ["dotnet", "Cinephila.API.dll"]
