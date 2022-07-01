@@ -1,23 +1,20 @@
 using Cinephila.API.Settings;
 using Cinephila.API.StartupExtensions;
 using Cinephila.DataAccess;
+using Cinephila.Domain.Settings;
 using Google.Apis.Oauth2.v2;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using System;
-using System.IO;
 
 namespace Cinephila.API
 {
@@ -37,6 +34,7 @@ namespace Cinephila.API
             services.AddControllers();
 
             var _appSettings = Configuration.GetSection("Authentication").Get<AuthenticationSettings>();
+            services.Configure<ApiSettings>(Configuration.GetSection("MovieApi"));
 
             services
                 .AddSwagger(_appSettings)
@@ -63,7 +61,6 @@ namespace Cinephila.API
                         ValidIssuer = discoveryDocument.Issuer,
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKeys = discoveryDocument.SigningKeys,
-                        //ValidAudience = _appSettings.Audience,
                         ValidateAudience = false,
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.FromMinutes(1)
@@ -78,7 +75,7 @@ namespace Cinephila.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CinephilaDbContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, CinephilaDbContext context, IOptions<ApiSettings> apiSettings)
         {
             if (env.IsDevelopment())
             {
@@ -111,6 +108,7 @@ namespace Cinephila.API
             app.UseAuthorization();
 
             CinephilaDbDataSeeder.SeedCountries(context);
+            CinephilaDbDataSeeder.SeedMovies(context, apiSettings.Value).GetAwaiter().GetResult();
 
             app.UseEndpoints(endpoints =>
             {

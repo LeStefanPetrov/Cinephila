@@ -7,9 +7,10 @@ namespace Cinephila.DataAccess.Entities
         [Required]
         public int ProductionID { get; set; }
 
+        [Required]
         public int ParticipantID { get; set; }
 
-        public int RoleID { get; set; }
+        public int? RoleID { get; set; }
 
         public virtual ProductionEntity Production { get; set; }
 

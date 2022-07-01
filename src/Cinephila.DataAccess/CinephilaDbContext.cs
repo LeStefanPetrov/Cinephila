@@ -39,7 +39,7 @@ namespace Cinephila.DataAccess
             });
 
             modelBuilder.Entity<ParticipantProductionEntity>()
-                .HasKey(x => new { x.ProductionID, x.ParticipantID, x.RoleID });
+                .HasKey(x => new { x.ProductionID, x.ParticipantID });
 
             modelBuilder.Entity<CountryProductionEntity>()
                 .HasKey(x => new { x.CountryID, x.ProductionID });
@@ -57,6 +57,7 @@ namespace Cinephila.DataAccess
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLazyLoadingProxies();
+            optionsBuilder.EnableSensitiveDataLogging();
         }
     }
 }
