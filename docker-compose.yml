@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   web:
-    image: "cinephila-v.1.1"
+    image: "cinephila-v.1.2"
     build: .
     ports:
       - "8000:5000"
