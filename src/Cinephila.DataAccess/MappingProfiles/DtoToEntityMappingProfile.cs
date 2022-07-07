@@ -83,6 +83,7 @@ namespace Cinephila.DataAccess.MappingProfiles
                 movie.YearOfCreation = source.YearOfCreation;
                 movie.Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions);
                 movie.LengthInMinutes = source.Movie.LengthInMinutes;
+                movie.PosterPath = source.PosterPath;
 
                 return movie;
             }
@@ -92,6 +93,7 @@ namespace Cinephila.DataAccess.MappingProfiles
             tvShow.Summary = source.Summary;
             tvShow.YearOfCreation = source.YearOfCreation;
             tvShow.Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions);
+            tvShow.PosterPath = source.PosterPath;
 
             return tvShow;
         }
