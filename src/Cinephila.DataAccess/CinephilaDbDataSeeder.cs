@@ -53,7 +53,7 @@ namespace Cinephila.DataAccess
             }
         }
 
-        public async static Task SeedMovies(CinephilaDbContext context, ApiSettings apiSettings)
+        public static void SeedMovies(CinephilaDbContext context, ApiSettings apiSettings)
         {
             using (var client = new HttpClient())
             {
@@ -95,7 +95,7 @@ namespace Cinephila.DataAccess
 
                             context.SaveChanges();
 
-                            if (entity.Production.ParticipantsProductions.Any(x => x.ParticipantID == participantEntity.ID))
+                            if (!entity.Production.ParticipantsProductions.Any(x => x.ParticipantID == participantEntity.ID))
                             {
                                 entity.Production.ParticipantsProductions.Add(new ParticipantProductionEntity
                                 {
