@@ -50,7 +50,7 @@ namespace Cinephila.API
                         new OpenIdConnectConfigurationRetriever(),
                         new HttpDocumentRetriever());
 
-                    var discoveryDocument = await configurationManager.GetConfigurationAsync();
+                    var discoveryDocument = configurationManager.GetConfigurationAsync().GetAwaiter().GetResult();
 
                     x.RequireHttpsMetadata = true;
                     x.SaveToken = true;
