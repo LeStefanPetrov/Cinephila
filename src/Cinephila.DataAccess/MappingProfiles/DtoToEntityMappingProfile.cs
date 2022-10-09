@@ -2,6 +2,7 @@
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
+using Cinephila.Domain.DTOs.ReviewDTOs;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,6 +33,10 @@ namespace Cinephila.DataAccess.MappingProfiles
             CreateMap<Production, ProductionEntity>().ConvertUsing<ProductionToProductionEntityResolver>();
 
             CreateMap<ProductionEntity, Production>().ConvertUsing<ProductionEntityToProductionResolver>();
+
+            CreateMap<Review, ReviewProductionEntity>()
+                .ForMember(x => x.Review, opts => opts.MapFrom(x => x.UserReview))
+                .ReverseMap();
         }
     }
 
@@ -78,6 +83,7 @@ namespace Cinephila.DataAccess.MappingProfiles
                 movie.YearOfCreation = source.YearOfCreation;
                 movie.Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions);
                 movie.LengthInMinutes = source.Movie.LengthInMinutes;
+                movie.PosterPath = source.PosterPath;
 
                 return movie;
             }
@@ -87,6 +93,7 @@ namespace Cinephila.DataAccess.MappingProfiles
             tvShow.Summary = source.Summary;
             tvShow.YearOfCreation = source.YearOfCreation;
             tvShow.Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions);
+            tvShow.PosterPath = source.PosterPath;
 
             return tvShow;
         }

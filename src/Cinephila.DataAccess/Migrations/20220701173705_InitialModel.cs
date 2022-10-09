@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace Cinephila.DataAccess.Migrations
 {
     public partial class InitialModel : Migration
@@ -88,6 +90,7 @@ namespace Cinephila.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_CountriesProductions", x => new { x.CountryID, x.ProductionID });
                     table.ForeignKey(
                         name: "FK_CountriesProductions_Countries_CountryID",
                         column: x => x.CountryID,
@@ -106,13 +109,12 @@ namespace Cinephila.DataAccess.Migrations
                 name: "Movies",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductionID = table.Column<int>(type: "int", nullable: false)
+                    ProductionID = table.Column<int>(type: "int", nullable: false),
+                    LengthInMinutes = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Movies", x => x.ID);
+                    table.PrimaryKey("PK_Movies", x => x.ProductionID);
                     table.ForeignKey(
                         name: "FK_Movies_Productions_ProductionID",
                         column: x => x.ProductionID,
@@ -122,19 +124,17 @@ namespace Cinephila.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shows",
+                name: "TVShows",
                 columns: table => new
                 {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductionID = table.Column<int>(type: "int", nullable: false),
                     EndOfProduction = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shows", x => x.ID);
+                    table.PrimaryKey("PK_TVShows", x => x.ProductionID);
                     table.ForeignKey(
-                        name: "FK_Shows_Productions_ProductionID",
+                        name: "FK_TVShows_Productions_ProductionID",
                         column: x => x.ProductionID,
                         principalTable: "Productions",
                         principalColumn: "ID",
@@ -147,10 +147,11 @@ namespace Cinephila.DataAccess.Migrations
                 {
                     ProductionID = table.Column<int>(type: "int", nullable: false),
                     ParticipantID = table.Column<int>(type: "int", nullable: false),
-                    RoleID = table.Column<int>(type: "int", nullable: false)
+                    RoleID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_ParticipantsProductions", x => new { x.ProductionID, x.ParticipantID });
                     table.ForeignKey(
                         name: "FK_ParticipantsProductions_Participants_ParticipantID",
                         column: x => x.ParticipantID,
@@ -167,14 +168,15 @@ namespace Cinephila.DataAccess.Migrations
                         name: "FK_ParticipantsProductions_Roles_RoleID",
                         column: x => x.RoleID,
                         principalTable: "Roles",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ID");
                 });
 
             migrationBuilder.CreateTable(
                 name: "ReviewsProductions",
                 columns: table => new
                 {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductionID = table.Column<int>(type: "int", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: false),
                     Review = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -182,6 +184,7 @@ namespace Cinephila.DataAccess.Migrations
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_ReviewsProductions", x => x.ID);
                     table.ForeignKey(
                         name: "FK_ReviewsProductions_Productions_ProductionID",
                         column: x => x.ProductionID,
@@ -197,29 +200,14 @@ namespace Cinephila.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CountriesProductions_CountryID",
-                table: "CountriesProductions",
-                column: "CountryID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CountriesProductions_ProductionID",
                 table: "CountriesProductions",
-                column: "ProductionID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Movies_ProductionID",
-                table: "Movies",
                 column: "ProductionID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ParticipantsProductions_ParticipantID",
                 table: "ParticipantsProductions",
                 column: "ParticipantID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ParticipantsProductions_ProductionID",
-                table: "ParticipantsProductions",
-                column: "ProductionID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ParticipantsProductions_RoleID",
@@ -235,11 +223,6 @@ namespace Cinephila.DataAccess.Migrations
                 name: "IX_ReviewsProductions_UserID",
                 table: "ReviewsProductions",
                 column: "UserID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Shows_ProductionID",
-                table: "Shows",
-                column: "ProductionID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -257,7 +240,7 @@ namespace Cinephila.DataAccess.Migrations
                 name: "ReviewsProductions");
 
             migrationBuilder.DropTable(
-                name: "Shows");
+                name: "TVShows");
 
             migrationBuilder.DropTable(
                 name: "Countries");

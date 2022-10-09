@@ -2,6 +2,8 @@
 using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.Models.ProductionModels;
 using Cinephila.Domain.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +12,8 @@ namespace Cinephila.API.Controllers
 {
     [Route("api/productions")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class ProductionsController : Controller
     {
         private readonly IProductionsService _productionsService;

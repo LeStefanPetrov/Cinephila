@@ -4,9 +4,11 @@ using Cinephila.Domain.Models.ParticipantModels;
 using Cinephila.Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Cinephila.API.Controllers
@@ -18,6 +20,7 @@ namespace Cinephila.API.Controllers
     {
         private readonly IParticipantsService _participantsService;
         private readonly IMapper _mapper;
+
         public ParticipantsController(IParticipantsService participantsService, IMapper mapper)
         {
             _participantsService = participantsService;
@@ -46,6 +49,7 @@ namespace Cinephila.API.Controllers
         }
 
         [HttpDelete]
+        [EnableCors]
         public async Task<ActionResult> Delete(int id)
         {
             if (id <= 0)
@@ -63,8 +67,6 @@ namespace Cinephila.API.Controllers
         public async Task<ActionResult> GetPaginated(int currentPage, int pageSize)
         {
             var participants = await _participantsService.GetPaginatedAsync(currentPage, pageSize).ConfigureAwait(false);
-
-            var a = User.Claims;
 
             if (!participants.Any())
                 return NotFound();

@@ -7,26 +7,30 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace Cinephila.DataAccess.Migrations
 {
     [DbContext(typeof(CinephilaDbContext))]
-    [Migration("20211029152807_MovieLengthPropertyMigration")]
-    partial class MovieLengthPropertyMigration
+    [Migration("20220701173705_InitialModel")]
+    partial class InitialModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.Country", b =>
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.CountryEntity", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -37,7 +41,7 @@ namespace Cinephila.DataAccess.Migrations
                     b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.CountryProduction", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.CountryProductionEntity", b =>
                 {
                     b.Property<int>("CountryID")
                         .HasColumnType("int");
@@ -45,39 +49,33 @@ namespace Cinephila.DataAccess.Migrations
                     b.Property<int>("ProductionID")
                         .HasColumnType("int");
 
-                    b.HasIndex("CountryID");
+                    b.HasKey("CountryID", "ProductionID");
 
                     b.HasIndex("ProductionID");
 
                     b.ToTable("CountriesProductions");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.Movie", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.MovieEntity", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ProductionID")
+                        .HasColumnType("int");
 
                     b.Property<int>("LengthInMinutes")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductionID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ProductionID");
+                    b.HasKey("ProductionID");
 
                     b.ToTable("Movies");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.Participant", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantEntity", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
@@ -97,32 +95,33 @@ namespace Cinephila.DataAccess.Migrations
                     b.ToTable("Participants");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantProduction", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantProductionEntity", b =>
                 {
-                    b.Property<int>("ParticipantID")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductionID")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoleID")
+                    b.Property<int>("ParticipantID")
                         .HasColumnType("int");
 
-                    b.HasIndex("ParticipantID");
+                    b.Property<int?>("RoleID")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ProductionID");
+                    b.HasKey("ProductionID", "ParticipantID");
+
+                    b.HasIndex("ParticipantID");
 
                     b.HasIndex("RoleID");
 
                     b.ToTable("ParticipantsProductions");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.Production", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.ProductionEntity", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -139,8 +138,14 @@ namespace Cinephila.DataAccess.Migrations
                     b.ToTable("Productions");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.ReviewProduction", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.ReviewProductionEntity", b =>
                 {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
                     b.Property<int>("ProductionID")
                         .HasColumnType("int");
 
@@ -153,6 +158,8 @@ namespace Cinephila.DataAccess.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
+                    b.HasKey("ID");
+
                     b.HasIndex("ProductionID");
 
                     b.HasIndex("UserID");
@@ -160,12 +167,13 @@ namespace Cinephila.DataAccess.Migrations
                     b.ToTable("ReviewsProductions");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.Role", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.RoleEntity", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -176,32 +184,26 @@ namespace Cinephila.DataAccess.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.TVShow", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.TVShowEntity", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ProductionID")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("EndOfProduction")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductionID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ProductionID");
+                    b.HasKey("ProductionID");
 
                     b.ToTable("TVShows");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.User", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.UserEntity", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -220,16 +222,16 @@ namespace Cinephila.DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.CountryProduction", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.CountryProductionEntity", b =>
                 {
-                    b.HasOne("Cinephila.DataAccess.Entities.Country", "Country")
-                        .WithMany()
+                    b.HasOne("Cinephila.DataAccess.Entities.CountryEntity", "Country")
+                        .WithMany("Productions")
                         .HasForeignKey("CountryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cinephila.DataAccess.Entities.Production", "Production")
-                        .WithMany()
+                    b.HasOne("Cinephila.DataAccess.Entities.ProductionEntity", "Production")
+                        .WithMany("Countries")
                         .HasForeignKey("ProductionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -239,36 +241,34 @@ namespace Cinephila.DataAccess.Migrations
                     b.Navigation("Production");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.Movie", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.MovieEntity", b =>
                 {
-                    b.HasOne("Cinephila.DataAccess.Entities.Production", "Production")
-                        .WithMany()
-                        .HasForeignKey("ProductionID")
+                    b.HasOne("Cinephila.DataAccess.Entities.ProductionEntity", "Production")
+                        .WithOne("Movie")
+                        .HasForeignKey("Cinephila.DataAccess.Entities.MovieEntity", "ProductionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Production");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantProduction", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantProductionEntity", b =>
                 {
-                    b.HasOne("Cinephila.DataAccess.Entities.Participant", "Participant")
-                        .WithMany()
+                    b.HasOne("Cinephila.DataAccess.Entities.ParticipantEntity", "Participant")
+                        .WithMany("ParticipantsProductions")
                         .HasForeignKey("ParticipantID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cinephila.DataAccess.Entities.Production", "Production")
-                        .WithMany()
+                    b.HasOne("Cinephila.DataAccess.Entities.ProductionEntity", "Production")
+                        .WithMany("ParticipantsProductions")
                         .HasForeignKey("ProductionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cinephila.DataAccess.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Cinephila.DataAccess.Entities.RoleEntity", "Role")
+                        .WithMany("ParticipantsProductions")
+                        .HasForeignKey("RoleID");
 
                     b.Navigation("Participant");
 
@@ -277,15 +277,15 @@ namespace Cinephila.DataAccess.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.ReviewProduction", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.ReviewProductionEntity", b =>
                 {
-                    b.HasOne("Cinephila.DataAccess.Entities.Production", "Production")
+                    b.HasOne("Cinephila.DataAccess.Entities.ProductionEntity", "Production")
                         .WithMany()
                         .HasForeignKey("ProductionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Cinephila.DataAccess.Entities.User", "User")
+                    b.HasOne("Cinephila.DataAccess.Entities.UserEntity", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -296,15 +296,41 @@ namespace Cinephila.DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.TVShow", b =>
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.TVShowEntity", b =>
                 {
-                    b.HasOne("Cinephila.DataAccess.Entities.Production", "Production")
-                        .WithMany()
-                        .HasForeignKey("ProductionID")
+                    b.HasOne("Cinephila.DataAccess.Entities.ProductionEntity", "Production")
+                        .WithOne("TVShow")
+                        .HasForeignKey("Cinephila.DataAccess.Entities.TVShowEntity", "ProductionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Production");
+                });
+
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.CountryEntity", b =>
+                {
+                    b.Navigation("Productions");
+                });
+
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantEntity", b =>
+                {
+                    b.Navigation("ParticipantsProductions");
+                });
+
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.ProductionEntity", b =>
+                {
+                    b.Navigation("Countries");
+
+                    b.Navigation("Movie");
+
+                    b.Navigation("ParticipantsProductions");
+
+                    b.Navigation("TVShow");
+                });
+
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.RoleEntity", b =>
+                {
+                    b.Navigation("ParticipantsProductions");
                 });
 #pragma warning restore 612, 618
         }

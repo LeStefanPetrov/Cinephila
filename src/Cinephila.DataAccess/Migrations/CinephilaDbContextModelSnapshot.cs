@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
+#nullable disable
+
 namespace Cinephila.DataAccess.Migrations
 {
     [DbContext(typeof(CinephilaDbContext))]
@@ -15,16 +17,18 @@ namespace Cinephila.DataAccess.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.11")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Cinephila.DataAccess.Entities.CountryEntity", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -67,8 +71,9 @@ namespace Cinephila.DataAccess.Migrations
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
@@ -96,10 +101,10 @@ namespace Cinephila.DataAccess.Migrations
                     b.Property<int>("ParticipantID")
                         .HasColumnType("int");
 
-                    b.Property<int>("RoleID")
+                    b.Property<int?>("RoleID")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductionID", "ParticipantID", "RoleID");
+                    b.HasKey("ProductionID", "ParticipantID");
 
                     b.HasIndex("ParticipantID");
 
@@ -112,11 +117,18 @@ namespace Cinephila.DataAccess.Migrations
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int>("ApiID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PosterPath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Summary")
@@ -132,6 +144,12 @@ namespace Cinephila.DataAccess.Migrations
 
             modelBuilder.Entity("Cinephila.DataAccess.Entities.ReviewProductionEntity", b =>
                 {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
                     b.Property<int>("ProductionID")
                         .HasColumnType("int");
 
@@ -144,6 +162,8 @@ namespace Cinephila.DataAccess.Migrations
                     b.Property<int>("UserID")
                         .HasColumnType("int");
 
+                    b.HasKey("ID");
+
                     b.HasIndex("ProductionID");
 
                     b.HasIndex("UserID");
@@ -155,8 +175,9 @@ namespace Cinephila.DataAccess.Migrations
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -184,8 +205,9 @@ namespace Cinephila.DataAccess.Migrations
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -250,9 +272,7 @@ namespace Cinephila.DataAccess.Migrations
 
                     b.HasOne("Cinephila.DataAccess.Entities.RoleEntity", "Role")
                         .WithMany("ParticipantsProductions")
-                        .HasForeignKey("RoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RoleID");
 
                     b.Navigation("Participant");
 

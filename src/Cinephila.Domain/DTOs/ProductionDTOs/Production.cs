@@ -13,6 +13,8 @@ namespace Cinephila.Domain.DTOs.ProductionDTOs
 
         public string Summary { get; set; }
 
+        public string PosterPath { get; set; }
+
         public ICollection<int> Countries { get; set; }
 
         public ICollection<ParticipantRole> Participants { get; set; }
