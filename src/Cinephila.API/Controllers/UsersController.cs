@@ -32,9 +32,10 @@ namespace Cinephila.API.Controllers
             if (await _usersService.CheckIfExistAsync(email))
                 return Ok();
 
-            await _usersService.CreateAsync(email);
 
-            return Ok();
+            var id = await _usersService.CreateAsync(email);
+
+            return Ok(id);
         }
     }
 }
