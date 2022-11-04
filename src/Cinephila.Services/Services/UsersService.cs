@@ -1,9 +1,6 @@
-﻿using Cinephila.Domain.Repositories;
+﻿using Cinephila.Domain.DTOs.UserDTOs;
+using Cinephila.Domain.Repositories;
 using Cinephila.Domain.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Cinephila.Services.Services
@@ -17,9 +14,9 @@ namespace Cinephila.Services.Services
             _usersRepository = usersRepository;
         }
 
-        public Task<int> CreateAsync(string email)
+        public Task<int> CreateAsync(UserInfo dto)
         {
-            return _usersRepository.CreateAsync(email);
+            return _usersRepository.CreateAsync(dto);
         }
 
         public Task<bool> CheckIfExistAsync(string email)

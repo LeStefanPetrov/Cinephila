@@ -1,11 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Cinephila.DataAccess.Entities
+﻿namespace Cinephila.Domain.DTOs.UserDTOs
 {
-    public class UserEntity : BaseEntity
+    public class UserInfo
     {
-        [Required]
-        [EmailAddress]
         public string Email { get; set; }
 
         public string Picture { get; set; }

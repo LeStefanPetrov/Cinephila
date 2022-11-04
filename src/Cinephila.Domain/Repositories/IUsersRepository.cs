@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Cinephila.Domain.DTOs.UserDTOs;
 using System.Threading.Tasks;
 
 namespace Cinephila.Domain.Repositories
 {
     public interface IUsersRepository
     {
-        Task<int> CreateAsync(string email);
+        Task<int> CreateAsync(UserInfo dto);
 
         Task<bool> CheckIfExistAsync(string email);
     }

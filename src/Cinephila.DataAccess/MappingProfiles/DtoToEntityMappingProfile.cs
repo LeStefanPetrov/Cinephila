@@ -3,8 +3,8 @@ using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.DTOs.ReviewDTOs;
+using Cinephila.Domain.DTOs.UserDTOs;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Cinephila.DataAccess.MappingProfiles
 {
@@ -37,6 +37,8 @@ namespace Cinephila.DataAccess.MappingProfiles
             CreateMap<Review, ReviewProductionEntity>()
                 .ForMember(x => x.Review, opts => opts.MapFrom(x => x.UserReview))
                 .ReverseMap();
+
+            CreateMap<UserInfo, UserEntity>().ReverseMap();
         }
     }
 
