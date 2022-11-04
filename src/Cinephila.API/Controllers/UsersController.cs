@@ -30,7 +30,7 @@ namespace Cinephila.API.Controllers
             if (email == null)
                 return BadRequest("No such claim!");
 
-            if (await _usersService.CheckIfExistAsync(email))
+            if (await _usersService.CheckIfExistAsync(email).ConfigureAwait(false))
                 return Ok();
 
             UserInfo dto = new UserInfo

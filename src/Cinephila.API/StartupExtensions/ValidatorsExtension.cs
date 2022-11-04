@@ -13,7 +13,9 @@ namespace Cinephila.API.StartupExtensions
     {
         public static IServiceCollection AddValidators(this IServiceCollection services)
         {
-            services.AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Startup>());
+            services.AddFluentValidationAutoValidation();
+            services.AddFluentValidationClientsideAdapters();
+            services.AddValidatorsFromAssembly(typeof(ValidatorsExtension).Assembly);
             return services;
         }
     }

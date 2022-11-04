@@ -43,7 +43,7 @@ namespace Cinephila.API
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(async x =>
+                .AddJwtBearer(x =>
                 {
                     var configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
                         $"{_appSettings.Authority.Trim('/')}/.well-known/openid-configuration",

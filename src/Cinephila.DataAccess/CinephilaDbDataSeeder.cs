@@ -2,7 +2,6 @@
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.ApiDTOs;
 using Cinephila.Domain.Settings;
-using IMDbApiLib;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
