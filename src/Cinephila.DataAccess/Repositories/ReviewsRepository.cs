@@ -47,7 +47,7 @@ namespace Cinephila.DataAccess.Repositories
 
         public async Task<List<Review>> GetPaginatedAsync(int currentPage, int pageSize)
         {
-            var entities = await _context.ReviewsProductions.Skip((currentPage - 1) * pageSize).Take(pageSize).ToListAsync().ConfigureAwait(false);
+            var entities = await _context.ReviewsProductions.OrderBy(x => x.ID).Skip((currentPage - 1) * pageSize).Take(pageSize).ToListAsync().ConfigureAwait(false);
 
             return _mapper.Map<List<Review>>(entities);
         }

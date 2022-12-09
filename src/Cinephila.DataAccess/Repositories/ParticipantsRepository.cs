@@ -48,7 +48,7 @@ namespace Cinephila.DataAccess.Repositories
 
         public async Task<List<Participant>> GetPaginatedAsync(int currentPage, int pageSize)
         {
-            var entities = await _context.Participants.Skip((currentPage - 1) * pageSize).Take(pageSize).ToListAsync().ConfigureAwait(false);
+            var entities = await _context.Participants.OrderBy(x => x.ID).Skip((currentPage - 1) * pageSize).Take(pageSize).ToListAsync().ConfigureAwait(false);
 
             return _mapper.Map<List<Participant>>(entities);
         }
