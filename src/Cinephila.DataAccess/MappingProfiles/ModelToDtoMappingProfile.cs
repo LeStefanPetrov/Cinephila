@@ -2,9 +2,11 @@
 using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.DTOs.ReviewDTOs;
+using Cinephila.Domain.DTOs.UserDTOs;
 using Cinephila.Domain.Models.ParticipantModels;
 using Cinephila.Domain.Models.ProductionModels;
 using Cinephila.Domain.Models.ReviewModels;
+using Cinephila.Domain.Models.UserModels;
 
 namespace Cinephila.DataAccess.MappingProfiles
 {
@@ -22,6 +24,8 @@ namespace Cinephila.DataAccess.MappingProfiles
             CreateMap<ProductionCreateModel, Production>().ConvertUsing<CustomModelToProductionResolver>();
 
             CreateMap<ReviewModel, Review>().ReverseMap();
+
+            CreateMap<UserInfoModel, UserInfo>().ReverseMap();
         }
     }
 

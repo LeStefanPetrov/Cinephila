@@ -1,4 +1,6 @@
-﻿using Cinephila.Domain.DTOs.UserDTOs;
+﻿using AutoMapper;
+using Cinephila.Domain.DTOs.UserDTOs;
+using Cinephila.Domain.Models.UserModels;
 using Cinephila.Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -15,25 +17,30 @@ namespace Cinephila.API.Controllers
     public class UsersController : Controller
     {
         private readonly IUsersService _usersService;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUsersService usersService)
+
+        public UsersController(IUsersService usersService, IMapper mapper)
         {
             _usersService = usersService;
+            _mapper = mapper;
         }
 
-        [HttpPost]
-        public async Task<ActionResult> SignIn()
+        [HttpGet]
+        public async Task<ActionResult> profileInfo()
         {
             ClaimsIdentity identity = (User.Identity as ClaimsIdentity);
             string email = identity.FindFirst("email")?.Value;
 
-            if (email == null)
-                return BadRequest("No such claim!");
+        if (email == null)
+            return BadRequest("No such claim!");
 
-            if (await _usersService.CheckIfExistAsync(email).ConfigureAwait(false))
-                return Ok();
+            var profileInfo = await _usersService.GetProfileInfo(email).ConfigureAwait(false);
 
-            UserInfo dto = new UserInfo
+            if (profileInfo != null)
+                return Ok(_mapper.Map<UserInfoModel>(profileInfo));
+
+            UserInfo newProfileInfo = new UserInfo
             {
                 Email = email,
                 Picture = identity.FindFirst("picture")?.Value,
@@ -41,9 +48,9 @@ namespace Cinephila.API.Controllers
                 LastName = identity.FindFirst("family_name")?.Value
             };
 
-            var id = await _usersService.CreateAsync(dto).ConfigureAwait(false);
+            await _usersService.CreateAsync(newProfileInfo).ConfigureAwait(false);
 
-            return Ok(id);
+            return Ok(_mapper.Map<UserInfoModel>(newProfileInfo));
         }
     }
 }

@@ -8,5 +8,7 @@ namespace Cinephila.Domain.Services
         Task<int> CreateAsync(UserInfo dto);
 
         Task<bool> CheckIfExistAsync(string email);
+
+        Task<UserInfo> GetProfileInfo(string email);
     }
 }

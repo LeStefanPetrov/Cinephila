@@ -23,5 +23,10 @@ namespace Cinephila.Services.Services
         {
             return _usersRepository.CheckIfExistAsync(email);
         }
+
+        public Task<UserInfo> GetProfileInfo(string email)
+        {
+            return _usersRepository.GetProfileInfo(email);
+        }
     }
 }
