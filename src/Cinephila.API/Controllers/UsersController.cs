@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Cinephila.API.Controllers
 {
-    [Route("api/signIn")]
+    [Route("api/users")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
