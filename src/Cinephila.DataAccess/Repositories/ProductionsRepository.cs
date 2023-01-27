@@ -93,6 +93,7 @@ namespace Cinephila.DataAccess.Repositories
         {
             var productions = await _context.Productions
                 .Where(x => x.Movie != null)
+                .OrderBy(x => x.ID)
                 .Skip((page - 1) * size)
                 .Take(size)
                 .ToListAsync()
