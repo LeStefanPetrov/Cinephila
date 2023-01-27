@@ -40,7 +40,7 @@ namespace Cinephila.API.Controllers
             if (profileInfo != null)
                 return Ok(_mapper.Map<UserInfoModel>(profileInfo));
 
-            UserInfo newProfileInfo = new UserInfo
+            var newProfileInfo = new UserInfo
             {
                 Email = email,
                 Picture = identity.FindFirst("picture")?.Value,

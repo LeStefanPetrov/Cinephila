@@ -79,23 +79,27 @@ namespace Cinephila.DataAccess.MappingProfiles
         {
             if (source.Movie != null)
             {
-                var movie = new Movie();
-                movie.Name = source.Name;
-                movie.Summary = source.Summary;
-                movie.YearOfCreation = source.YearOfCreation;
-                movie.Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions);
-                movie.LengthInMinutes = source.Movie.LengthInMinutes;
-                movie.PosterPath = source.PosterPath;
+                var movie = new Movie()
+                {
+                    Name = source.Name,
+                    Summary = source.Summary,
+                    YearOfCreation = source.YearOfCreation,
+                    Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions),
+                    LengthInMinutes = source.Movie.LengthInMinutes,
+                    PosterPath = source.PosterPath
+                };
 
                 return movie;
             }
 
-            var tvShow = new TVShow();
-            tvShow.Name = source.Name;
-            tvShow.Summary = source.Summary;
-            tvShow.YearOfCreation = source.YearOfCreation;
-            tvShow.Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions);
-            tvShow.PosterPath = source.PosterPath;
+            var tvShow = new TVShow()
+            {
+                Name = source.Name,
+                Summary = source.Summary,
+                YearOfCreation = source.YearOfCreation,
+                Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions),
+                PosterPath = source.PosterPath
+            };
 
             return tvShow;
         }
