@@ -27,7 +27,7 @@ namespace Cinephila.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> profileInfo()
+        public async Task<ActionResult> ProfileInfo()
         {
             ClaimsIdentity identity = (User.Identity as ClaimsIdentity);
             string email = identity.FindFirst("email")?.Value;
