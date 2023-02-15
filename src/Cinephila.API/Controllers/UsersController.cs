@@ -26,14 +26,14 @@ namespace Cinephila.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("profileInfo")]
         public async Task<ActionResult> ProfileInfo()
         {
             ClaimsIdentity identity = (User.Identity as ClaimsIdentity);
             string email = identity.FindFirst("email")?.Value;
 
-        if (email == null)
-            return BadRequest("No such claim!");
+            if (email == null)
+                return BadRequest("No such claim!");
 
             var profileInfo = await _usersService.GetProfileInfo(email).ConfigureAwait(false);
 
@@ -50,7 +50,7 @@ namespace Cinephila.API.Controllers
 
             await _usersService.CreateAsync(newProfileInfo).ConfigureAwait(false);
 
-            return Ok(_mapper.Map<UserInfoModel>(newProfileInfo));
+            return Created("", _mapper.Map<UserInfoModel>(newProfileInfo));
         }
     }
 }
