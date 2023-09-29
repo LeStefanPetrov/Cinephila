@@ -1,14 +1,14 @@
 version: "3.9"
 services:
   web:
-    image: "cinephila-v.1.2"
+    image: "cinephila-api"
     build: .
     ports:
       - "8000:5000"
     depends_on:
       - db
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
   db:
     image: "mcr.microsoft.com/mssql/server"
     environment:
