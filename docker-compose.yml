@@ -1,14 +1,16 @@
 version: "3.9"
 services:
-  web:
+  api:
     image: "cinephila-api"
     build: .
     ports:
       - "8000:5000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+
   db:
     image: "mcr.microsoft.com/mssql/server"
     ports: 
@@ -16,3 +18,9 @@ services:
     environment:
       MSSQL_SA_PASSWORD: "ZEmLRGq2_wI_R84S"
       ACCEPT_EULA: "Y"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${Sa_Password:-ZEmLRGq2_wI_R84S} -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
