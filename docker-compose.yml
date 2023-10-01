@@ -11,6 +11,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Production
   db:
     image: "mcr.microsoft.com/mssql/server"
+    ports: 
+      - "1444:1433"
     environment:
-      SA_PASSWORD: "Your_password123"
+      MSSQL_SA_PASSWORD: "ZEmLRGq2_wI_R84S"
       ACCEPT_EULA: "Y"
