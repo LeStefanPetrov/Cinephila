@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Cinephila.Domain.DTOs.ProductionDTOs
 {
-    public abstract class Production : IProduction
+    public class Production : IProduction
     {
         public string Name { get; set; }
 

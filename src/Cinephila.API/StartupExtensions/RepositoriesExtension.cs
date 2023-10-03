@@ -1,4 +1,6 @@
-﻿using Cinephila.DataAccess.Repositories;
+﻿using Cinephila.DataAccess.Redis;
+using Cinephila.DataAccess.Repositories;
+using Cinephila.Domain.Redis;
 using Cinephila.Domain.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +15,7 @@ namespace Cinephila.API.StartupExtensions
             services.AddScoped<IProductionsRepository, ProductionsRepository>();
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IReviewsRepository, ReviewsRepository>();
+            services.AddScoped<IRedisRepository, RedisRepository>();
 
             return services;
         }

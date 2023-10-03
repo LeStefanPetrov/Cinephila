@@ -61,10 +61,22 @@ namespace Cinephila.API.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult> GetPaginatedAsync(int page, int size)
         {
             var productions = await _productionsService.GetPaginatedAsync(page, size).ConfigureAwait(false);
+
+            if (!productions.Any())
+                return NotFound();
+
+            return Ok(productions);
+        }
+
+        [HttpGet]
+        [Route("top-picks")]
+        [AllowAnonymous]
+        public async Task<ActionResult> GetTopPicksAsync(int page, int size)
+        {
+            var productions = await _productionsService.GetTopPicksAsync(page, size).ConfigureAwait(false);
 
             if (!productions.Any())
                 return NotFound();

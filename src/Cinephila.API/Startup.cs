@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System;
 
 namespace Cinephila.API
@@ -31,6 +32,13 @@ namespace Cinephila.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<CinephilaDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CinephilaDb")));
+            services.AddSingleton(options =>
+            {
+                ConfigurationOptions configurationOptions = ConfigurationOptions.Parse(Configuration.GetConnectionString("Redis"));
+                ConnectionMultiplexer connection = ConnectionMultiplexer.Connect(configurationOptions);
+
+                return connection;
+            });
             services.AddControllers();
 
             var _appSettings = Configuration.GetSection("Authentication").Get<AuthenticationSettings>();

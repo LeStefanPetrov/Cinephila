@@ -16,5 +16,8 @@ namespace Cinephila.Domain.Services
         Task<bool> CheckIfExistAsync(int id);
 
         Task<IEnumerable<Production>> GetPaginatedAsync(int page, int size);
+
+        Task<IEnumerable<Production>> GetTopPicksAsync(int page, int size);
+
     }
 }
