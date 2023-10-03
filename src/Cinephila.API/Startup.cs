@@ -1,21 +1,13 @@
-using Cinephila.API.Settings;
 using Cinephila.API.StartupExtensions;
 using Cinephila.DataAccess;
 using Cinephila.Domain.Settings;
 using Google.Apis.Oauth2.v2;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Protocols;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
-using StackExchange.Redis;
-using System;
 
 namespace Cinephila.API
 {
@@ -31,50 +23,10 @@ namespace Cinephila.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<CinephilaDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("CinephilaDb")));
-            services.AddSingleton(options =>
-            {
-                ConfigurationOptions configurationOptions = ConfigurationOptions.Parse(Configuration.GetConnectionString("Redis"));
-                ConnectionMultiplexer connection = ConnectionMultiplexer.Connect(configurationOptions);
-
-                return connection;
-            });
+            services.AddDatabases(Configuration);
+            services.LoadConfigurations(Configuration);
+            services.AddAuthentication(Configuration);
             services.AddControllers();
-
-            var _appSettings = Configuration.GetSection("Authentication").Get<AuthenticationSettings>();
-            services.Configure<ApiSettings>(Configuration.GetSection("MovieApi"));
-
-            services
-                .AddSwagger(_appSettings)
-                .AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(x =>
-                {
-                    var configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                        $"{_appSettings.Authority.Trim('/')}/.well-known/openid-configuration",
-                        new OpenIdConnectConfigurationRetriever(),
-                        new HttpDocumentRetriever());
-
-                    var discoveryDocument = configurationManager.GetConfigurationAsync().GetAwaiter().GetResult();
-
-                    x.RequireHttpsMetadata = true;
-                    x.SaveToken = true;
-                    x.MapInboundClaims = false;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = discoveryDocument.Issuer,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKeys = discoveryDocument.SigningKeys,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.FromMinutes(1)
-                    };
-                });
-
             services.AddMappingProfiles();
             services.AddRepositories();
             services.AddServices();
