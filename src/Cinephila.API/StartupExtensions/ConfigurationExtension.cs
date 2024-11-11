@@ -1,6 +1,8 @@
 ﻿using Cinephila.Domain.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace Cinephila.API.StartupExtensions
 {
@@ -9,6 +11,17 @@ namespace Cinephila.API.StartupExtensions
         public static IServiceCollection LoadConfigurations(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<ApiSettings>(configuration.GetSection("MovieApi"));
+            services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<ApiSettings>>().Value);
+
+            return services;
+        }
+
+        public static IServiceCollection LoadSerializationOptions(this IServiceCollection services)
+        {
+            services.AddSingleton(new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            });
 
             return services;
         }

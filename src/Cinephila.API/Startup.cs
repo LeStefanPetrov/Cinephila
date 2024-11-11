@@ -1,6 +1,7 @@
 using Cinephila.API.StartupExtensions;
 using Cinephila.DataAccess;
 using Cinephila.Domain.Settings;
+using Cinephila.Services.BackgroundServices;
 using Google.Apis.Oauth2.v2;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using System.Threading;
 
 namespace Cinephila.API
 {
@@ -25,11 +27,13 @@ namespace Cinephila.API
         {
             services.AddDatabases(Configuration);
             services.LoadConfigurations(Configuration);
+            services.LoadSerializationOptions();
             services.AddAuthentication(Configuration);
             services.AddControllers();
             services.AddMappingProfiles();
             services.AddRepositories();
             services.AddServices();
+            services.AddBackgroundServices();
             services.AddValidators();
             services.AddCors();
         }
@@ -51,7 +55,6 @@ namespace Cinephila.API
                     c.EnableDeepLinking();
                 });
             }
-
             app.UseHttpsRedirection();
 
             app.UseRouting();

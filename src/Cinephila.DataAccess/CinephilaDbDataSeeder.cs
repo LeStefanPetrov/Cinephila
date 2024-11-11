@@ -1,15 +1,14 @@
-﻿using AutoMapper;
-using Cinephila.DataAccess.Entities;
+﻿using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.ApiDTOs;
 using Cinephila.Domain.Settings;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Cinephila.DataAccess
@@ -51,6 +50,8 @@ namespace Cinephila.DataAccess
                 context.SaveChanges();
             }
         }
+
+
 
         public static void SeedMovies(CinephilaDbContext context, ApiSettings apiSettings)
         {
