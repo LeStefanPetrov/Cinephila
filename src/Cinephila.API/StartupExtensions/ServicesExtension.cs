@@ -3,6 +3,7 @@ using Cinephila.Domain.Services;
 using Cinephila.Services.BackgroundServices;
 using Cinephila.Services.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Cinephila.API.StartupExtensions
 {
@@ -25,6 +26,14 @@ namespace Cinephila.API.StartupExtensions
             services.AddSingleton<IMovieFetcherService, MovieFetcherService>();
 
             services.AddHostedService<DataFetcherService>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddHttpClients(this IServiceCollection services)
+        {
+            services.AddHttpClient<IPersonFetcherService, PersonFetcherService>();
+            services.AddHttpClient<IMovieFetcherService, MovieFetcherService>();
 
             return services;
         }
