@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Cinephila.DataAccess.Entities;
+using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.DTOs.ReviewDTOs;
@@ -39,6 +40,10 @@ namespace Cinephila.DataAccess.MappingProfiles
                 .ReverseMap();
 
             CreateMap<UserInfo, UserEntity>().ReverseMap();
+
+            CreateMap<GenreDto, GenreEntity>()
+                .ForMember(x => x.TmdbId, opts => opts.MapFrom(x => x.Id))
+                .ForMember(x => x.ID, opts => opts.Ignore());
         }
     }
 

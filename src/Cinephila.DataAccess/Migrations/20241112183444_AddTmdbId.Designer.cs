@@ -4,6 +4,7 @@ using Cinephila.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinephila.DataAccess.Migrations
 {
     [DbContext(typeof(CinephilaDbContext))]
-    partial class CinephilaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241112183444_AddTmdbId")]
+    partial class AddTmdbId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,10 +63,7 @@ namespace Cinephila.DataAccess.Migrations
             modelBuilder.Entity("Cinephila.DataAccess.Entities.GenreEntity", b =>
                 {
                     b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -73,10 +73,6 @@ namespace Cinephila.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("TmdbId")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Genres_TmdbId");
 
                     b.ToTable("Genres");
                 });

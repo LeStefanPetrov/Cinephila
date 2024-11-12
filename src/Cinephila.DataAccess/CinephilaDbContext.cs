@@ -7,6 +7,8 @@ namespace Cinephila.DataAccess
     {
         public DbSet<CountryEntity> Countries { get; set; }
 
+        public DbSet<GenreEntity> Genres { get; set; }
+
         public DbSet<ProductionEntity> Productions { get; set; }
 
         public DbSet<MovieEntity> Movies { get; set; }
@@ -52,6 +54,12 @@ namespace Cinephila.DataAccess
 
             modelBuilder.Entity<ReviewProductionEntity>()
                 .HasKey(x => x.ID);
+
+            //Indexes
+            modelBuilder.Entity<GenreEntity>()
+                .HasIndex(x => x.TmdbId)
+                .HasDatabaseName("IX_Genres_TmdbId")
+                .IsUnique();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

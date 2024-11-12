@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Cinephila.Services.BackgroundServices
 {
@@ -15,6 +17,8 @@ namespace Cinephila.Services.BackgroundServices
         private readonly HttpClient _httpClient;
         private readonly ApiSettings _apiSettings;
         private readonly JsonSerializerOptions _options;
+        private const int BatchSize = 1;
+        private const int BufferSize = 200;
 
         protected BaseFetcherService(
             HttpClient httpClient,
@@ -26,19 +30,21 @@ namespace Cinephila.Services.BackgroundServices
             _options = options;
         }
 
-        protected async Task ProcessFileAsync(Func<int, Task> fetchDetailsAsync, string fetchUrl)
+        protected async Task ProcessFileAsync<T>(Func<int, Task<T>> fetchDetailsAsync, string fetchUrl)
         {
             string tempGzFilePath = Path.Combine(Path.GetTempPath(), "records.json.gz");
             string tempJsonFilePath = Path.Combine(Path.GetTempPath(), "records.json");
 
-           await DownloadAndDecompressDataAsync(fetchUrl, tempGzFilePath, tempJsonFilePath);
+           //await DownloadAndDecompressDataAsync(fetchUrl, tempGzFilePath, tempJsonFilePath);
 
             if (!File.Exists(tempJsonFilePath))
             {
                 // Log error
                 return;
             }
-            var counter = 0;
+
+            var apiTasks = new List<Task<T>>();
+            var dbBuffer = new List<T>();
 
             using (var streamReader = new StreamReader(tempJsonFilePath))
             {
@@ -49,13 +55,26 @@ namespace Cinephila.Services.BackgroundServices
                     try
                     {
                         var record = JsonSerializer.Deserialize<TmdbRecordImport>(line, _options);
-                        if (record != null && record.Popularity > 5)
+
+                        if (record == null || record.Popularity <= 5) 
+                            continue;
+
+                        apiTasks.Add(fetchDetailsAsync(record.Id));
+
+                        if (apiTasks.Count >= BatchSize)
                         {
-                            await fetchDetailsAsync(record.Id);
-                        }
-                        else
-                        {
-                            // Log error
+                            var results = await Task.WhenAll(apiTasks); // Wait for all API tasks to complete
+                            apiTasks.Clear(); // Clear tasks for the next batch
+
+                            // Add results to the buffer for bulk saving
+                            dbBuffer.AddRange(results.Where(r => r != null));
+
+                            // Save to DB if buffer size is reached
+                            if (dbBuffer.Count >= BufferSize)
+                            {
+                                // Save records
+                                dbBuffer.Clear();
+                            }
                         }
                     }
                     catch (JsonException ex)

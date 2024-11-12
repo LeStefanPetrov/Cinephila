@@ -51,8 +51,6 @@ namespace Cinephila.DataAccess
             }
         }
 
-
-
         public static void SeedMovies(CinephilaDbContext context, ApiSettings apiSettings)
         {
             using (var client = new HttpClient())

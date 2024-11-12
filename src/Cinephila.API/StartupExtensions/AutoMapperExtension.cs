@@ -9,6 +9,7 @@ namespace Cinephila.API.StartupExtensions
         {
             services.AddAutoMapper(typeof(DtoToEntityMappingProfile));
             services.AddAutoMapper(typeof(ModelToDtoMappingProfile));
+
             return services;
         }
     }

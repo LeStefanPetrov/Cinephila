@@ -16,6 +16,7 @@ namespace Cinephila.API.StartupExtensions
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IReviewsRepository, ReviewsRepository>();
             services.AddScoped<IRedisRepository, RedisRepository>();
+            services.AddScoped<IGenresRepository, GenresRepository>();
 
             return services;
         }

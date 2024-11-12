@@ -1,10 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using Cinephila.Domain.DTOs.FetchDataDTOs;
+using System.Threading.Tasks;
 
 namespace Cinephila.Domain.BackgroundServices
 {
     public interface IPersonFetcherService
     {
         Task ProcessPersonListAsync();
-        Task FetchPersonInfoAsync(int recordId);
+        Task<PersonDto> FetchPersonInfoAsync(int recordId);
     }
 }

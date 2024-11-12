@@ -34,7 +34,7 @@ namespace Cinephila.API
             services.AddRepositories();
             services.AddServices();
             services.AddBackgroundServices();
-            services.AddHttpClients();
+            services.AddHttpClients(Configuration);
             services.AddValidators();
             services.AddCors();
         }

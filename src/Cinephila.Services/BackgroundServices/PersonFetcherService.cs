@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Options;
 using System.Net.Http;
 using System.Text.Json;
-using System;
 using System.Threading.Tasks;
 using Cinephila.Domain.BackgroundServices;
+using Cinephila.Domain.DTOs.FetchDataDTOs;
 
 namespace Cinephila.Services.BackgroundServices
 {
@@ -29,9 +29,15 @@ namespace Cinephila.Services.BackgroundServices
             await ProcessFileAsync(FetchPersonInfoAsync, _apiSettings.FetchPeopleUrl);
         }
 
-        public Task FetchPersonInfoAsync(int recordId)
+        public async Task<PersonDto> FetchPersonInfoAsync(int recordId)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await _httpClient.GetAsync($"person/{recordId}?api_key={_apiSettings.Key}");
+            response.EnsureSuccessStatusCode();
+
+            string content  = await response.Content.ReadAsStringAsync();
+            var personDto = JsonSerializer.Deserialize<PersonDto>(content, _options);
+
+            return personDto;
         }
     }
 }

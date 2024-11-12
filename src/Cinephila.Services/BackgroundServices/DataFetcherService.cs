@@ -10,17 +10,11 @@ namespace Cinephila.Services.BackgroundServices
     public class DataFetcherService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IPersonFetcherService _personFetcherService;
-        private readonly IMovieFetcherService _movieFetcherService;
 
         public DataFetcherService(
-            IServiceProvider serviceProvider, 
-            IPersonFetcherService personFetcherService, 
-            IMovieFetcherService movieFetcherService)
+            IServiceProvider serviceProvider)
         {
             _serviceProvider = serviceProvider;
-            _personFetcherService = personFetcherService;
-            _movieFetcherService = movieFetcherService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -31,9 +25,14 @@ namespace Cinephila.Services.BackgroundServices
                 {
                     try
                     {
+                        var personFetcherService = scope.ServiceProvider.GetRequiredService<IPersonFetcherService>();
+                        var movieFetcherService = scope.ServiceProvider.GetRequiredService<IMovieFetcherService>();
+                        var genreFetcherService = scope.ServiceProvider.GetRequiredService<IGenreFetcherService>();
+
                         // Fetch person and movie data sequentially
-                        await _personFetcherService.ProcessPersonListAsync();
-                        await _movieFetcherService.ProcessMovieListAsync();
+                        await genreFetcherService.FetchGenresAsync();
+                        await personFetcherService.ProcessPersonListAsync();
+                        await movieFetcherService.ProcessMovieListAsync();
                     }
                     catch (Exception ex)
                     {

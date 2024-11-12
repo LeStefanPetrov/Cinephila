@@ -5,6 +5,8 @@ using System.Net.Http;
 using Cinephila.Domain.Settings;
 using Microsoft.Extensions.Options;
 using Cinephila.Domain.BackgroundServices;
+using Cinephila.Domain.DTOs.FetchDataDTOs;
+using System.Collections.Generic;
 
 namespace Cinephila.Services.BackgroundServices
 {
@@ -13,7 +15,6 @@ namespace Cinephila.Services.BackgroundServices
         private readonly HttpClient _httpClient; 
         private readonly ApiSettings _apiSettings;
         private readonly JsonSerializerOptions _options;
-
         public MovieFetcherService(
             HttpClient httpClient,
             IOptions<ApiSettings> apiSettings,
@@ -29,9 +30,15 @@ namespace Cinephila.Services.BackgroundServices
             await ProcessFileAsync(FetchMovieInfoAsync, _apiSettings.FetchMoviesUrl);
         }
 
-        public Task FetchMovieInfoAsync(int recordId)
+        public async Task<MovieDto> FetchMovieInfoAsync(int recordId)
         {
-            throw new NotImplementedException();
+            HttpResponseMessage response = await _httpClient.GetAsync($"genre/movie/list?api_key={_apiSettings.Key}");
+            response.EnsureSuccessStatusCode();
+
+            string content = await response.Content.ReadAsStringAsync();
+            var personDto = JsonSerializer.Deserialize<List<GenreDto>>(content, _options);
+
+            return new MovieDto();
         }
     }
 }

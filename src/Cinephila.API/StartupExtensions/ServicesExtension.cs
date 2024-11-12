@@ -1,7 +1,10 @@
-﻿using Cinephila.Domain.BackgroundServices;
+﻿using Cinephila.API.Settings;
+using Cinephila.Domain.BackgroundServices;
 using Cinephila.Domain.Services;
+using Cinephila.Domain.Settings;
 using Cinephila.Services.BackgroundServices;
 using Cinephila.Services.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -22,18 +25,30 @@ namespace Cinephila.API.StartupExtensions
 
         public static IServiceCollection AddBackgroundServices(this IServiceCollection services)
         {
-            services.AddSingleton<IPersonFetcherService, PersonFetcherService>();
-            services.AddSingleton<IMovieFetcherService, MovieFetcherService>();
-
             services.AddHostedService<DataFetcherService>();
 
             return services;
         }
 
-        public static IServiceCollection AddHttpClients(this IServiceCollection services)
+        public static IServiceCollection AddHttpClients(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpClient<IPersonFetcherService, PersonFetcherService>();
-            services.AddHttpClient<IMovieFetcherService, MovieFetcherService>();
+            var _appSettings = configuration.GetSection("MovieApi").Get<ApiSettings>();
+
+
+            services.AddHttpClient<IPersonFetcherService, PersonFetcherService>(client =>
+            {
+                client.BaseAddress = new Uri(_appSettings.Url);
+            });
+
+            services.AddHttpClient<IMovieFetcherService, MovieFetcherService>(client =>
+            {
+                client.BaseAddress = new Uri(_appSettings.Url);
+            });
+
+            services.AddHttpClient<IGenreFetcherService, GenreFetcherService>(client =>
+            {
+                client.BaseAddress = new Uri(_appSettings.Url);
+            });
 
             return services;
         }
