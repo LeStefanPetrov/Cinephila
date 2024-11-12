@@ -2,7 +2,7 @@
 
 namespace Cinephila.Domain.DTOs.FetchDataDTOs
 {
-    public class GenreResponse
+    public class GenresResponse
     {
         public List<GenreDto> Genres { get; set; }
     }

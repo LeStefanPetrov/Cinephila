@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Cinephila.DataAccess.Entities;
+using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -101,6 +103,23 @@ namespace Cinephila.DataAccess.Repositories
 
             var result = _mapper.Map<List<Production>>(productions);
             return result;
+        }
+
+        public async Task BatchInsertMovieProductionsAsync(IEnumerable<MovieDto> movieDtos)
+        {
+            if (movieDtos != null && movieDtos.Any())
+            {
+                var entities = _mapper.Map<List<ProductionEntity>>(movieDtos);
+
+                await _context.Productions.AddRangeAsync(entities);
+                try
+                {
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
+                } catch (Exception e)
+                {
+                    // Log error
+                }
+            }
         }
     }
 }

@@ -25,18 +25,17 @@ namespace Cinephila.Services.BackgroundServices
                 {
                     try
                     {
-                        var personFetcherService = scope.ServiceProvider.GetRequiredService<IPersonFetcherService>();
-                        var movieFetcherService = scope.ServiceProvider.GetRequiredService<IMovieFetcherService>();
                         var genreFetcherService = scope.ServiceProvider.GetRequiredService<IGenreFetcherService>();
+                        var movieFetcherService = scope.ServiceProvider.GetRequiredService<IMovieFetcherService>();
+                        var personFetcherService = scope.ServiceProvider.GetRequiredService<IPersonFetcherService>();
 
-                        // Fetch person and movie data sequentially
-                        await genreFetcherService.FetchGenresAsync();
-                        await personFetcherService.ProcessPersonListAsync();
+                        // Fetch genre, movie and person data sequentially
+                        // await genreFetcherService.FetchGenresAsync();
                         await movieFetcherService.ProcessMovieListAsync();
+                        await personFetcherService.ProcessPersonListAsync();
                     }
                     catch (Exception ex)
                     {
-                        // Log exception (handle errors as needed)
                         Console.WriteLine($"Error executing sequential tasks: {ex.Message}");
                     }
                 }

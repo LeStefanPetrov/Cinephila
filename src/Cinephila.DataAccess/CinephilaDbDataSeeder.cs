@@ -74,8 +74,8 @@ namespace Cinephila.DataAccess
                         {
                             Production = new ProductionEntity
                             {
-                                ApiID = movie.ID,
-                                YearOfCreation = movie.ReleaseDate,
+                                TmdbID = movie.ID,
+                                ReleaseDate = movie.ReleaseDate,
                                 Name = movie.Name,
                                 PosterPath = apiSettings.PosterUrl + movie.PosterPath
                             }

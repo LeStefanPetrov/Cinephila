@@ -60,6 +60,11 @@ namespace Cinephila.DataAccess
                 .HasIndex(x => x.TmdbId)
                 .HasDatabaseName("IX_Genres_TmdbId")
                 .IsUnique();
+
+            modelBuilder.Entity<ProductionEntity>()
+                .HasIndex(x => x.TmdbID)
+                .HasDatabaseName("IX_Production_TmdbId")
+                .IsUnique();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

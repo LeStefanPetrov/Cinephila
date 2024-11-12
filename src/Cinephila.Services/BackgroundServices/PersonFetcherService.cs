@@ -26,7 +26,7 @@ namespace Cinephila.Services.BackgroundServices
 
         public async Task ProcessPersonListAsync()
         {
-            await ProcessFileAsync(FetchPersonInfoAsync, _apiSettings.FetchPeopleUrl);
+            //await ProcessFileAsync(FetchPersonInfoAsync, new Func<>, _apiSettings.FetchPeopleUrl);
         }
 
         public async Task<PersonDto> FetchPersonInfoAsync(int recordId)

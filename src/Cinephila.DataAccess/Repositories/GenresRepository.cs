@@ -2,9 +2,7 @@
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.Repositories;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +20,7 @@ namespace Cinephila.DataAccess.Repositories
             _mapper = mapper;
         }
 
-        public async Task SeedGenresAsync(IEnumerable<GenreDto> genreDtos)
+        public async Task BatchInsertGenresAsync(IEnumerable<GenreDto> genreDtos)
         {
             if (genreDtos != null && genreDtos.Any())
             {
@@ -32,10 +30,9 @@ namespace Cinephila.DataAccess.Repositories
                 try
                 {
                     await _context.SaveChangesAsync().ConfigureAwait(false);
-                }
-                catch (Exception ex)
+                }catch (Exception e)
                 {
-                    Console.WriteLine(ex.Message);
+                    // Log error
                 }
             }
         }

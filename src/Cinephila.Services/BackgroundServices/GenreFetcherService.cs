@@ -35,9 +35,9 @@ namespace Cinephila.Services.BackgroundServices
             response.EnsureSuccessStatusCode();
 
             string content = await response.Content.ReadAsStringAsync();
-            var genresResponse = JsonSerializer.Deserialize<GenreResponse>(content, _options);
+            var genresResponse = JsonSerializer.Deserialize<GenresResponse>(content, _options);
 
-            await _genresRepository.SeedGenresAsync(genresResponse.Genres);
+            await _genresRepository.BatchInsertGenresAsync(genresResponse.Genres);
         }
     }
 }

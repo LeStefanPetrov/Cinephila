@@ -1,4 +1,5 @@
-﻿using Cinephila.Domain.DTOs.ProductionDTOs;
+﻿using Cinephila.Domain.DTOs.FetchDataDTOs;
+using Cinephila.Domain.DTOs.ProductionDTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,5 +16,7 @@ namespace Cinephila.Domain.Repositories
         Task<bool> CheckIfExistAsync(int id);
 
         Task<IEnumerable<Production>> GetPaginatedAsync(int page, int size);
+
+        Task BatchInsertMovieProductionsAsync(IEnumerable<MovieDto> movieDtos);
     }
 }

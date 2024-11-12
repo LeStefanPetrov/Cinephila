@@ -4,6 +4,7 @@ using Cinephila.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinephila.DataAccess.Migrations
 {
     [DbContext(typeof(CinephilaDbContext))]
-    partial class CinephilaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241112204425_UpdateProductionEntityLongRevenue")]
+    partial class UpdateProductionEntityLongRevenue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
