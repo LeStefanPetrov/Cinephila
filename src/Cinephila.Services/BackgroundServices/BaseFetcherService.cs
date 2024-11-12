@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
-using Cinephila.Domain.DTOs.ApiDTOs;
 
 namespace Cinephila.Services.BackgroundServices
 {
