@@ -1,4 +1,5 @@
-﻿using Cinephila.Domain.DTOs.ParticipantDTOs;
+﻿using Cinephila.Domain.DTOs.FetchDataDTOs;
+using Cinephila.Domain.DTOs.ParticipantDTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,5 +16,7 @@ namespace Cinephila.Domain.Repositories
         Task<List<Participant>> GetPaginatedAsync(int currentPage, int pageSize);
 
         Task<bool> CheckIfExistAsync(int id);
+
+        Task BatchInsertParticipantsAsync(IEnumerable<PersonDto> participantDtos);
     }
 }

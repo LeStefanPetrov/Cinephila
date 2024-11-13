@@ -4,6 +4,7 @@ using Cinephila.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinephila.DataAccess.Migrations
 {
     [DbContext(typeof(CinephilaDbContext))]
-    partial class CinephilaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241113183053_ParticipantsProductionsFixes3")]
+    partial class ParticipantsProductionsFixes3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,9 +107,6 @@ namespace Cinephila.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int>("ParticipantID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Path")
                         .HasColumnType("nvarchar(max)");
 
@@ -117,8 +117,6 @@ namespace Cinephila.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("ParticipantID");
 
                     b.ToTable("Images");
                 });
@@ -174,6 +172,21 @@ namespace Cinephila.DataAccess.Migrations
                     b.ToTable("Participants");
                 });
 
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantImageEntity", b =>
+                {
+                    b.Property<int>("ParticipantID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ImageID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ParticipantID", "ImageID");
+
+                    b.HasIndex("ImageID");
+
+                    b.ToTable("ParticipantsImages");
+                });
+
             modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantProductionEntity", b =>
                 {
                     b.Property<int>("ProductionID")
@@ -181,9 +194,6 @@ namespace Cinephila.DataAccess.Migrations
 
                     b.Property<int>("ParticipantID")
                         .HasColumnType("int");
-
-                    b.Property<string>("Character")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RoleID")
                         .HasColumnType("int");
@@ -374,17 +384,6 @@ namespace Cinephila.DataAccess.Migrations
                     b.Navigation("Production");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.ImageEntity", b =>
-                {
-                    b.HasOne("Cinephila.DataAccess.Entities.ParticipantEntity", "Participant")
-                        .WithMany("ParticipantImages")
-                        .HasForeignKey("ParticipantID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Participant");
-                });
-
             modelBuilder.Entity("Cinephila.DataAccess.Entities.MovieEntity", b =>
                 {
                     b.HasOne("Cinephila.DataAccess.Entities.ProductionEntity", "Production")
@@ -394,6 +393,25 @@ namespace Cinephila.DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Production");
+                });
+
+            modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantImageEntity", b =>
+                {
+                    b.HasOne("Cinephila.DataAccess.Entities.ImageEntity", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Cinephila.DataAccess.Entities.ParticipantEntity", "Participant")
+                        .WithMany("ParticipantImages")
+                        .HasForeignKey("ParticipantID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Image");
+
+                    b.Navigation("Participant");
                 });
 
             modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantProductionEntity", b =>

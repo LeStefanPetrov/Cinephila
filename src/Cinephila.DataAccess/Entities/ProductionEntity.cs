@@ -35,6 +35,8 @@ namespace Cinephila.DataAccess.Entities
 
         public virtual ICollection<ParticipantProductionEntity> ParticipantsProductions { get; set; } = new List<ParticipantProductionEntity>();
 
+        public virtual ICollection<GenreProductionEntity> GenresProductions { get; set; } = new List<GenreProductionEntity>();
+
         public virtual MovieEntity Movie { get; set; }
 
         public virtual TVShowEntity TVShow { get; set; }

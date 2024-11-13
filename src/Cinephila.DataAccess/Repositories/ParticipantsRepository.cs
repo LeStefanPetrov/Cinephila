@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using Cinephila.DataAccess.Entities;
+using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Cinephila.DataAccess.Repositories
@@ -56,6 +56,24 @@ namespace Cinephila.DataAccess.Repositories
         public async Task<bool> CheckIfExistAsync(int id)
         {
             return await _context.Participants.AnyAsync(x => x.ID == id).ConfigureAwait(false);
+        }
+
+        public async Task BatchInsertParticipantsAsync(IEnumerable<PersonDto> participantDtos)
+        {
+            try
+            {
+                if (participantDtos != null && participantDtos.Any())
+                {
+                    var entities = _mapper.Map<List<ParticipantEntity>>(participantDtos);
+
+                    await _context.Participants.AddRangeAsync(entities);
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
+                }
+            }
+            catch (Exception e)
+            {
+                // Log error
+            }
         }
     }
 }

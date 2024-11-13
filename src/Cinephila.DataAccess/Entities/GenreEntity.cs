@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Cinephila.DataAccess.Entities
 {
@@ -9,5 +10,7 @@ namespace Cinephila.DataAccess.Entities
 
         [Required]
         public int TmdbId { get; set; }
+
+        public virtual ICollection<GenreProductionEntity> GenreProductions { get; set; } = new List<GenreProductionEntity>();
     }
 }

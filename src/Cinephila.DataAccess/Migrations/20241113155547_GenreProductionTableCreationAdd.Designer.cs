@@ -4,6 +4,7 @@ using Cinephila.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cinephila.DataAccess.Migrations
 {
     [DbContext(typeof(CinephilaDbContext))]
-    partial class CinephilaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241113155547_GenreProductionTableCreationAdd")]
+    partial class GenreProductionTableCreationAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,33 +99,6 @@ namespace Cinephila.DataAccess.Migrations
                     b.ToTable("GenresProductions");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.ImageEntity", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("ParticipantID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Path")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("VoteAverage")
-                        .HasColumnType("float");
-
-                    b.Property<int>("VoteCount")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ParticipantID");
-
-                    b.ToTable("Images");
-                });
-
             modelBuilder.Entity("Cinephila.DataAccess.Entities.MovieEntity", b =>
                 {
                     b.Property<int>("ProductionID")
@@ -144,17 +120,11 @@ namespace Cinephila.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<string>("Biography")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeathDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("KnownForDepartment")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -162,12 +132,6 @@ namespace Cinephila.DataAccess.Migrations
 
                     b.Property<string>("PlaceOfBirth")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Popularity")
-                        .HasColumnType("float");
-
-                    b.Property<int>("TmdbId")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -181,9 +145,6 @@ namespace Cinephila.DataAccess.Migrations
 
                     b.Property<int>("ParticipantID")
                         .HasColumnType("int");
-
-                    b.Property<string>("Character")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RoleID")
                         .HasColumnType("int");
@@ -357,9 +318,8 @@ namespace Cinephila.DataAccess.Migrations
             modelBuilder.Entity("Cinephila.DataAccess.Entities.GenreProductionEntity", b =>
                 {
                     b.HasOne("Cinephila.DataAccess.Entities.GenreEntity", "Genre")
-                        .WithMany("GenreProductions")
+                        .WithMany()
                         .HasForeignKey("GenreID")
-                        .HasPrincipalKey("TmdbId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -372,17 +332,6 @@ namespace Cinephila.DataAccess.Migrations
                     b.Navigation("Genre");
 
                     b.Navigation("Production");
-                });
-
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.ImageEntity", b =>
-                {
-                    b.HasOne("Cinephila.DataAccess.Entities.ParticipantEntity", "Participant")
-                        .WithMany("ParticipantImages")
-                        .HasForeignKey("ParticipantID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Participant");
                 });
 
             modelBuilder.Entity("Cinephila.DataAccess.Entities.MovieEntity", b =>
@@ -401,14 +350,12 @@ namespace Cinephila.DataAccess.Migrations
                     b.HasOne("Cinephila.DataAccess.Entities.ParticipantEntity", "Participant")
                         .WithMany("ParticipantsProductions")
                         .HasForeignKey("ParticipantID")
-                        .HasPrincipalKey("TmdbId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Cinephila.DataAccess.Entities.ProductionEntity", "Production")
                         .WithMany("ParticipantsProductions")
                         .HasForeignKey("ProductionID")
-                        .HasPrincipalKey("TmdbID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -458,15 +405,8 @@ namespace Cinephila.DataAccess.Migrations
                     b.Navigation("Productions");
                 });
 
-            modelBuilder.Entity("Cinephila.DataAccess.Entities.GenreEntity", b =>
-                {
-                    b.Navigation("GenreProductions");
-                });
-
             modelBuilder.Entity("Cinephila.DataAccess.Entities.ParticipantEntity", b =>
                 {
-                    b.Navigation("ParticipantImages");
-
                     b.Navigation("ParticipantsProductions");
                 });
 

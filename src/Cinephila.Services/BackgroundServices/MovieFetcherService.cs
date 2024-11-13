@@ -36,23 +36,21 @@ namespace Cinephila.Services.BackgroundServices
 
         public async Task<MovieDto> FetchMovieInfoAsync(int recordId)
         {
-            var movieDto = new MovieDto();
             try
             {
-            HttpResponseMessage response = await _httpClient.GetAsync($"movie/{recordId}?api_key={_apiSettings.Key}");
-            response.EnsureSuccessStatusCode();
+                HttpResponseMessage response = await _httpClient.GetAsync($"movie/{recordId}?api_key={_apiSettings.Key}");
+                response.EnsureSuccessStatusCode();
 
-            string content = await response.Content.ReadAsStringAsync();
-
+                string content = await response.Content.ReadAsStringAsync();
             
-                movieDto = JsonSerializer.Deserialize<MovieDto>(content, _options);
+                var movieDto = JsonSerializer.Deserialize<MovieDto>(content, _options);
             }
             catch (Exception e)
             {
                 return null;
             }
 
-            return movieDto;
+            return null;
         }
     }
 }

@@ -5,7 +5,6 @@ using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -107,18 +106,19 @@ namespace Cinephila.DataAccess.Repositories
 
         public async Task BatchInsertMovieProductionsAsync(IEnumerable<MovieDto> movieDtos)
         {
-            if (movieDtos != null && movieDtos.Any())
+            try
             {
-                var entities = _mapper.Map<List<ProductionEntity>>(movieDtos);
+                if (movieDtos != null && movieDtos.Any())
+                {
+                    var entities = _mapper.Map<List<ProductionEntity>>(movieDtos);
 
-                await _context.Productions.AddRangeAsync(entities);
-                try
-                {
+                    await _context.Productions.AddRangeAsync(entities);
                     await _context.SaveChangesAsync().ConfigureAwait(false);
-                } catch (Exception e)
-                {
-                    // Log error
                 }
+            }
+            catch (Exception e)
+            {
+                // Log error
             }
         }
     }

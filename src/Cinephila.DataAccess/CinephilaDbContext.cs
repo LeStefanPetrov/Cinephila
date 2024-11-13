@@ -21,11 +21,15 @@ namespace Cinephila.DataAccess
 
         public DbSet<UserEntity> Users { get; set; }
 
+        public DbSet<ImageEntity> Images { get; set; }
+
         public DbSet<CountryProductionEntity> CountriesProductions { get; set; }
 
         public DbSet<ParticipantProductionEntity> ParticipantsProductions { get; set; }
 
         public DbSet<ReviewProductionEntity> ReviewsProductions { get; set; }
+
+        public DbSet<GenreProductionEntity> GenresProductions { get; set; }
 
         public CinephilaDbContext(DbContextOptions options) : base(options)
         {
@@ -46,6 +50,9 @@ namespace Cinephila.DataAccess
             modelBuilder.Entity<CountryProductionEntity>()
                 .HasKey(x => new { x.CountryID, x.ProductionID });
 
+            modelBuilder.Entity<GenreProductionEntity>()
+                .HasKey(x => new { x.ProductionID, x.GenreID });
+
             modelBuilder.Entity<MovieEntity>()
                 .HasKey(x => x.ProductionID);
 
@@ -54,6 +61,33 @@ namespace Cinephila.DataAccess
 
             modelBuilder.Entity<ReviewProductionEntity>()
                 .HasKey(x => x.ID);
+
+            // Configure relationship between Genre and GenreProduction
+            modelBuilder.Entity<GenreProductionEntity>()
+                .HasOne(gp => gp.Genre)
+                .WithMany(g => g.GenreProductions)
+                .HasForeignKey(gp => gp.GenreID)
+                .HasPrincipalKey(g => g.TmdbId); // Maps to TmdbId, not PK Id of Genre
+
+            // Configure relationship between Production and ParticipantProductionEntity
+            modelBuilder.Entity<ParticipantProductionEntity>()
+                .HasOne(pp => pp.Production)
+                .WithMany(p => p.ParticipantsProductions)
+                .HasForeignKey(pp => pp.ProductionID)
+                .HasPrincipalKey(p => p.TmdbID); // Maps to TmdbId, not PK Id of Production
+
+            // Configure relationship between Participant and ParticipantProductionEntity
+            modelBuilder.Entity<ParticipantProductionEntity>()
+                .HasOne(pp => pp.Participant)
+                .WithMany(p => p.ParticipantsProductions)
+                .HasForeignKey(pp => pp.ParticipantID)
+                .HasPrincipalKey(p => p.TmdbId); // Maps to TmdbId, not PK Id of Participant
+
+            modelBuilder.Entity<ImageEntity>()
+                   .HasOne(i => i.Participant)
+                   .WithMany(p => p.ParticipantImages) 
+                   .HasForeignKey(i => i.ParticipantID)
+                   .OnDelete(DeleteBehavior.Cascade);
 
             //Indexes
             modelBuilder.Entity<GenreEntity>()

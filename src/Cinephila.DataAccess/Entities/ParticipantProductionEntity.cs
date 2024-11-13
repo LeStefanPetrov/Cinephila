@@ -12,6 +12,8 @@ namespace Cinephila.DataAccess.Entities
 
         public int? RoleID { get; set; }
 
+        public string Character { get; set; }
+
         public virtual ProductionEntity Production { get; set; }
 
         public virtual ParticipantEntity Participant { get; set; }

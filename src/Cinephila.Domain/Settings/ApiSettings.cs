@@ -11,5 +11,7 @@
         public string FetchPeopleUrl { get; set; }
 
         public string FetchMoviesUrl { get; set; }
+
+        public int MinimumPopularity { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace Cinephila.Services.BackgroundServices
                         var personFetcherService = scope.ServiceProvider.GetRequiredService<IPersonFetcherService>();
 
                         // Fetch genre, movie and person data sequentially
-                        // await genreFetcherService.FetchGenresAsync();
+                        await genreFetcherService.FetchGenresAsync();
                         await movieFetcherService.ProcessMovieListAsync();
                         await personFetcherService.ProcessPersonListAsync();
                     }

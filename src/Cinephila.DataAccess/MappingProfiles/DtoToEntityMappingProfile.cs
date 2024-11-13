@@ -6,7 +6,10 @@ using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.DTOs.ReviewDTOs;
 using Cinephila.Domain.DTOs.UserDTOs;
 using Cinephila.Domain.Extensions;
+using Cinephila.Domain.Settings;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Cinephila.DataAccess.MappingProfiles
 {
@@ -48,6 +51,8 @@ namespace Cinephila.DataAccess.MappingProfiles
                 .ForMember(x => x.ID, opts => opts.Ignore());
 
             CreateMap<MovieDto, ProductionEntity>().ConvertUsing<MovieDtoToProductionEntityResolver>();
+
+            CreateMap<PersonDto, ParticipantEntity>().ConvertUsing<PersonDtoToParticipantEntityResolver>();
         }
     }
 
@@ -134,8 +139,11 @@ namespace Cinephila.DataAccess.MappingProfiles
             destination.VoteAverage = source.Vote_Average;
             destination.VoteCount = source.Vote_Count;
 
-            //destination.ParticipantsProductions = context.Mapper.Map<List<ParticipantProductionEntity>>(source.Participants);
-            //destination.Countries = context.Mapper.Map<List<CountryProductionEntity>>(source.Countries);
+            destination.GenresProductions = source.Genres.Select(x => new GenreProductionEntity
+            {
+                GenreID = x.Id,
+            }).ToList();
+
 
             destination.Movie = new MovieEntity
             {
@@ -144,5 +152,50 @@ namespace Cinephila.DataAccess.MappingProfiles
 
             return destination;
         }
+
+    }
+
+    public class PersonDtoToParticipantEntityResolver : ITypeConverter<PersonDto, ParticipantEntity>
+    {
+        private ApiSettings _apiSettings { get; set; }
+        public PersonDtoToParticipantEntityResolver(IOptions<ApiSettings> options)
+        {
+            _apiSettings = options.Value;
+        }
+
+        public ParticipantEntity Convert(PersonDto source, ParticipantEntity destination, ResolutionContext context)
+        {
+            if (destination == null)
+                destination = new ParticipantEntity();
+
+            destination.Name = source.Name;
+            destination.TmdbId = source.Id;
+            destination.Popularity = source.Popularity;
+            destination.Biography = source.Biography;
+            destination.BirthDate = source.BirthDay.ToNullableDateTime();
+            destination.DeathDate = source.DeathDay.ToNullableDateTime();
+            destination.KnownForDepartment = source.Known_For_Department;
+            destination.PlaceOfBirth = source.Place_Of_Birth;
+
+            destination.ParticipantImages = source.Images.Profiles.Select(x => new ImageEntity
+            {
+                Path = x.File_Path,
+                VoteAverage = x.Vote_Average,
+                VoteCount = x.Vote_Count,
+            }).ToList();
+
+            destination.ParticipantsProductions = source.Movie_Credits.Cast
+                .DistinctBy(x => x.Id)
+                .Where(x => x.Popularity > _apiSettings.MinimumPopularity && x.Adult == false)
+                .Select(x => new ParticipantProductionEntity
+            {
+                ProductionID = x.Id,
+                ParticipantID = source.Id,
+                Character = x.Character,
+            }).ToList();
+
+            return destination;
+        }
+
     }
 }

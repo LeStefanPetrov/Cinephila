@@ -54,7 +54,7 @@ namespace Cinephila.Services.BackgroundServices
                 {
                     var record = JsonSerializer.Deserialize<TmdbRecordImport>(line, _options);
 
-                    if (record == null || record.Popularity <= 20) 
+                    if (record == null || record.Popularity <= _apiSettings.MinimumPopularity)
                         continue;
 
                     fetchRecordDetailsTasks.Add(fetchDetailsAsync(record.Id));
