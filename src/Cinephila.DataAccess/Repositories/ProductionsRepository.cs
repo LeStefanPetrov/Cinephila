@@ -4,6 +4,7 @@ using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,16 @@ namespace Cinephila.DataAccess.Repositories
     {
         private readonly CinephilaDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger<ProductionsRepository> _logger;
 
-        public ProductionsRepository(CinephilaDbContext context, IMapper mapper)
+        public ProductionsRepository(
+            CinephilaDbContext context,
+            IMapper mapper,
+            ILogger<ProductionsRepository> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<int> CreateAsync(Production dto)
@@ -116,9 +122,9 @@ namespace Cinephila.DataAccess.Repositories
                     await _context.SaveChangesAsync().ConfigureAwait(false);
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                // Log error
+                _logger.LogError(ex, "Error while inserting productions.");
             }
         }
     }

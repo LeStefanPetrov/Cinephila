@@ -7,6 +7,7 @@ using Cinephila.Domain.BackgroundServices;
 using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.Repositories;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace Cinephila.Services.BackgroundServices
 {
@@ -16,22 +17,29 @@ namespace Cinephila.Services.BackgroundServices
         private readonly ApiSettings _apiSettings;
         private readonly JsonSerializerOptions _options;
         private readonly IParticipantsRepository _participantsRepository;
+        private readonly ILogger<PersonFetcherService> _logger;
 
         public PersonFetcherService(
             HttpClient httpClient,
             IOptions<ApiSettings> apiSettings,
             JsonSerializerOptions options,
-            IParticipantsRepository participantsRepository) : base(httpClient, apiSettings, options)
+            IParticipantsRepository participantsRepository,
+            ILogger<PersonFetcherService> logger) : base(httpClient, apiSettings, options, logger)
         {
             _httpClient = httpClient;
             _apiSettings = apiSettings.Value;
             _options = options;
             _participantsRepository = participantsRepository;
+            _logger = logger;
         }
 
         public async Task ProcessPersonListAsync()
         {
+            _logger.LogInformation("Starting fetching people operation.");
+
             await ProcessFileAsync(FetchPersonInfoAsync, _participantsRepository.BatchInsertParticipantsAsync, _apiSettings.FetchPeopleUrl);
+
+            _logger.LogInformation("Finished fetching people operation.");
         }
 
         public async Task<PersonDto> FetchPersonInfoAsync(int recordId)
@@ -46,9 +54,17 @@ namespace Cinephila.Services.BackgroundServices
                 var personDto = JsonSerializer.Deserialize<PersonDto>(content, _options);
                 return personDto;
             }
-            catch (Exception e)
+            catch (HttpRequestException ex)
             {
-                // Log error
+                _logger.LogError(ex, "Error while fetching people from API.");
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError(ex, "Error while deserializing person details.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occured:");
             }
 
             return null;

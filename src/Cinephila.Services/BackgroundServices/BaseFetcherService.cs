@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Cinephila.Services.BackgroundServices
 {
@@ -17,17 +18,21 @@ namespace Cinephila.Services.BackgroundServices
         private readonly HttpClient _httpClient;
         private readonly ApiSettings _apiSettings;
         private readonly JsonSerializerOptions _options;
+        private readonly ILogger<BaseFetcherService> _logger;
+
         private const int ConcurrentOperationsLimit = 50;
         private const int RecordsBatchLimit = 200;
 
         protected BaseFetcherService(
             HttpClient httpClient,
             IOptions<ApiSettings> apiSettings,
-            JsonSerializerOptions options)
+            JsonSerializerOptions options,
+            ILogger<BaseFetcherService> logger)
         {
             _httpClient = httpClient;
             _apiSettings = apiSettings.Value;
             _options = options;
+            _logger = logger;
         }
 
         protected async Task ProcessFileAsync<T>(Func<int, Task<T>> fetchDetailsAsync, Func<IEnumerable<T>, Task> saveRecordsBatchAsync, string fetchUrl)
@@ -35,64 +40,73 @@ namespace Cinephila.Services.BackgroundServices
             string tempGzFilePath = Path.Combine(Path.GetTempPath(), "records.json.gz");
             string tempJsonFilePath = Path.Combine(Path.GetTempPath(), "records.json");
 
+
             await DownloadAndDecompressDataAsync(fetchUrl, tempGzFilePath, tempJsonFilePath);
 
             if (!File.Exists(tempJsonFilePath))
             {
-                // Log error
+                _logger.LogInformation("File with the name '{tempJsonFilePath}' does not exist.", tempJsonFilePath);
                 return;
             }
 
-            var fetchRecordDetailsTasks = new List<Task<T>>();
-            var fetchedRecordsBatch = new List<T>();
-
-            using (var streamReader = new StreamReader(tempJsonFilePath))
+            try
             {
-                string line;
+                var fetchRecordDetailsTasks = new List<Task<T>>();
+                var fetchedRecordsBatch = new List<T>();
 
-                while ((line = await streamReader.ReadLineAsync()) != null)
+                using (var streamReader = new StreamReader(tempJsonFilePath))
                 {
-                    var record = JsonSerializer.Deserialize<TmdbRecordImport>(line, _options);
+                    string line;
 
-                    if (record == null || record.Popularity <= _apiSettings.MinimumPopularity)
-                        continue;
-
-                    fetchRecordDetailsTasks.Add(fetchDetailsAsync(record.Id));
-
-                    if (fetchRecordDetailsTasks.Count >= ConcurrentOperationsLimit)
+                    while ((line = await streamReader.ReadLineAsync()) != null)
                     {
-                        var results = await Task.WhenAll(fetchRecordDetailsTasks);
-                        fetchRecordDetailsTasks.Clear();
+                        var record = JsonSerializer.Deserialize<TmdbRecordImport>(line, _options);
 
-                        fetchedRecordsBatch.AddRange(results.Where(r => r != null));
+                        if (record == null || record.Popularity <= _apiSettings.MinimumPopularity)
+                            continue;
 
-                        if (fetchedRecordsBatch.Count >= RecordsBatchLimit)
+                        fetchRecordDetailsTasks.Add(fetchDetailsAsync(record.Id));
+
+                        if (fetchRecordDetailsTasks.Count >= ConcurrentOperationsLimit)
                         {
-                            await saveRecordsBatchAsync(fetchedRecordsBatch);
-                            fetchedRecordsBatch.Clear();
+                            var results = await Task.WhenAll(fetchRecordDetailsTasks);
+                            fetchRecordDetailsTasks.Clear();
+
+                            fetchedRecordsBatch.AddRange(results.Where(r => r != null));
+
+                            if (fetchedRecordsBatch.Count >= RecordsBatchLimit)
+                            {
+                                await saveRecordsBatchAsync(fetchedRecordsBatch);
+                                fetchedRecordsBatch.Clear();
+                            }
                         }
                     }
-                }
 
-                // Process any remaining tasks in the final batch
-                if (fetchRecordDetailsTasks.Any())
-                {
-                    var results = await Task.WhenAll(fetchRecordDetailsTasks);
-                    fetchedRecordsBatch.AddRange(results.Where(r => r != null));
-                }
+                    // Process any remaining tasks in the final batch
+                    if (fetchRecordDetailsTasks.Any())
+                    {
+                        var results = await Task.WhenAll(fetchRecordDetailsTasks);
+                        fetchedRecordsBatch.AddRange(results.Where(r => r != null));
+                    }
 
-                // Final save for any remaining buffered data
-                if (fetchedRecordsBatch.Any())
-                {
-                    await saveRecordsBatchAsync(fetchedRecordsBatch);
+                    // Final save for any remaining buffered data
+                    if (fetchedRecordsBatch.Any())
+                    {
+                        await saveRecordsBatchAsync(fetchedRecordsBatch);
+                    }
                 }
             }
-
-            File.Delete(tempGzFilePath);
-            File.Delete(tempJsonFilePath);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while processing file.");
+            }
+            finally
+            {
+                CleanUp(tempGzFilePath, tempJsonFilePath);
+            }
         }
 
-        protected async Task DownloadAndDecompressDataAsync(string fetchUrl, string tempGzFilePath, string tempJsonFilePath)
+        private async Task DownloadAndDecompressDataAsync(string fetchUrl, string tempGzFilePath, string tempJsonFilePath)
         {
             // Download the .gz file
             using (var response = await _httpClient.GetAsync(GenerateFetchUrl(fetchUrl), HttpCompletionOption.ResponseHeadersRead))
@@ -114,12 +128,18 @@ namespace Cinephila.Services.BackgroundServices
             }
         }
 
-        protected string GenerateFetchUrl(string urlFormat)
+        private string GenerateFetchUrl(string urlFormat)
         {
             return urlFormat
                 .Replace("{MM}", DateTime.Today.Month.ToString("D2"))
                 .Replace("{DD}", DateTime.Today.Day.ToString("D2"))
                 .Replace("{YYYY}", DateTime.Today.Year.ToString());
+        }
+
+        private void CleanUp(string tempGzFilePath, string tempJsonFilePath)
+        {
+            File.Delete(tempGzFilePath);
+            File.Delete(tempJsonFilePath);
         }
     }
 }

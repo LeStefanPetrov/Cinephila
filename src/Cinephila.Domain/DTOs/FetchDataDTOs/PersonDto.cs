@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Cinephila.Domain.DTOs.FetchDataDTOs
+﻿namespace Cinephila.Domain.DTOs.FetchDataDTOs
 {
     public class PersonDto
     {

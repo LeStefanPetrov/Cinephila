@@ -2,6 +2,7 @@
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.Repositories;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,16 @@ namespace Cinephila.DataAccess.Repositories
     {
         private readonly CinephilaDbContext _context;
         private readonly IMapper _mapper;
+        private readonly ILogger<GenresRepository> _logger;
 
-        public GenresRepository(CinephilaDbContext context, IMapper mapper)
+        public GenresRepository(
+            CinephilaDbContext context,
+            IMapper mapper,
+            ILogger<GenresRepository> logger)
         {
             _context = context;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task BatchInsertGenresAsync(IEnumerable<GenreDto> genreDtos)
@@ -30,9 +36,10 @@ namespace Cinephila.DataAccess.Repositories
                 try
                 {
                     await _context.SaveChangesAsync().ConfigureAwait(false);
-                }catch (Exception e)
+                }
+                catch (Exception ex)
                 {
-                    // Log error
+                    _logger.LogError(ex, "Error while inserting genres.");
                 }
             }
         }

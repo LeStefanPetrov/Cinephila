@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Cinephila.Domain.BackgroundServices;
 using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace Cinephila.Services.BackgroundServices
 {
@@ -16,22 +17,28 @@ namespace Cinephila.Services.BackgroundServices
         private readonly ApiSettings _apiSettings;
         private readonly JsonSerializerOptions _options;
         private readonly IProductionsRepository _productionsRepository;
-
+        private readonly ILogger<MovieFetcherService> _logger;
         public MovieFetcherService(
             HttpClient httpClient,
             IOptions<ApiSettings> apiSettings,
             JsonSerializerOptions options,
-            IProductionsRepository productionsRepository) : base(httpClient, apiSettings, options)
+            IProductionsRepository productionsRepository,
+            ILogger<MovieFetcherService> logger) : base(httpClient, apiSettings, options, logger)
         {
             _httpClient = httpClient;
             _apiSettings = apiSettings.Value;
             _options = options;
             _productionsRepository = productionsRepository;
+            _logger = logger;
         }
 
         public async Task ProcessMovieListAsync()
         {
+            _logger.LogInformation("Starting fetching movies operation.");
+            
             await ProcessFileAsync(FetchMovieInfoAsync, _productionsRepository.BatchInsertMovieProductionsAsync,  _apiSettings.FetchMoviesUrl);
+            
+            _logger.LogInformation("Finished fetching movies operation.");
         }
 
         public async Task<MovieDto> FetchMovieInfoAsync(int recordId)
@@ -44,10 +51,19 @@ namespace Cinephila.Services.BackgroundServices
                 string content = await response.Content.ReadAsStringAsync();
             
                 var movieDto = JsonSerializer.Deserialize<MovieDto>(content, _options);
+                return movieDto;
             }
-            catch (Exception e)
+            catch (HttpRequestException ex)
             {
-                return null;
+                _logger.LogError(ex, "Error while fetching movies from API.");
+            }
+            catch (JsonException ex)
+            {
+                _logger.LogError(ex, "Error while deserializing movie details.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occured:");
             }
 
             return null;
