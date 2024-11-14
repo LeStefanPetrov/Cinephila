@@ -21,34 +21,30 @@ namespace Cinephila.Services.BackgroundServices
             _logger = logger;
         }
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _ = Task.Run(async () =>
+            try
             {
-                try
-                {
-                    using var scope = _serviceScopeFactory.CreateScope();
+                using var scope = _serviceScopeFactory.CreateScope();
 
-                    var genreFetcherService = scope.ServiceProvider.GetRequiredService<IGenreFetcherService>();
-                    var movieFetcherService = scope.ServiceProvider.GetRequiredService<IMovieFetcherService>();
-                    var personFetcherService = scope.ServiceProvider.GetRequiredService<IPersonFetcherService>();
+                var genreFetcherService = scope.ServiceProvider.GetRequiredService<IGenreFetcherService>();
+                var movieFetcherService = scope.ServiceProvider.GetRequiredService<IMovieFetcherService>();
+                var personFetcherService = scope.ServiceProvider.GetRequiredService<IPersonFetcherService>();
 
-                    _logger.LogInformation("Start fetching data from API.");
+                _logger.LogInformation("Start fetching data from API.");
 
-                    // Fetch genre, movie and person data sequentially
-                    await genreFetcherService.FetchGenresAsync();
-                    await movieFetcherService.ProcessMovieListAsync();
-                    await personFetcherService.ProcessPersonListAsync();
+                // Fetch genre, movie and person data sequentially
+                await genreFetcherService.FetchGenresAsync();
+                await movieFetcherService.ProcessMovieListAsync();
+                await personFetcherService.ProcessPersonListAsync();
 
-                    _logger.LogInformation("Fetching data complete.");
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex, "Error while fetching data.");
-                }
-            }, stoppingToken);
+                _logger.LogInformation("Fetching data complete.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error while fetching data.");
+            }
 
-            return Task.CompletedTask;
         }
     }
 }
