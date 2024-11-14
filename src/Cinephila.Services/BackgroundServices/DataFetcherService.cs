@@ -10,25 +10,23 @@ namespace Cinephila.Services.BackgroundServices
 {
     public class DataFetcherService : BackgroundService
     {
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger<DataFetcherService> _logger;
         public DataFetcherService(
-            IServiceProvider serviceProvider,
+            IServiceScopeFactory serviceScopeFactory,
             ILogger<DataFetcherService> logger)
         {
-            _serviceProvider = serviceProvider;
+            _serviceScopeFactory = serviceScopeFactory;
             _logger = logger;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-
             _ = Task.Run(async () =>
             {
                 try
                 {
-
-                    using var scope = _serviceProvider.CreateScope();
+                    using var scope = _serviceScopeFactory.CreateScope();
 
                     var genreFetcherService = scope.ServiceProvider.GetRequiredService<IGenreFetcherService>();
                     var movieFetcherService = scope.ServiceProvider.GetRequiredService<IMovieFetcherService>();
@@ -49,6 +47,7 @@ namespace Cinephila.Services.BackgroundServices
                 }
             }, stoppingToken);
 
+            return Task.CompletedTask;
         }
     }
 }
