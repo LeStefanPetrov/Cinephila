@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Cinephila.Services.BackgroundServices
 {
-    public class PersonFetcherService : BaseFetcherService, IPersonFetcherService
+    public class PersonFetcherService : BaseFetcherService<PersonDto>, IPersonFetcherService
     {
         private readonly HttpClient _httpClient;
         private readonly ApiSettings _apiSettings;
@@ -37,12 +37,12 @@ namespace Cinephila.Services.BackgroundServices
         {
             _logger.LogInformation("Starting fetching people operation.");
 
-            await ProcessFileAsync(FetchPersonInfoAsync, _participantsRepository.BatchInsertParticipantsAsync, _apiSettings.FetchPeopleUrl);
+            await ProcessFileAsync(FetchInfoAsync, _participantsRepository.BatchInsertParticipantsAsync, _apiSettings.FetchPeopleUrl);
 
             _logger.LogInformation("Finished fetching people operation.");
         }
 
-        public async Task<PersonDto> FetchPersonInfoAsync(int recordId)
+        public override async Task<PersonDto> FetchInfoAsync(int recordId)
         {
             try
             {

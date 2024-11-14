@@ -6,6 +6,5 @@ namespace Cinephila.Domain.BackgroundServices
     public interface IPersonFetcherService
     {
         Task ProcessPersonListAsync();
-        Task<PersonDto> FetchPersonInfoAsync(int recordId);
     }
 }

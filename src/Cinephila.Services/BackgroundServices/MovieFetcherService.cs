@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Cinephila.Services.BackgroundServices
 {
-    public class MovieFetcherService : BaseFetcherService, IMovieFetcherService
+    public class MovieFetcherService : BaseFetcherService<MovieDto>, IMovieFetcherService
     {
         private readonly HttpClient _httpClient; 
         private readonly ApiSettings _apiSettings;
@@ -36,12 +36,12 @@ namespace Cinephila.Services.BackgroundServices
         {
             _logger.LogInformation("Starting fetching movies operation.");
             
-            await ProcessFileAsync(FetchMovieInfoAsync, _productionsRepository.BatchInsertMovieProductionsAsync,  _apiSettings.FetchMoviesUrl);
+            await ProcessFileAsync(FetchInfoAsync, _productionsRepository.BatchInsertMovieProductionsAsync,  _apiSettings.FetchMoviesUrl);
             
             _logger.LogInformation("Finished fetching movies operation.");
         }
 
-        public async Task<MovieDto> FetchMovieInfoAsync(int recordId)
+        public override async Task<MovieDto> FetchInfoAsync(int recordId)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace Cinephila.Services.BackgroundServices
                 response.EnsureSuccessStatusCode();
 
                 string content = await response.Content.ReadAsStringAsync();
-            
+
                 var movieDto = JsonSerializer.Deserialize<MovieDto>(content, _options);
                 return movieDto;
             }

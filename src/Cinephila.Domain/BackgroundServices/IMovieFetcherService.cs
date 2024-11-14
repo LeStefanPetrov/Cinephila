@@ -6,6 +6,5 @@ namespace Cinephila.Domain.BackgroundServices
     public interface IMovieFetcherService
     {
         Task ProcessMovieListAsync();
-        Task<MovieDto> FetchMovieInfoAsync(int recordId);
     }
 }

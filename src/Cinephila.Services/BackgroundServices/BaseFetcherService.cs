@@ -13,12 +13,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Cinephila.Services.BackgroundServices
 {
-    public abstract class BaseFetcherService
+    public abstract class BaseFetcherService<T>
     {
         private readonly HttpClient _httpClient;
         private readonly ApiSettings _apiSettings;
         private readonly JsonSerializerOptions _options;
-        private readonly ILogger<BaseFetcherService> _logger;
+        private readonly ILogger<BaseFetcherService<T>> _logger;
 
         private const int ConcurrentOperationsLimit = 50;
         private const int RecordsBatchLimit = 200;
@@ -27,7 +27,7 @@ namespace Cinephila.Services.BackgroundServices
             HttpClient httpClient,
             IOptions<ApiSettings> apiSettings,
             JsonSerializerOptions options,
-            ILogger<BaseFetcherService> logger)
+            ILogger<BaseFetcherService<T>> logger)
         {
             _httpClient = httpClient;
             _apiSettings = apiSettings.Value;
@@ -141,5 +141,7 @@ namespace Cinephila.Services.BackgroundServices
             File.Delete(tempGzFilePath);
             File.Delete(tempJsonFilePath);
         }
+
+        public abstract Task<T> FetchInfoAsync(int recordId);
     }
 }
