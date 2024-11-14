@@ -18,7 +18,10 @@ namespace Cinephila.DataAccess.Repositories
         private readonly IMapper _mapper;
         private readonly ILogger<ParticipantsRepository> _logger;
 
-        public ParticipantsRepository(CinephilaDbContext context, IMapper mapper)
+        public ParticipantsRepository(
+            CinephilaDbContext context,
+            IMapper mapper,
+            ILogger<ParticipantsRepository> logger)
         {
             _context = context;
             _mapper = mapper;
