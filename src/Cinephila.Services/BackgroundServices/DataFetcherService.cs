@@ -12,6 +12,7 @@ namespace Cinephila.Services.BackgroundServices
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger<DataFetcherService> _logger;
+
         public DataFetcherService(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<DataFetcherService> logger)
