@@ -69,9 +69,6 @@ namespace Cinephila.API
 
             app.UseAuthorization();
 
-            //CinephilaDbDataSeeder.SeedCountries(context);
-            //CinephilaDbDataSeeder.SeedMovies(context, apiSettings.Value);
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
