@@ -18,6 +18,15 @@ namespace Cinephila.API.StartupExtensions
 
                 return connection;
             });
+
+            // Build a temporary provider to run migrations
+            using (var serviceProvider = services.BuildServiceProvider())
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<CinephilaDbContext>();
+                dbContext.Database.Migrate();
+            }
+
             return services;
         }
     }
