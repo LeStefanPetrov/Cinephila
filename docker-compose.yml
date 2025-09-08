@@ -1,31 +1,31 @@
-version: "3.9"
 services:
-  api:
+  cinephila-api:
     image: "cinephila-api"
     build: .
     ports:
       - "8000:5000"
     depends_on:
-      db:
+      cinephila-db:
         condition: service_healthy
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
 
-  cache:
+  redis:
       image: redis:latest
       ports:
         - '6379:6379'
       command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
-  db:
-    image: "mcr.microsoft.com/mssql/server"
+  cinephila-db:
+    image: "cinephila-db"
+    build: ./db
     ports: 
       - "1444:1433"
     environment:
-      MSSQL_SA_PASSWORD: "ZEmLRGq2_wI_R84S"
+      MSSQL_SA_PASSWORD: "ZEmLRGq2_wI_R84S" 
       ACCEPT_EULA: "Y"
     healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${Sa_Password:-ZEmLRGq2_wI_R84S} -Q 'SELECT 1' || exit 1"]
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ZEmLRGq2_wI_R84S -Q \"SELECT 1\" -C"]
       interval: 10s
-      retries: 3
+      retries: 5
       start_period: 10s
       timeout: 5s
