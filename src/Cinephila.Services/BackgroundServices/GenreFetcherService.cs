@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Net.Http;
+using System.Runtime.ConstrainedExecution;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -35,6 +36,12 @@ namespace Cinephila.Services.BackgroundServices
 
         public async Task FetchGenresAsync()
         {
+            if (await _genresRepository.AnyAsync())
+            {
+                _logger.LogInformation("Genres table contains data. Skipping fetch operation.");
+                return;
+            }
+
             try
             {
                 HttpResponseMessage response = await _httpClient.GetAsync($"genre/movie/list?api_key={_apiSettings.Key}");

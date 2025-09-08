@@ -2,6 +2,7 @@
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -43,5 +44,7 @@ namespace Cinephila.DataAccess.Repositories
                 }
             }
         }
+
+        public Task<bool> AnyAsync() => _context.Genres.AnyAsync();
     }
 }

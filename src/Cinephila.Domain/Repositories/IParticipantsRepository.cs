@@ -18,5 +18,7 @@ namespace Cinephila.Domain.Repositories
         Task<bool> CheckIfExistAsync(int id);
 
         Task BatchInsertParticipantsAsync(IEnumerable<PersonDto> participantDtos);
+
+        Task<bool> AnyAsync();
     }
 }

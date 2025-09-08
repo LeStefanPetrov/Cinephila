@@ -34,6 +34,12 @@ namespace Cinephila.Services.BackgroundServices
 
         public async Task ProcessMovieListAsync()
         {
+            if (await _productionsRepository.AnyAsync())
+            {
+                _logger.LogInformation("Productions table contains data. Skipping fetch operation.");
+                return;
+            }
+
             _logger.LogInformation("Starting fetching movies operation.");
             
             await ProcessFileAsync(FetchInfoAsync, _productionsRepository.BatchInsertMovieProductionsAsync,  _apiSettings.FetchMoviesUrl);

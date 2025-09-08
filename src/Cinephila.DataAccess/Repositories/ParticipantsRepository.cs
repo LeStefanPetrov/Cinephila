@@ -81,5 +81,7 @@ namespace Cinephila.DataAccess.Repositories
                 _logger.LogError(ex, "Error while inserting genres.");
             }
         }
+
+        public Task<bool> AnyAsync() => _context.Participants.AnyAsync();
     }
 }

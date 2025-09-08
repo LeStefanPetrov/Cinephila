@@ -35,6 +35,12 @@ namespace Cinephila.Services.BackgroundServices
 
         public async Task ProcessPersonListAsync()
         {
+            if (await _participantsRepository.AnyAsync())
+            {
+                _logger.LogInformation("Participants table contains data. Skipping fetch operation.");
+                return;
+            }
+
             _logger.LogInformation("Starting fetching people operation.");
 
             await ProcessFileAsync(FetchInfoAsync, _participantsRepository.BatchInsertParticipantsAsync, _apiSettings.FetchPeopleUrl);

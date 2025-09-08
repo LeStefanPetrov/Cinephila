@@ -18,5 +18,7 @@ namespace Cinephila.Domain.Repositories
         Task<IEnumerable<Production>> GetPaginatedAsync(int page, int size);
 
         Task BatchInsertMovieProductionsAsync(IEnumerable<MovieDto> movieDtos);
+
+        Task<bool> AnyAsync();
     }
 }

@@ -127,5 +127,7 @@ namespace Cinephila.DataAccess.Repositories
                 _logger.LogError(ex, "Error while inserting productions.");
             }
         }
+
+        public Task<bool> AnyAsync() => _context.Productions.AnyAsync();
     }
 }
