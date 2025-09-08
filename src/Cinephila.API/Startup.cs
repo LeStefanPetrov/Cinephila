@@ -1,3 +1,4 @@
+using Cinephila.API.Middleware;
 using Cinephila.API.StartupExtensions;
 using Cinephila.DataAccess;
 using Cinephila.Domain.Settings;
@@ -55,6 +56,8 @@ namespace Cinephila.API
                 });
             }
             app.UseHttpsRedirection();
+
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseRouting();
 
