@@ -12,7 +12,7 @@
 
         public string BirthDay { get; set; }
 
-        public string? DeathDay { get; set; }
+        public string DeathDay { get; set; }
 
         public string Known_For_Department { get; set; }
 

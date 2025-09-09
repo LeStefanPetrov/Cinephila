@@ -12,7 +12,6 @@ namespace Cinephila.DataAccess.Repositories
         private readonly CinephilaDbContext _context;
         private readonly IMapper _mapper;
 
-
         public UsersRepository(CinephilaDbContext context, IMapper mapper)
         {
             _context = context;

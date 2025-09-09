@@ -1,5 +1,5 @@
-﻿using Cinephila.Domain.DTOs.UserDTOs;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Cinephila.Domain.DTOs.UserDTOs;
 
 namespace Cinephila.Domain.Services
 {

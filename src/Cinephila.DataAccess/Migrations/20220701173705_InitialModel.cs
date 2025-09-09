@@ -15,7 +15,7 @@ namespace Cinephila.DataAccess.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -31,7 +31,7 @@ namespace Cinephila.DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DeathDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    PlaceOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    PlaceOfBirth = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -46,7 +46,7 @@ namespace Cinephila.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     YearOfCreation = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Summary = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -59,7 +59,7 @@ namespace Cinephila.DataAccess.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -74,7 +74,7 @@ namespace Cinephila.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -86,7 +86,7 @@ namespace Cinephila.DataAccess.Migrations
                 columns: table => new
                 {
                     ProductionID = table.Column<int>(type: "int", nullable: false),
-                    CountryID = table.Column<int>(type: "int", nullable: false)
+                    CountryID = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -110,7 +110,7 @@ namespace Cinephila.DataAccess.Migrations
                 columns: table => new
                 {
                     ProductionID = table.Column<int>(type: "int", nullable: false),
-                    LengthInMinutes = table.Column<int>(type: "int", nullable: false)
+                    LengthInMinutes = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -128,7 +128,7 @@ namespace Cinephila.DataAccess.Migrations
                 columns: table => new
                 {
                     ProductionID = table.Column<int>(type: "int", nullable: false),
-                    EndOfProduction = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    EndOfProduction = table.Column<DateTime>(type: "datetime2", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -147,7 +147,7 @@ namespace Cinephila.DataAccess.Migrations
                 {
                     ProductionID = table.Column<int>(type: "int", nullable: false),
                     ParticipantID = table.Column<int>(type: "int", nullable: false),
-                    RoleID = table.Column<int>(type: "int", nullable: true)
+                    RoleID = table.Column<int>(type: "int", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -180,7 +180,7 @@ namespace Cinephila.DataAccess.Migrations
                     ProductionID = table.Column<int>(type: "int", nullable: false),
                     UserID = table.Column<int>(type: "int", nullable: false),
                     Review = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Rating = table.Column<int>(type: "int", nullable: true)
+                    Rating = table.Column<int>(type: "int", nullable: true),
                 },
                 constraints: table =>
                 {

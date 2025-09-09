@@ -6,7 +6,7 @@ namespace Cinephila.DataAccess.Entities
 {
     public class ProductionEntity : BaseEntity
     {
-        public string? Name { get; set; }
+        public string Name { get; set; }
 
         public string Title { get; set; }
 

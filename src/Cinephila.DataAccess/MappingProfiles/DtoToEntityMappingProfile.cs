@@ -100,7 +100,7 @@ namespace Cinephila.DataAccess.MappingProfiles
                     YearOfCreation = source.ReleaseDate,
                     Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions),
                     LengthInMinutes = source.Movie.Runtime,
-                    PosterPath = source.PosterPath
+                    PosterPath = source.PosterPath,
                 };
 
                 return movie;
@@ -112,7 +112,7 @@ namespace Cinephila.DataAccess.MappingProfiles
                 Summary = source.Summary,
                 YearOfCreation = source.ReleaseDate,
                 Participants = context.Mapper.Map<List<ParticipantRole>>(source.ParticipantsProductions),
-                PosterPath = source.PosterPath
+                PosterPath = source.PosterPath,
             };
 
             return tvShow;
@@ -144,7 +144,6 @@ namespace Cinephila.DataAccess.MappingProfiles
                 GenreID = x.Id,
             }).ToList();
 
-
             destination.Movie = new MovieEntity
             {
                 Runtime = source.Runtime,
@@ -152,16 +151,16 @@ namespace Cinephila.DataAccess.MappingProfiles
 
             return destination;
         }
-
     }
 
     public class PersonDtoToParticipantEntityResolver : ITypeConverter<PersonDto, ParticipantEntity>
     {
-        private ApiSettings _apiSettings { get; set; }
         public PersonDtoToParticipantEntityResolver(IOptions<ApiSettings> options)
         {
-            _apiSettings = options.Value;
+            ApiSettings = options.Value;
         }
+
+        private ApiSettings ApiSettings { get; set; }
 
         public ParticipantEntity Convert(PersonDto source, ParticipantEntity destination, ResolutionContext context)
         {
@@ -186,7 +185,7 @@ namespace Cinephila.DataAccess.MappingProfiles
 
             destination.ParticipantsProductions = source.Movie_Credits.Cast
                 .DistinctBy(x => x.Id)
-                .Where(x => x.Popularity > _apiSettings.MinimumPopularity && x.Adult == false)
+                .Where(x => x.Popularity > ApiSettings.MinimumPopularity && x.Adult == false)
                 .Select(x => new ParticipantProductionEntity
             {
                 ProductionID = x.Id,

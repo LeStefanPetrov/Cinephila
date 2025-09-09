@@ -19,7 +19,6 @@ namespace Cinephila.API.Controllers
         private readonly IUsersService _usersService;
         private readonly IMapper _mapper;
 
-
         public UsersController(IUsersService usersService, IMapper mapper)
         {
             _usersService = usersService;
@@ -29,7 +28,7 @@ namespace Cinephila.API.Controllers
         [HttpGet("profileInfo")]
         public async Task<ActionResult> ProfileInfo()
         {
-            ClaimsIdentity identity = (User.Identity as ClaimsIdentity);
+            ClaimsIdentity identity = User.Identity as ClaimsIdentity;
             string email = identity.FindFirst("email")?.Value;
 
             if (email == null)
@@ -45,7 +44,7 @@ namespace Cinephila.API.Controllers
                 Email = email,
                 Picture = identity.FindFirst("picture")?.Value,
                 FirstName = identity.FindFirst("given_name")?.Value,
-                LastName = identity.FindFirst("family_name")?.Value
+                LastName = identity.FindFirst("family_name")?.Value,
             };
 
             await _usersService.CreateAsync(newProfileInfo).ConfigureAwait(false);

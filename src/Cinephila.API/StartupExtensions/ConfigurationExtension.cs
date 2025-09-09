@@ -1,8 +1,8 @@
-﻿using Cinephila.Domain.Settings;
+﻿using System.Text.Json;
+using Cinephila.Domain.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using System.Text.Json;
 
 namespace Cinephila.API.StartupExtensions
 {

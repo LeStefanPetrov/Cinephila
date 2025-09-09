@@ -1,8 +1,8 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
 
 namespace Cinephila.API
 {
@@ -28,7 +28,7 @@ namespace Cinephila.API
                     .UseSerilog()
                     .Build()
                     .Run();
-            } 
+            }
             catch (Exception ex)
             {
                 Log.Fatal(ex, "Application startup failed.");

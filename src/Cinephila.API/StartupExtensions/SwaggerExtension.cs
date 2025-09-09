@@ -73,7 +73,7 @@ namespace Cinephila.API.StartupExtensions
                             Id = JwtBearerDefaults.AuthenticationScheme,
                         },
                     },
-                    new string[] {}
+                    new string[] { }
                 },
             });
             }

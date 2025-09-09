@@ -23,9 +23,9 @@ dotnet_diagnostic.SA1633.severity = none
 dotnet_diagnostic.SA1101.severity = none
 dotnet_diagnostic.SA1309.severity = none
 dotnet_diagnostic.SA1503.severity = none
-
-
-
+dotnet_diagnostic.SA1601.severity = none
+dotnet_diagnostic.SA1402.severity = none
+dotnet_diagnostic.SA0001.severity = none
 
 # Roslyn
 csharp_indent_labels = one_less_than_current

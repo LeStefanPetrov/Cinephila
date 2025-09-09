@@ -55,6 +55,7 @@ namespace Cinephila.API
                     c.EnableDeepLinking();
                 });
             }
+
             app.UseHttpsRedirection();
 
             app.UseMiddleware<ExceptionHandlingMiddleware>();

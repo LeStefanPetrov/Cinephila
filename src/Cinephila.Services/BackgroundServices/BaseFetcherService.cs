@@ -15,13 +15,13 @@ namespace Cinephila.Services.BackgroundServices
 {
     public abstract class BaseFetcherService<T>
     {
+        private const int ConcurrentOperationsLimit = 50;
+        private const int RecordsBatchLimit = 200;
+
         private readonly HttpClient _httpClient;
         private readonly ApiSettings _apiSettings;
         private readonly JsonSerializerOptions _options;
         private readonly ILogger<BaseFetcherService<T>> _logger;
-
-        private const int ConcurrentOperationsLimit = 50;
-        private const int RecordsBatchLimit = 200;
 
         protected BaseFetcherService(
             HttpClient httpClient,
@@ -35,11 +35,12 @@ namespace Cinephila.Services.BackgroundServices
             _logger = logger;
         }
 
-        protected async Task ProcessFileAsync<T>(Func<int, Task<T>> fetchDetailsAsync, Func<IEnumerable<T>, Task> saveRecordsBatchAsync, string fetchUrl)
+        public abstract Task<T> FetchInfoAsync(int recordId);
+
+        protected async Task ProcessFileAsync<TRecord>(Func<int, Task<TRecord>> fetchDetailsAsync, Func<IEnumerable<TRecord>, Task> saveRecordsBatchAsync, string fetchUrl)
         {
             string tempGzFilePath = Path.Combine(Path.GetTempPath(), "records.json.gz");
             string tempJsonFilePath = Path.Combine(Path.GetTempPath(), "records.json");
-
 
             await DownloadAndDecompressDataAsync(fetchUrl, tempGzFilePath, tempJsonFilePath);
 
@@ -51,8 +52,8 @@ namespace Cinephila.Services.BackgroundServices
 
             try
             {
-                var fetchRecordDetailsTasks = new List<Task<T>>();
-                var fetchedRecordsBatch = new List<T>();
+                var fetchRecordDetailsTasks = new List<Task<TRecord>>();
+                var fetchedRecordsBatch = new List<TRecord>();
 
                 using (var streamReader = new StreamReader(tempJsonFilePath))
                 {
@@ -141,7 +142,5 @@ namespace Cinephila.Services.BackgroundServices
             File.Delete(tempGzFilePath);
             File.Delete(tempJsonFilePath);
         }
-
-        public abstract Task<T> FetchInfoAsync(int recordId);
     }
 }

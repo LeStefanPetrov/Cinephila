@@ -25,6 +25,6 @@ namespace Cinephila.DataAccess.Entities
 
         public virtual ICollection<ParticipantProductionEntity> ParticipantsProductions { get; set; }
 
-        public virtual ICollection<ImageEntity> ParticipantImages { get; set; }  
+        public virtual ICollection<ImageEntity> ParticipantImages { get; set; }
     }
 }

@@ -17,6 +17,5 @@ namespace Cinephila.Domain.Services
         Task<IEnumerable<Production>> GetPaginatedAsync(int page, int size);
 
         Task<IEnumerable<Production>> GetTopPicksAsync(int page, int size);
-
     }
 }

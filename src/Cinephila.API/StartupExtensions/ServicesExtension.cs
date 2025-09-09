@@ -1,4 +1,4 @@
-﻿using Cinephila.API.Settings;
+﻿using System;
 using Cinephila.Domain.BackgroundServices;
 using Cinephila.Domain.Services;
 using Cinephila.Domain.Settings;
@@ -6,7 +6,6 @@ using Cinephila.Services.BackgroundServices;
 using Cinephila.Services.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Cinephila.API.StartupExtensions
 {
@@ -32,22 +31,21 @@ namespace Cinephila.API.StartupExtensions
 
         public static IServiceCollection AddHttpClients(this IServiceCollection services, IConfiguration configuration)
         {
-            var _appSettings = configuration.GetSection("MovieApi").Get<ApiSettings>();
-
+            var appSettings = configuration.GetSection("MovieApi").Get<ApiSettings>();
 
             services.AddHttpClient<IPersonFetcherService, PersonFetcherService>(client =>
             {
-                client.BaseAddress = new Uri(_appSettings.Url);
+                client.BaseAddress = new Uri(appSettings.Url);
             });
 
             services.AddHttpClient<IMovieFetcherService, MovieFetcherService>(client =>
             {
-                client.BaseAddress = new Uri(_appSettings.Url);
+                client.BaseAddress = new Uri(appSettings.Url);
             });
 
             services.AddHttpClient<IGenreFetcherService, GenreFetcherService>(client =>
             {
-                client.BaseAddress = new Uri(_appSettings.Url);
+                client.BaseAddress = new Uri(appSettings.Url);
             });
 
             return services;

@@ -1,11 +1,11 @@
-﻿using Cinephila.API.Settings;
+﻿using System;
+using Cinephila.API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
-using System;
 
 namespace Cinephila.API.StartupExtensions
 {
@@ -13,10 +13,10 @@ namespace Cinephila.API.StartupExtensions
     {
         public static IServiceCollection AddAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            var _appSettings = configuration.GetSection("Authentication").Get<AuthenticationSettings>();
+            var appSettings = configuration.GetSection("Authentication").Get<AuthenticationSettings>();
 
             services
-                .AddSwagger(_appSettings)
+                .AddSwagger(appSettings)
                 .AddAuthentication(options =>
                 {
                     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -25,7 +25,7 @@ namespace Cinephila.API.StartupExtensions
                 .AddJwtBearer(x =>
                 {
                     var configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                        $"{_appSettings.Authority.Trim('/')}/.well-known/openid-configuration",
+                        $"{appSettings.Authority.Trim('/')}/.well-known/openid-configuration",
                         new OpenIdConnectConfigurationRetriever(),
                         new HttpDocumentRetriever());
 
