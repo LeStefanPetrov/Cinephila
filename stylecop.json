@@ -1,0 +1,30 @@
+{
+  "settings": {
+
+    "documentationRules": {
+      "companyName": "MyCompany",
+      "documentExposedElements": true,
+      "documentInternalElements": true
+    },
+    "orderingRules": {
+      "usingDirectivesPlacement": "outsideNamespace",
+      "elementOrder": [
+        "kind",
+        "accessibility",
+        "constant",
+        "readonly",
+        "static",
+        "instance",
+      ]
+    },
+    "namingRules": {
+      "includeInferredTupleElementNames": true
+    },
+    "rules": {
+      "disableRules": [
+        "SA1300", // Element must begin with an uppercase letter
+        "SA1600" // Elements must be documented
+      ]
+    },
+  }
+}

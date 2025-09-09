@@ -1,10 +1,10 @@
-﻿using Cinephila.Domain.DTOs.ProductionDTOs;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.Redis;
 using Cinephila.Domain.Repositories;
 using Cinephila.Domain.Services;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Cinephila.Services.Services
 {

@@ -1,8 +1,8 @@
-﻿using Cinephila.Domain.Redis;
-using StackExchange.Redis;
-using System;
+﻿using System;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Cinephila.Domain.Redis;
+using StackExchange.Redis;
 
 namespace Cinephila.DataAccess.Redis
 {

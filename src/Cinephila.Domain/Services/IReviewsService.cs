@@ -1,9 +1,6 @@
-﻿using Cinephila.Domain.DTOs.ReviewDTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cinephila.Domain.DTOs.ReviewDTOs;
 
 namespace Cinephila.Domain.Services
 {

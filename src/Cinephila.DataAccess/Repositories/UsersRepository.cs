@@ -1,10 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Threading.Tasks;
+using AutoMapper;
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.UserDTOs;
 using Cinephila.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Cinephila.DataAccess.Repositories
 {

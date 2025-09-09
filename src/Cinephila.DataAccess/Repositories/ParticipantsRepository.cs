@@ -1,14 +1,14 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.DTOs.ParticipantDTOs;
 using Cinephila.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Cinephila.DataAccess.Repositories
 {

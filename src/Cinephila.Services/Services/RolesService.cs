@@ -1,6 +1,6 @@
-﻿using Cinephila.Domain.Repositories;
+﻿using System.Threading.Tasks;
+using Cinephila.Domain.Repositories;
 using Cinephila.Domain.Services;
-using System.Threading.Tasks;
 
 namespace Cinephila.Services.Services
 {
@@ -10,7 +10,7 @@ namespace Cinephila.Services.Services
 
         public RolesService(IRolesRepository rolesRepository)
         {
-            _rolesRepository = rolesRepository;            
+            _rolesRepository = rolesRepository;
         }
 
         public Task<int> CreateAsync(string roleName)

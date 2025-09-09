@@ -1,11 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.ReviewDTOs;
 using Cinephila.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Cinephila.DataAccess.Repositories
 {
@@ -13,7 +13,6 @@ namespace Cinephila.DataAccess.Repositories
     {
         private readonly CinephilaDbContext _context;
         private readonly IMapper _mapper;
-
 
         public ReviewsRepository(CinephilaDbContext context, IMapper mapper)
         {

@@ -5,6 +5,11 @@ namespace Cinephila.DataAccess
 {
     public class CinephilaDbContext : DbContext
     {
+        public CinephilaDbContext(DbContextOptions options)
+            : base(options)
+        {
+        }
+
         public DbSet<CountryEntity> Countries { get; set; }
 
         public DbSet<GenreEntity> Genres { get; set; }
@@ -30,10 +35,6 @@ namespace Cinephila.DataAccess
         public DbSet<ReviewProductionEntity> ReviewsProductions { get; set; }
 
         public DbSet<GenreProductionEntity> GenresProductions { get; set; }
-
-        public CinephilaDbContext(DbContextOptions options) : base(options)
-        {
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -85,11 +86,11 @@ namespace Cinephila.DataAccess
 
             modelBuilder.Entity<ImageEntity>()
                    .HasOne(i => i.Participant)
-                   .WithMany(p => p.ParticipantImages) 
+                   .WithMany(p => p.ParticipantImages)
                    .HasForeignKey(i => i.ParticipantID)
                    .OnDelete(DeleteBehavior.Cascade);
 
-            //Indexes
+            // Indexes
             modelBuilder.Entity<GenreEntity>()
                 .HasIndex(x => x.TmdbId)
                 .HasDatabaseName("IX_Genres_TmdbId")

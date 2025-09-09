@@ -1,5 +1,4 @@
-﻿using Cinephila.Domain.DTOs.FetchDataDTOs;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Cinephila.Domain.BackgroundServices
 {

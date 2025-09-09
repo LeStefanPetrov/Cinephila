@@ -1,10 +1,10 @@
-﻿using Cinephila.Domain.BackgroundServices;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Cinephila.Domain.BackgroundServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Cinephila.Services.BackgroundServices
 {
@@ -44,7 +44,6 @@ namespace Cinephila.Services.BackgroundServices
             {
                 _logger.LogError(ex, "Error while fetching data.");
             }
-
         }
     }
 }

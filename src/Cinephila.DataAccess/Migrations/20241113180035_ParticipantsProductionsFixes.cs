@@ -62,7 +62,7 @@ namespace Cinephila.DataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Path = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VoteAverage = table.Column<double>(type: "float", nullable: false),
-                    VoteCount = table.Column<int>(type: "int", nullable: false)
+                    VoteCount = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {
@@ -74,7 +74,7 @@ namespace Cinephila.DataAccess.Migrations
                 columns: table => new
                 {
                     ParticipantID = table.Column<int>(type: "int", nullable: false),
-                    ImageID = table.Column<int>(type: "int", nullable: false)
+                    ImageID = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {

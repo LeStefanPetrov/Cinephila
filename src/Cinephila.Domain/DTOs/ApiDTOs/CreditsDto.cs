@@ -3,7 +3,7 @@
 namespace Cinephila.Domain.DTOs.ApiDTOs
 {
     [DataContract]
-    public  class CreditsDto
+    public class CreditsDto
     {
         [DataMember(Name = "cast")]
         public ParticipantDto[] Participants { get; set; }

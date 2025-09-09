@@ -64,7 +64,7 @@ namespace Cinephila.DataAccess.Migrations
                 columns: table => new
                 {
                     ParticipantID = table.Column<int>(type: "int", nullable: false),
-                    ImageID = table.Column<int>(type: "int", nullable: false)
+                    ImageID = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {

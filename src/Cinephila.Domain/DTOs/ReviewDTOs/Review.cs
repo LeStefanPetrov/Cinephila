@@ -11,6 +11,5 @@ namespace Cinephila.Domain.DTOs.ReviewDTOs
         public int Rating { get; set; }
 
         public string UserReview { get; set; }
-
     }
 }

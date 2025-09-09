@@ -1,6 +1,6 @@
-﻿using Cinephila.Domain.DTOs.FetchDataDTOs;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cinephila.Domain.DTOs.FetchDataDTOs;
 
 namespace Cinephila.Domain.Repositories
 {

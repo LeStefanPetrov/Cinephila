@@ -1,5 +1,5 @@
-﻿using Cinephila.Domain.ModelInterfaces;
-using System;
+﻿using System;
+using Cinephila.Domain.ModelInterfaces;
 
 namespace Cinephila.Domain.DTOs.ProductionDTOs
 {

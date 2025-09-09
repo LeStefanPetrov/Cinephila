@@ -1,14 +1,14 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Cinephila.DataAccess.Repositories
 {
@@ -42,13 +42,13 @@ namespace Cinephila.DataAccess.Repositories
             var productionEntity = await _context.Productions.Where(x => x.ID == id).FirstOrDefaultAsync().ConfigureAwait(false);
             _context.Entry(productionEntity).CurrentValues.SetValues(dto);
 
-            foreach(var country in productionEntity.Countries)
+            foreach (var country in productionEntity.Countries)
             {
                 if (!dto.Countries.Any(c => c == country.CountryID))
                     _context.CountriesProductions.Remove(country);
             }
 
-            foreach(var participant in productionEntity.ParticipantsProductions)
+            foreach (var participant in productionEntity.ParticipantsProductions)
             {
                 if (!dto.Participants.Any(p => p.ParticipantID == participant.ParticipantID && p.RoleID == participant.RoleID))
                     _context.ParticipantsProductions.Remove(participant);
@@ -56,27 +56,27 @@ namespace Cinephila.DataAccess.Repositories
 
             foreach (var countryID in dto.Countries)
             {
-               if(!productionEntity.Countries.Any(c => c.CountryID == countryID))
+               if (!productionEntity.Countries.Any(c => c.CountryID == countryID))
                 {
                     productionEntity.Countries.Add(
                         new CountryProductionEntity
                         {
                             CountryID = countryID,
-                            ProductionID = productionEntity.ID
+                            ProductionID = productionEntity.ID,
                         });
                 }
             }
 
-            foreach(var participant in dto.Participants)
+            foreach (var participant in dto.Participants)
             {
-                if(!productionEntity.ParticipantsProductions.Any(p => p.ParticipantID == participant.ParticipantID && p.RoleID == participant.RoleID))
+                if (!productionEntity.ParticipantsProductions.Any(p => p.ParticipantID == participant.ParticipantID && p.RoleID == participant.RoleID))
                 {
                     productionEntity.ParticipantsProductions.Add(
                         new ParticipantProductionEntity
                         {
                             ParticipantID = participant.ParticipantID,
                             RoleID = participant.RoleID,
-                            ProductionID = productionEntity.ID
+                            ProductionID = productionEntity.ID,
                         });
                 }
             }

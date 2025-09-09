@@ -1,4 +1,7 @@
-﻿using Cinephila.API.Settings;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Cinephila.API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,9 +9,6 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Interfaces;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Cinephila.API.StartupExtensions
 {
@@ -26,7 +26,7 @@ namespace Cinephila.API.StartupExtensions
                     Contact = new OpenApiContact
                     {
                         Name = settings.ClientId,
-                    }
+                    },
                 });
                 options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                 {
@@ -39,9 +39,9 @@ namespace Cinephila.API.StartupExtensions
                         {
                             AuthorizationUrl = new Uri($"{settings.Authority.TrimEnd('/')}/o/oauth2/v2/auth"),
                             TokenUrl = new Uri("https://oauth2.googleapis.com/token"),
-                            Scopes = settings.Scopes.ToDictionary(k => k, v => v)
-                        }
-                    }
+                            Scopes = settings.Scopes.ToDictionary(k => k, v => v),
+                        },
+                    },
                 });
                 options.OperationFilter<SwaggerAuthorizationFilter>();
                 options.CustomSchemaIds(type => type.ToString());
@@ -70,11 +70,11 @@ namespace Cinephila.API.StartupExtensions
                         Reference = new OpenApiReference
                         {
                             Type = ReferenceType.SecurityScheme,
-                            Id = JwtBearerDefaults.AuthenticationScheme
-                        }
+                            Id = JwtBearerDefaults.AuthenticationScheme,
+                        },
                     },
                     new string[] {}
-                }
+                },
             });
             }
         }

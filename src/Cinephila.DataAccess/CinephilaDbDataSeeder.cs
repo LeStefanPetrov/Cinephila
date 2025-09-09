@@ -1,15 +1,12 @@
-﻿using Cinephila.DataAccess.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.ApiDTOs;
 using Cinephila.Domain.Settings;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Cinephila.DataAccess
 {
@@ -24,7 +21,7 @@ namespace Cinephila.DataAccess
                 var countries = new List<CountryEntity>
                 {
                     new () { Name = "USA" },
-                    new ()  { Name = "United Kingdom" },
+                    new () { Name = "United Kingdom" },
                     new () { Name = "France" },
                     new () { Name = "Italy" },
                     new () { Name = "South Korea" },
@@ -43,7 +40,7 @@ namespace Cinephila.DataAccess
                     new () { Name = "Serbia" },
                     new () { Name = "Turkey" },
                     new () { Name = "Greece" },
-                    new () { Name = "Ireland"},
+                    new () { Name = "Ireland" },
                 };
 
                 context.Countries.AddRange(countries);
@@ -58,14 +55,14 @@ namespace Cinephila.DataAccess
                 if (!context.Movies.Any())
                 {
                     client.BaseAddress = new Uri(apiSettings.Url);
-                    HttpResponseMessage response = client.GetAsync($"movie/popular?api_key={ apiSettings.Key }&page=1").Result;
+                    HttpResponseMessage response = client.GetAsync($"movie/popular?api_key={apiSettings.Key}&page=1").Result;
                     response.EnsureSuccessStatusCode();
                     string popularMoviesResult = response.Content.ReadAsStringAsync().Result;
                     var moviesDto = JsonConvert.DeserializeObject<PopularMoviesDto>(popularMoviesResult).Movies;
 
                     foreach (var movie in moviesDto)
                     {
-                        HttpResponseMessage creditsResponse = client.GetAsync($"movie/{ movie.ID }/credits?api_key={ apiSettings.Key }&page=1").Result;
+                        HttpResponseMessage creditsResponse = client.GetAsync($"movie/{movie.ID}/credits?api_key={ apiSettings.Key }&page=1").Result;
                         response.EnsureSuccessStatusCode();
                         string creditsResult = creditsResponse.Content.ReadAsStringAsync().Result;
                         var participantsDto = JsonConvert.DeserializeObject<CreditsDto>(creditsResult).Participants;
@@ -77,8 +74,8 @@ namespace Cinephila.DataAccess
                                 TmdbID = movie.ID,
                                 ReleaseDate = movie.ReleaseDate,
                                 Name = movie.Name,
-                                PosterPath = apiSettings.PosterUrl + movie.PosterPath
-                            }
+                                PosterPath = apiSettings.PosterUrl + movie.PosterPath,
+                            },
                         };
 
                         foreach (var participant in participantsDto)
@@ -98,7 +95,7 @@ namespace Cinephila.DataAccess
                                 entity.Production.ParticipantsProductions.Add(new ParticipantProductionEntity
                                 {
                                     ProductionID = entity.ProductionID,
-                                    ParticipantID = participantEntity.ID
+                                    ParticipantID = participantEntity.ID,
                                 });
                             }
                         }

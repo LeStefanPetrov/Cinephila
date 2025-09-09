@@ -15,7 +15,7 @@ namespace Cinephila.DataAccess.Migrations
                 columns: table => new
                 {
                     ProductionID = table.Column<int>(type: "int", nullable: false),
-                    GenreID = table.Column<int>(type: "int", nullable: false)
+                    GenreID = table.Column<int>(type: "int", nullable: false),
                 },
                 constraints: table =>
                 {

@@ -1,7 +1,7 @@
-﻿using Cinephila.Domain.DTOs.ParticipantDTOs;
-using Cinephila.Domain.ModelInterfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Cinephila.Domain.DTOs.ParticipantDTOs;
+using Cinephila.Domain.ModelInterfaces;
 
 namespace Cinephila.Domain.DTOs.ProductionDTOs
 {

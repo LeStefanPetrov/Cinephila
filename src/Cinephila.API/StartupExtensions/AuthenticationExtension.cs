@@ -42,7 +42,7 @@ namespace Cinephila.API.StartupExtensions
                         IssuerSigningKeys = discoveryDocument.SigningKeys,
                         ValidateAudience = false,
                         ValidateLifetime = true,
-                        ClockSkew = TimeSpan.FromMinutes(1)
+                        ClockSkew = TimeSpan.FromMinutes(1),
                     };
                 });
 

@@ -1,14 +1,13 @@
-﻿using Cinephila.Domain.BackgroundServices;
+﻿using System;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
+using Cinephila.Domain.BackgroundServices;
 using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.Repositories;
 using Cinephila.Domain.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using System;
-using System.Net.Http;
-using System.Runtime.ConstrainedExecution;
-using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Cinephila.Services.BackgroundServices
 {

@@ -1,12 +1,12 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using AutoMapper;
 using Cinephila.Domain.DTOs.ProductionDTOs;
 using Cinephila.Domain.Models.ProductionModels;
 using Cinephila.Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Cinephila.API.Controllers
 {

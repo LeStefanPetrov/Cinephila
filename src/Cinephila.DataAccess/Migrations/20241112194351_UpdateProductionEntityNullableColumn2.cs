@@ -27,7 +27,7 @@ namespace Cinephila.DataAccess.Migrations
                 table: "Productions",
                 type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: "",
+                defaultValue: string.Empty,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);

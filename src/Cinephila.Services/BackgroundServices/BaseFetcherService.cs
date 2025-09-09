@@ -1,15 +1,15 @@
-﻿using Cinephila.Domain.Helpers;
-using Cinephila.Domain.Settings;
-using System.IO.Compression;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System;
+using System.IO.Compression;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System.Linq;
+using Cinephila.Domain.Helpers;
+using Cinephila.Domain.Settings;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Cinephila.Services.BackgroundServices
 {

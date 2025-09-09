@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using Cinephila.DataAccess.Entities;
 using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.DTOs.ParticipantDTOs;
@@ -8,8 +10,6 @@ using Cinephila.Domain.DTOs.UserDTOs;
 using Cinephila.Domain.Extensions;
 using Cinephila.Domain.Settings;
 using Microsoft.Extensions.Options;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Cinephila.DataAccess.MappingProfiles
 {
@@ -65,13 +65,13 @@ namespace Cinephila.DataAccess.MappingProfiles
             destination.ReleaseDate = source.YearOfCreation;
             destination.ParticipantsProductions = context.Mapper.Map<List<ParticipantProductionEntity>>(source.Participants);
             destination.Countries = context.Mapper.Map<List<CountryProductionEntity>>(source.Countries);
-            
-            if(source is Movie)
+
+            if (source is Movie)
             {
                 Movie movie = source as Movie;
                 destination.Movie = new MovieEntity
                 {
-                    Runtime = movie.LengthInMinutes
+                    Runtime = movie.LengthInMinutes,
                 };
 
                 return destination;
@@ -80,9 +80,9 @@ namespace Cinephila.DataAccess.MappingProfiles
             TVShow tvShow = source as TVShow;
             destination.TVShow = new TVShowEntity
             {
-                EndOfProduction = tvShow.EndOfProduction
+                EndOfProduction = tvShow.EndOfProduction,
             };
-            
+
             return destination;
         }
     }
@@ -196,6 +196,5 @@ namespace Cinephila.DataAccess.MappingProfiles
 
             return destination;
         }
-
     }
 }

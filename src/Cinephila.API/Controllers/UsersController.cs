@@ -1,12 +1,12 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
+using AutoMapper;
 using Cinephila.Domain.DTOs.UserDTOs;
 using Cinephila.Domain.Models.UserModels;
 using Cinephila.Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace Cinephila.API.Controllers
 {
@@ -50,7 +50,7 @@ namespace Cinephila.API.Controllers
 
             await _usersService.CreateAsync(newProfileInfo).ConfigureAwait(false);
 
-            return Created("", _mapper.Map<UserInfoModel>(newProfileInfo));
+            return Created(string.Empty, _mapper.Map<UserInfoModel>(newProfileInfo));
         }
     }
 }

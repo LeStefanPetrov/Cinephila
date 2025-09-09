@@ -1,13 +1,13 @@
-﻿using Cinephila.Domain.Settings;
-using Microsoft.Extensions.Options;
+﻿using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Cinephila.Domain.BackgroundServices;
 using Cinephila.Domain.DTOs.FetchDataDTOs;
 using Cinephila.Domain.Repositories;
-using System;
+using Cinephila.Domain.Settings;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Cinephila.Services.BackgroundServices
 {
@@ -24,7 +24,8 @@ namespace Cinephila.Services.BackgroundServices
             IOptions<ApiSettings> apiSettings,
             JsonSerializerOptions options,
             IParticipantsRepository participantsRepository,
-            ILogger<PersonFetcherService> logger) : base(httpClient, apiSettings, options, logger)
+            ILogger<PersonFetcherService> logger)
+            : base(httpClient, apiSettings, options, logger)
         {
             _httpClient = httpClient;
             _apiSettings = apiSettings.Value;

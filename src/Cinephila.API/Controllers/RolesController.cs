@@ -1,9 +1,8 @@
-﻿using Cinephila.Domain.Services;
+﻿using System.Threading.Tasks;
+using Cinephila.Domain.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Cinephila.API.Controllers
 {

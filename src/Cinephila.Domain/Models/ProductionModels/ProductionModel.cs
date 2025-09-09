@@ -1,7 +1,7 @@
-﻿using Cinephila.Domain.ModelInterfaces;
-using Cinephila.Domain.Models.ParticipantModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Cinephila.Domain.ModelInterfaces;
+using Cinephila.Domain.Models.ParticipantModels;
 
 namespace Cinephila.Domain.Models.ProductionModels
 {
